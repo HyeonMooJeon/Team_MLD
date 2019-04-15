@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{title}}</title>
+</head>
+<body>
+    <h1>{{title}}</h1>
+    <h1>Regist Test</h1>
+        <form action="/signUp" method="post">
+            <input type="text" name="id"  placeholder="ID">
+            <input type="text" name="pw"  placeholder="password">
+            <input type="text" name="userName"  placeholder="username">
+
+            <input type="submit">
+
+        </form>
+    <br>
+        <h1>login Test</h1>
+       <form action="/login" method="post">
+            <input type="text" name="log_id"  placeholder="ID">
+            <input type="text" name="log_pw"  placeholder="password">
+            <input type="submit">
+
+        </form>
+        <H1>board Test</H1>
+
+       <form action="/board" method="post">
+            <input type="text" name="id"  placeholder="ID">
+            <input type="text" name="pw"  placeholder="pw">
+           <br>
+            <input type="text" name="contents"  placeholder="contents" size="100%">
+           <br>
+            <input type="submit" name="submit_button" value="새 글 작성">
+            <input type="submit" name="submit_button" value="삭제">
+            <input type="submit" name="submit_button" value="수정">
+            <input type="submit" name="submit_button" value="확인">
+
+        </form>
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" ></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" ></script>
+
+</body>
+</html>
