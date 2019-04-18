@@ -1414,7 +1414,7 @@ void test_detector(char *datacfg, char *cfgfile, char *weightfile, char *filenam
 
     free_network(net);
 }
-
+//파라미터 파싱 후 함수 호출
 void run_detector(int argc, char **argv)
 {
     int dont_show = find_arg(argc, argv, "-dont_show");
@@ -1482,9 +1482,13 @@ void run_detector(int argc, char **argv)
     else if (0 == strcmp(argv[2], "map")) validate_detector_map(datacfg, cfg, weights, thresh, iou_thresh, NULL);
     else if (0 == strcmp(argv[2], "calc_anchors")) calc_anchors(datacfg, num_of_clusters, width, height, show);
     else if (0 == strcmp(argv[2], "demo")) {
+        //.data파일 값 읽기(option_list.c)
         list *options = read_data_cfg(datacfg);
+        //인식할 class 종류의 수 읽기(option_list.c)
         int classes = option_find_int(options, "classes", 20);
+        //.names 파일 경로 읽기(option_list.c)
         char *name_list = option_find_str(options, "names", "data/names.list");
+        //.names 파일 읽기(data.c)
         char **names = get_labels(name_list);
         if (filename)
             if (strlen(filename) > 0)

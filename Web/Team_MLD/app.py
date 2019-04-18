@@ -90,5 +90,16 @@ def develop():
     elif request.form["submit_button"] == "확인":
         return jsonify(payload)
 
+#YOLO 멀티 쓰레드
+import threading
+import os
+def yolo():
+    #darknet.exe path 설정
+    os.chdir("C:\\Users\\cps435\\Desktop\\Loo\\Team_MLD\\darknet\\build\\darknet\\x64")
+    #웹캠 연동
+    os.system("darknet.exe detector demo data/coco.data cfg/yolov3-tiny.cfg weights/yolov3-tiny.weights -c 0")
+
 if __name__ == "__main__":
+    yoloThread = threading.Thread(target = yolo, args = ())
+    yoloThread.start()
     app.run()

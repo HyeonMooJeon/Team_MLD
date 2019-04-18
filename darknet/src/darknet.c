@@ -445,17 +445,20 @@ int main(int argc, char **argv)
     //test_resize("data/bad.jpg");
     //test_box();
     //test_convolutional_layer();
+    //파라미터 개수 2개이하시 에러메시지 출력
     if(argc < 2){
         fprintf(stderr, "usage: %s <function>\n", argv[0]);
         return 0;
     }
+    //GPU옵션 확인
     gpu_index = find_int_arg(argc, argv, "-i", 0);
+    //-nogpu옵션 확인
     if(find_arg(argc, argv, "-nogpu")) {
         gpu_index = -1;
         printf("\n Currently Darknet doesn't support -nogpu flag. If you want to use CPU - please compile Darknet with GPU=0 in the Makefile, or compile darknet_no_gpu.sln on Windows.\n");
         exit(-1);
     }
-
+//Make 파일 GPU옵션 확인
 #ifndef GPU
     gpu_index = -1;
 #else
@@ -464,7 +467,7 @@ int main(int argc, char **argv)
         CHECK_CUDA(cudaSetDeviceFlags(cudaDeviceScheduleBlockingSync));
     }
 #endif
-
+    //파라미터에 따라 함수 호출
     if (0 == strcmp(argv[1], "average")){
         average(argc, argv);
     } else if (0 == strcmp(argv[1], "yolo")){

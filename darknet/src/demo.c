@@ -121,6 +121,7 @@ void demo(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int 
 {
     in_img = det_img = show_img = NULL;
     //skip = frame_skip;
+    //폰트 읽어오기(image.c)
     image **alphabet = load_alphabet();
     int delay = frame_skip;
     demo_names = names;
@@ -130,6 +131,7 @@ void demo(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int 
     demo_ext_output = ext_output;
     demo_json_port = json_port;
     printf("Demo\n");
+    //.cfg파일 network 내용 파씽(parse.c)
     net = parse_network_cfg_custom(cfgfile, 1, 1);    // set batch=1
     if(weightfile){
         load_weights(&net, weightfile);
