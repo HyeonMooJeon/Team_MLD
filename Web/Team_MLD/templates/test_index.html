@@ -1,46 +1,60 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>{{title}}</title>
-</head>
-<body>
-    <h1>{{title}}</h1>
-    <h1>Regist Test</h1>
-        <form action="/signUp" method="post">
-            <input type="text" name="id"  placeholder="ID">
-            <input type="text" name="pw"  placeholder="password">
-            <input type="text" name="userName"  placeholder="username">
+<!DOCTYPE HTML>
 
-            <input type="submit">
+<html>
+	<head>
+		<title>Generic - Transitive by TEMPLATED</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="static/css/main.css" />
+	</head>
+	<body class="subpage">
 
-        </form>
-    <br>
-        <h1>login Test</h1>
-       <form action="/login" method="post">
-            <input type="text" name="log_id"  placeholder="ID">
-            <input type="text" name="log_pw"  placeholder="password">
-            <input type="submit">
+		<!-- Header -->
+			<header id="header">
+				<div class="logo"><a href="index">Car Decte System <span>by Team_MLD</span></a></div>
+				<a href="#menu" class="toggle"><span>Menu</span></a>
+			</header>
 
-        </form>
-        <H1>board Test</H1>
+		<!-- Nav -->
+			<nav id="menu">
+				<ul class="links">
+					<li><a href="index">홈페이지</a></li>
+					<li><a href="video" >실시간 확인</a></li>
+					<li><a href="board">자유게시판</a></li>
+					<li><a href="dev_login">관리자 로그인</a></li>
+					<li><a href="test">테스트 페이지</a></li>
+				</ul>
+			</nav>
 
-       <form action="/board" method="post">
-            <input type="text" name="id"  placeholder="ID">
-            <input type="text" name="pw"  placeholder="pw">
-           <br>
-            <input type="text" name="contents"  placeholder="contents" size="100%">
-           <br>
-            <input type="submit" name="submit_button" value="새 글 작성">
-            <input type="submit" name="submit_button" value="삭제">
-            <input type="submit" name="submit_button" value="수정">
-            <input type="submit" name="submit_button" value="확인">
+		<!-- One -->
+			<section id="one" class="wrapper style2">
+				<div class="inner">
+					<div class="box">
+						<div class="image fit">
+							<img src="static/images/pic01.jpg" alt="" />
+						</div>
+						<div class="content">
+							<header class="align-center">
+								<h2>Lorem ipsum dolor</h2>
+								<p>maecenas feugiat ex purus, quis volutpat lacus placerat</p>
+							</header>
+							<hr />
+							<p> Cras aliquet urna ut sapien tincidunt, quis malesuada elit facilisis. Vestibulum sit amet tortor velit. Nam elementum nibh a libero pharetra elementum. Maecenas feugiat ex purus, quis volutpat lacus placerat malesuada. Praesent in sem ex. Morbi mattis sapien pretium tellus venenatis, at egestas urna ornare.</p>
+							<p>Vivamus fermentum nibh vel pharetra blandit. Cras a purus urna. Sed et libero ex. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Suspendisse id hendrerit felis. Nulla viverra tempor dui at congue. Pellentesque quis nulla ornare, congue nisi id, finibus nulla. Aliquam sit amet hendrerit purus. Donec libero massa, posuere fermentum eros sit amet, maximus fringilla augue. Maecenas at rhoncus lorem. Vivamus ultricies consequat est, efficitur convallis libero. Vivamus rutrum semper mauris, vitae consequat eros tempor ac. Pellentesque et ornare sapien</p>
+						</div>
+					</div>
+				</div>
+			</section>
 
-        </form>
 
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" ></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" ></script>
 
-</body>
+		<!-- Scripts -->
+			<script src="/static/js/jquery.min.js"></script>
+			<script src="/static/js/jquery.scrolly.min.js"></script>
+			<script src="/static/js/jquery.scrollex.min.js"></script>
+			<script src="/static/js/skel.min.js"></script>
+			<script src="/static/js/util.js"></script>
+			<script src="/static/js/main.js"></script>
+
+	</body>
 </html>

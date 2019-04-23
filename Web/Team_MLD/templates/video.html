@@ -1,10 +1,60 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+<!DOCTYPE HTML>
 
-</body>
+<html>
+	<head>
+		<title>Generic - Transitive by TEMPLATED</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="static/css/main.css" />
+	</head>
+	<body class="subpage">
+
+		<!-- Header -->
+			<header id="header">
+				<div class="logo"><a href="index">Car Decte System <span>by Team_MLD</span></a></div>
+				<a href="#menu" class="toggle"><span>Menu</span></a>
+			</header>
+
+		<!-- Nav -->
+			<nav id="menu">
+				<ul class="links">
+					<li><a href="index">홈페이지</a></li>
+					<li><a href="video" >실시간 확인</a></li>
+					<li><a href="board">자유게시판</a></li>
+					<li><a href="dev_login">관리자 로그인</a></li>
+					<li><a href="test">테스트 페이지</a></li>
+				</ul>
+			</nav>
+
+		<!-- One -->
+			<section id="one" class="wrapper style2">
+				<div class="inner">
+					<div class="box">
+						<div class="image fit">
+                            <img src="{{ url_for('video_feed') }}">
+						</div>
+						<div class="content">
+							<header class="align-center">
+								<h2>실시간 이미지</h2>
+								<p>인식 영상이 아닌 실시간 이미지 입니다.</p>
+							</header>
+							<hr />
+						</div>
+					</div>
+				</div>
+			</section>
+
+
+
+		<!-- Scripts -->
+			<script src="/static/js/jquery.min.js"></script>
+			<script src="/static/js/jquery.scrolly.min.js"></script>
+			<script src="/static/js/jquery.scrollex.min.js"></script>
+			<script src="/static/js/skel.min.js"></script>
+			<script src="/static/js/util.js"></script>
+			<script src="/static/js/main.js"></script>
+
+	</body>
 </html>
+
+
