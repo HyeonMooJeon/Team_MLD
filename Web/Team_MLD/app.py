@@ -39,9 +39,9 @@ def video_feed():
 
 
 #로그인시 나오는 페이지
-@app.route("/login")
-def login():
-    return render_template("login.html", title="data")
+@app.route("/login_admin")
+def login_admin():
+    return render_template("login_admin.html", title="data")
 
 
 @app.route("/admin_login", methods=["POST"])
@@ -76,6 +76,11 @@ def test_page():
 def logout():
     session.pop('admin', None)
     return render_template('/index.html')
+
+
+@app.route('/login')
+def login():
+    return render_template('/login.html')
 
 
 if __name__ == "__main__":

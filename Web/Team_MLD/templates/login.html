@@ -1,122 +1,87 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" >
+
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <style>
-        body {
-            font-family: "Lato", sans-serif;
-        }
+  	<meta charset="UTF-8">
+  	<title>Sign-Up/Login Form</title>
+  	<link href='https://fonts.googleapis.com/css?family=Titillium+Web:400,300,600' rel='stylesheet' type='text/css'>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+	<link rel="stylesheet" href="/static/css/style.css">
 
-
-
-        .main-head{
-            height: 150px;
-            background: #FFF;
-
-        }
-
-        .sidenav {
-            height: 100%;
-            background-color: #000;
-            overflow-x: hidden;
-            padding-top: 20px;
-        }
-
-
-        .main {
-            padding: 0px 10px;
-        }
-
-        @media screen and (max-height: 450px) {
-            .sidenav {padding-top: 15px;}
-        }
-
-        @media screen and (max-width: 450px) {
-            .login-form{
-                margin-top: 10%;
-            }
-
-            .register-form{
-                margin-top: 10%;
-            }
-        }
-
-        @media screen and (min-width: 768px){
-            .main{
-                margin-left: 40%;
-            }
-
-            .sidenav{
-                width: 40%;
-                position: fixed;
-                z-index: 1;
-                top: 0;
-                left: 0;
-            }
-
-            .login-form{
-                margin-top: 80%;
-            }
-
-            .register-form{
-                margin-top: 20%;
-            }
-        }
-
-
-        .login-main-text{
-            margin-top: 20%;
-            padding: 60px;
-            color: #fff;
-        }
-
-        .login-main-text h2{
-            font-weight: 300;
-        }
-
-        .btn-black{
-            background-color: #000 !important;
-            color: #fff;
-        }
-    </style>
-    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 </head>
-    <div class="sidenav">
-         <div class="login-main-text">
-            <h2>Administer<br> Login Page</h2>
-            <p>Login here to Database access.</p>
-         </div>
-      </div>
-      <div class="main">
-         <div class="col-md-6 col-sm-12">
-            <div class="login-form">
 
+<body>
+  <div class="form">
+      <ul class="tab-group">
+        <li class="tab active"><a href="#signup">Sign Up</a></li>
+        <li class="tab"><a href="#login">Log In</a></li>
+      </ul>
 
-                      <!-- 로그인 버튼 누를시 보내지는 데이터 쪽 -->
-                      <form action="/admin_login" method="post">
-                     <label>User ID</label>
-                      <!-- ID입력 칸 -->
-                     <input type="text" class="form-control" placeholder="id" name = "ID">
+      <div class="tab-content">
+        <div id="signup">
+          <h1 style="color:white">Sign Up for Free</h1>
 
-                  <div class="form-group">
-                     <label>Password</label>
-                      <!-- PW입력 칸 -->
-                     <input type="password" class="form-control" placeholder="pw" name="PW">
-                  </div>
-                  <button type="submit" class="btn btn-black">Login</button>
-               </form>
-                   <!--등록버튼은 아예 막아놓음. 관리자는 우리만 있으면 되니깐 웹으로 까지...뭘..-->
-                   <!--
-                  <button type="submit" class="btn btn-secondary">Register</button>
-                  -->
+          <form action="/" method="post">
 
-            </div>
-         </div>
-      </div>
+              <div class="field-wrap">
+                <label style="color:#999999">
+                  Email Address<span class="req">*</span>
+                </label>
+                <input type="email"required autocomplete="off"/>
+              </div>
 
+              <div class="field-wrap">
+                <label style="color:#999999">
+                  Password<span class="req">*</span>
+                </label>
+                <input type="password"required autocomplete="off"/>
+              </div>
+
+              <div class="field-wrap">
+                <label style="color:#999999">
+                  name<span class="req">*</span>
+                </label>
+                <input type="text"required autocomplete="off"/>
+              </div>
+
+          <button type="submit" class="button button-block"/>Get Started</button>
+
+          </form>
+
+        </div>
+
+        <div id="login">
+          <h1>Welcome Back!</h1>
+
+          <form action="/" method="post">
+
+            <div class="field-wrap">
+            <label>
+              Email Address<span class="req">*</span>
+            </label>
+            <input type="email"required autocomplete="off"/>
+          </div>
+
+          <div class="field-wrap">
+            <label>
+              Password<span class="req">*</span>
+            </label>
+            <input type="password"required autocomplete="off"/>
+          </div>
+
+          <p class="forgot"><a href="#">Forgot Password?</a></p>
+
+          <button class="button button-block"/>Log In</button>
+
+          </form>
+
+        </div>
+
+      </div><!-- tab-content -->
+		</div> <!-- /form -->
+ 	 <script src='http://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script>
+  		<script  src="/static/js/index.js"></script>
 
 </body>
+
 </html>
