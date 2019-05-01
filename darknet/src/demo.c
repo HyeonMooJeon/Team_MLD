@@ -1,3 +1,5 @@
+//db연동 헤더파일 include
+#include "test.h"
 #include "network.h"
 #include "detection_layer.h"
 #include "region_layer.h"
@@ -119,6 +121,10 @@ double get_wall_time()
 void demo(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int cam_index, const char *filename, char **names, int classes,
     int frame_skip, char *prefix, char *out_filename, int mjpeg_port, int json_port, int dont_show, int ext_output)
 {
+    //db연동 및 정보 삽입
+    loadmysql();
+    insert_car_info(123456);
+    closemysql();
     in_img = det_img = show_img = NULL;
     //skip = frame_skip;
     //폰트 읽어오기(image.c)
