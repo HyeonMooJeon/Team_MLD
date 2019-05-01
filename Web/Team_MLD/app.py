@@ -1,8 +1,8 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify, Response, session
+from flask import Flask, render_template, request, redirect, url_for,  Response, session, jsonify
 import MySQLdb
 import cv2
-from werkzeug.wrappers import json
-
+import json
+from flask_sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 app.secret_key = "super secret key"
@@ -60,14 +60,23 @@ def check():
         return "로그인 다시입력해봐"
 
 
-@app.route("/management")
-def management():
-    if 'admin' in session:
-        return render_template('dev_page.html')
-    else:
-        return "Login First!"
+@app.route("/dev_page")
+def managePage():
+    return render_template("chart_test.html")
 
-@app.route('/test')
+
+@app.route("/GetGoverment")
+def goverment():
+     cursor = conn.cursor()
+     cursor.execute("SELECT go.GO_License_Plate, car_status.car_status_now, model.model_car FROM go  INNER JOIN car_status ON go.GO_car_state = car_status.car_status_key INNER JOIN model ON go.GO_car_model = model.model_key;")
+     r = [dict((cursor.description[i][0], value)
+               for i, value in enumerate(row)) for row in cursor.fetchall()]
+     return jsonify(r)
+
+
+
+
+@app.route('/login_normal')
 def test_page():
     return render_template('test_index.html')
 
@@ -81,6 +90,14 @@ def logout():
 @app.route('/login')
 def login():
     return render_template('/login.html')
+
+
+@app.route('/chart')
+def chart():
+    return render_template('/chart.html')
+
+
+
 
 
 if __name__ == "__main__":

@@ -1,0 +1,120 @@
+tcp ip
+port 8008
+x protocol port 33060
+
+Root PW = root
+
+adminAccount
+User Name : admin
+PW : admin
+
+V 5.7.25
+
+
+
+DATABSE Command line 사용법.
+
+CREATE DATABASE 'test';
+ = test라는 데이터 베이스 생성.
+
+SHOW DATABASES;
+ = 모든 DB 보여줌.
+
+use test;
+ = 사용할 데이터베이스 'test' DB를 사용함.
+
+CREATE TABLE TEST(
+id varchar(20) NOT NULL
+pw int(11)
+);
+= use 한 DB에서 테이블 생성, 
+
+SELECT * FROM test;
+=DB이름이 test인 곳에서 모든 정보를 가져옴.
+
+DELETE FROM test WHERE id=123;
+=test DB에서 id값이 123인 것을 삭제함.
+
+DROP DATABASE test;
+=test이름의 DB 삭제.
+
+INSERT INTO professor (name, belong, phone) 
+VALUES('유재석', 'IDE','01112345678');
+
+
+
+DBM - DataBase Manager 로 Database 생성. 
+       - DBM으로 매니저들 아이디, 비번 넣어놓을거임.
+
+
+
+
+from flask import Flask, render_template, request, redirect, url_for
+import MySQLdb
+
+app = Flask(__name__)
+
+conn = MySQLdb.connect(host="localhost", user="root", password="root", db="login_data")
+
+@app.route("/")
+def index():
+    return render_template('test_index.html', title="SignUp")
+
+
+@app.route("/signUp", methods=["POST"])
+def signUp():
+    username = str(request.form["user"])
+    password = str(request.form["password"])
+
+    cursor = conn.cursor()
+
+    cursor.execute("INSERT INTO DBA (name, password VALUES(%s, %s)",(username, password)
+    conn.commit()
+    return redirect(url_for("login"))
+
+
+@app.route("/login")
+def login():
+    return render_template("login.html", title="data")
+
+
+@app.route("/checkUser", methods=["POST"])
+def check():
+    username = str(request.form["user"])
+    password = str(request.form["password"])
+    cursor = conn.cursor()
+    cursor.execute("SELECT name FROM user WHERE name = ' "+username+" ' ")
+    user = cursor.fetchone()
+
+    if len(user) is 1:
+        return redirect(url_for("home"))
+    else:
+        return "failed"
+
+
+if __name__ == "__main__":
+    app.run()
+
+
+# Using a while loop
+cursor.execute("SELECT * FROM employees")
+row = cursor.fetchone()
+while row is not None:
+  print(row)
+  row = cursor.fetchone()
+
+# Using the cursor as iterator
+cursor.execute("SELECT * FROM employees")
+for row in cursor:
+  print(row)
+
+
+
+
+
+
+
+
+
+
+
