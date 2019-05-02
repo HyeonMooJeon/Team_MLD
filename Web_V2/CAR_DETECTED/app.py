@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for,  Response, session
+from flask import Flask, render_template, request,  Response, session
 import MySQLdb
 import cv2
 from flask.json import jsonify
@@ -25,35 +25,17 @@ def gen():
 #비디오 동영상 HTML
 @app.route("/video")
 def streaming():
-    return render_template('video.html')
+    if 'user' in session:
+        return render_template('video.html')
+    else:
+        return index()
+
 
 
 #비디오 동영상 동작
 @app.route('/video_feed')
 def video_feed():
     return Response(gen(), mimetype='multipart/x-mixed-replace; boundary=frame')
-
-
-#로그인시 나오는 페이지
-@app.route("/login_admin")
-def login_admin():
-    return render_template("login_admin.html", title="data")
-
-
-@app.route("/admin_login", methods=["POST"])
-def check():
-    ID = str(request.form["ID"])
-    PW = str(request.form["PW"])
-    cursor = conn.cursor()
-    cursor.execute("SELECT admin_name FROM administor WHERE admin_id='"+ID+"' AND admin_pw='"+PW+"' ")
-    user = cursor.fetchall()
-    #fetchall() 은 전부 가져오고 fetchone()은 한줄만 불러옴. 전부 가져와서 비교해야돼니깐..
-    #대소 문자 구별이 안되게 로그인이 되고있음.. //charset="utf8"로 수정됨.
-    if user:
-        session['admin'] = user
-        return redirect(url_for("management"))
-    else:
-        return "로그인 다시입력해봐"
 
 
 #시작화면
@@ -65,42 +47,71 @@ def login():
 
 @app.route("/intro")
 def intro():
-    return render_template('intro.html')
+    if 'user' in session:
+        return render_template('intro.html')
+    else:
+        return index()
+
 
 
 @app.route("/intro_not_regist")
 def intro_not_regist():
-    return render_template('intro_not_regist.html')
+    if 'user' in session:
+        return index()
+    else:
+        return render_template('intro_not_regist.html')
+
 
 
 
 @app.route("/chart")
 def chart():
-    return render_template('charts.html')
+    if 'user' in session:
+        return render_template('charts.html')
+    else:
+        index()
+
 
 
 #차량 검색
 @app.route("/lookup")
 def lookup():
-    return render_template('lookup.html')
+    if 'user' in session:
+        return render_template('lookup.html')
+    else:
+        index()
+
 
 
 #사용자 관리
 @app.route("/user_manage")
 def user_manage():
-    return render_template('user_manage.html')
+    if 'user' in session:
+        return render_template('user_manage.html')
+    else:
+        index()
+
 
 
 #실시간 영상
 @app.route("/real_time")
 def real_time():
-    return render_template('real_time.html')
+    if 'user' in session:
+        return render_template('real_time.html')
+    else:
+        index()
+
 
 
 #DB관리
 @app.route("/DB_manage")
 def DB_manage():
-    return render_template('DB_manage.html')
+    if 'user' in session:
+        return render_template('DB_manage.html')
+    else:
+        index()
+
+
 
 
 #로그아웃
@@ -113,7 +124,11 @@ def logout():
 #홈페이지
 @app.route("/home")
 def index():
-    return render_template('index.html')
+    if 'user' in session:
+        return render_template('index.html')
+    else:
+        index()
+
 
 
 #비밀번호 분실
@@ -125,6 +140,7 @@ def forgot_password():
 #회원 등록
 @app.route('/register')
 def register():
+
     return render_template('/register.html')
 
 
@@ -158,6 +174,7 @@ def getilleal():
 @app.route("/ChkStatus", methods=["POST"])
 def ChkStatus():
     LP = str(request.form["license_plate"])
+
     cursor = conn.cursor()
     cursor.execute("SELECT recognize.re_plate, location.location_now, model.model_car, recognize.re_time FROM recognize INNER JOIN location ON recognize.re_location = location.location_key INNER JOIN model ON recognize.re_model = model.model_key where recognize.re_plate = '"+LP+"';")
     data = cursor.fetchall()
@@ -167,6 +184,24 @@ def ChkStatus():
         return "인식된 차량 없음."
 
 
+@app.route("/login_CHK", methods=["POST"])
+def CHK_login():
+    email = str(request.form["Email"])
+    PW = str(request.form["Password"])
+    cursor = conn.cursor()
+    cursor.execute("SELECT User_name FROM user WHERE Email='"+email+"'")
+    EmailCHK = cursor.fetchall()
+    #fetchall() 은 전부 가져오고 fetchone()은 한줄만 불러옴. 전부 가져와서 비교해야돼니깐..
+    #대소 문자 구별이 안되게 로그인이 되고있음.. //charset="utf8"로 수정됨.
+    if EmailCHK:
+        final_chk= cursor.execute("SELECT User_name FROM user WHERE Email='"+email+"' AND PW='"+PW+"' ")
+        if final_chk:
+            session['user'] = final_chk
+            return index()
+        else:
+            return "비밀번호가 틀렸습니다."
+    else:
+        return "로그인 다시입력해봐"
 
 
 if __name__ == "__main__":
