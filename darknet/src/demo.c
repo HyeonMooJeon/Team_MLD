@@ -230,8 +230,11 @@ void demo(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int 
     double before = get_wall_time();
 
     //번호판 정렬 변수 선언
+    FRAME_NODE * list = NULL;
     FRAME_INFO newFrame;
     int countnumber;
+    FRAME_NODE * newNode;
+    int framecheck = 0;
 
     while(1){
         ++count;
@@ -272,6 +275,29 @@ void demo(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int 
                     printf("%d", newFrame.car.full[i].num);
                 }
                 printf("\n");
+            }
+
+            if (countnumber >= 6) {
+                sort_number(&newFrame);
+                //정렬된 숫자 출력
+                for (int i = 0; i < 6; i++) {
+                    printf("%d", newFrame.car.full[i].num);
+                }
+                printf("\n");
+                newNode = create_node(newFrame);
+                insert_frame(&list, newNode);
+                framecheck = 0;
+            }
+            else framecheck++;
+
+            if (framecheck > 3) {
+                if (!list == NULL && !list->next == NULL) {
+                    int test = get_total_node(list);
+                    get_car_info(list, test);
+                    //print_list(&list);
+                    releaselist(&list);
+                    list = NULL;
+                }
             }
 
             if(!prefix){
