@@ -37,7 +37,21 @@ int insert_car_info(int carnumber) {
     return 0;
     
 }
+//DB 연결 종료
 void closemysql() {
     mysql_close(conn);
     printf("DB close\n");
+}
+//번호판 정렬(선택정렬)
+void sort_number(FRAME_INFO *frame) {
+    NUMBER temp;
+    for (int i = 0; i < 5; i++) {
+        for (int j = i + 1; j < 6; j++) {
+            if (frame->car.full[i].x > frame->car.full[j].x) {
+                temp = frame->car.full[j];
+                frame->car.full[j] = frame->car.full[i];
+                frame->car.full[i] = temp;
+            }
+        }
+    }
 }

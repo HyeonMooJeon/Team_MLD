@@ -1,3 +1,8 @@
+//정렬 헤더 추가
+#include "test.h"
+#include <stdlib.h>
+#include <string.h>
+
 #include "image.h"
 #include "utils.h"
 #include "blas.h"
@@ -524,7 +529,8 @@ void save_cv_jpg(IplImage *img, const char *name)
     cvRelease((void**)&img_rgb);
 }
 
-void draw_detections_cv_v3(IplImage* show_img, detection *dets, int num, float thresh, char **names, image **alphabet, int classes, int ext_output)
+void draw_detections_cv_v3(IplImage* show_img, detection *dets, int num, float thresh, char **names, image **alphabet, int classes,
+    int ext_output, FRAME_INFO *frame, int *count)
 {
     int i, j;
     if (!show_img) return;
@@ -545,7 +551,14 @@ void draw_detections_cv_v3(IplImage* show_img, detection *dets, int num, float t
                     strcat(labelstr, ", ");
                     strcat(labelstr, names[j]);
                 }
-                printf("%s: %.0f%% ", names[j], dets[i].prob[j] * 100);
+                //인식 정보 저장(이름,확률,x,y)
+                //printf("%s: %.0f%% ", names[j], dets[i].prob[j] * 100);
+                if (!strcmp(names[j], "LicensePlate")) continue;
+                frame->car.full[*count].num = atoi(names[j]);
+                frame->car.full[*count].prod = dets[i].prob[j] * 100;
+                frame->car.full[*count].x = round((dets[i].bbox.x - dets[i].bbox.w / 2)*show_img->width);
+                frame->car.full[*count].y = round((dets[i].bbox.y - dets[i].bbox.h / 2)*show_img->height);
+                *count += 1;
             }
         }
         if (class_id >= 0) {

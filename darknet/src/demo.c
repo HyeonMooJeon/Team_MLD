@@ -1,5 +1,7 @@
-//db연동 헤더파일 include
+//db연동 헤더, 메모리할당 헤더 include
 #include "test.h"
+#include <stdlib.h>
+
 #include "network.h"
 #include "detection_layer.h"
 #include "region_layer.h"
@@ -51,7 +53,7 @@ static image images[NFRAMES];
 static IplImage* ipl_images[NFRAMES];
 static float *avg;
 
-void draw_detections_cv_v3(IplImage* show_img, detection *dets, int num, float thresh, char **names, image **alphabet, int classes, int ext_output);
+void draw_detections_cv_v3(IplImage* show_img, detection *dets, int num, float thresh, char **names, image **alphabet, int classes, int ext_output, FRAME_INFO *frame, int * count);
 void show_image_cv_ipl(IplImage *disp, const char *name);
 void save_cv_png(IplImage *img, const char *name);
 void save_cv_jpg(IplImage *img, const char *name);
@@ -122,9 +124,10 @@ void demo(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int 
     int frame_skip, char *prefix, char *out_filename, int mjpeg_port, int json_port, int dont_show, int ext_output)
 {
     //db연동 및 정보 삽입
-    loadmysql();
-    insert_car_info(123456);
-    closemysql();
+    //loadmysql();
+    //insert_car_info(123456);
+    //closemysql();
+
     in_img = det_img = show_img = NULL;
     //skip = frame_skip;
     //폰트 읽어오기(image.c)
@@ -226,6 +229,10 @@ void demo(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int 
 
     double before = get_wall_time();
 
+    //번호판 정렬 변수 선언
+    FRAME_INFO newFrame;
+    int countnumber;
+
     while(1){
         ++count;
         {
@@ -250,8 +257,22 @@ void demo(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int 
                 send_json(local_dets, local_nboxes, l.classes, demo_names, frame_id, demo_json_port, timeout);
             }
 
-            draw_detections_cv_v3(show_img, local_dets, local_nboxes, demo_thresh, demo_names, demo_alphabet, demo_classes, demo_ext_output);
+            //번호판 정렬
+            countnumber = 0;
+            memset(&newFrame.car, 0, sizeof(FRAME_INFO));
+
+            draw_detections_cv_v3(show_img, local_dets, local_nboxes, demo_thresh, demo_names, demo_alphabet, demo_classes, demo_ext_output, &newFrame, &countnumber);
             free_detections(local_dets, local_nboxes);
+
+            //번호판 정렬
+            if (countnumber >= 6) {
+                sort_number(&newFrame);
+                //정렬된 숫자 출력
+                for (int i = 0; i < 6; i++) {
+                    printf("%d", newFrame.car.full[i].num);
+                }
+                printf("\n");
+            }
 
             if(!prefix){
                 if (!dont_show) {
