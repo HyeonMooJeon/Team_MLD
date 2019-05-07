@@ -56,10 +56,7 @@ def intro():
 
 @app.route("/intro_not_regist")
 def intro_not_regist():
-    if 'user' in session:
-        return index()
-    else:
-        return render_template('intro_not_regist.html')
+     return render_template('intro_not_regist.html')
 
 
 
@@ -118,7 +115,7 @@ def DB_manage():
 @app.route('/logout')
 def logout():
     session.pop('admin', None)
-    return render_template('/homt')
+    return login()
 
 
 #홈페이지
@@ -137,11 +134,48 @@ def forgot_password():
     return render_template('/forgot_password.html')
 
 
+@app.route('/show_my_password',  methods=["POST"])
+def show_my_password():
+    email = str(request.form["Email"])
+    name = str(request.form["real_name"])
+    if len(email) == 0 or len(name) == 0:
+        return "형식을 다 입력해주세요."
+    cursor = conn.cursor()
+    cursor.execute("SELECT PW FROM user where Email='"+email+"' AND User_name='"+name+"'")
+    password = cursor.fetchall()
+    if password:
+        return jsonify(password)
+    else:
+        return "존재하지 않는 이메일입니다."
+
+
+
 #회원 등록
 @app.route('/register')
 def register():
-
     return render_template('/register.html')
+
+
+@app.route("/register_user", methods=["POST"])
+def register_user():
+    email = str(request.form["Email"])
+    name = str(request.form["user_name"])
+    PW = str(request.form["Password"])
+    CHK_PW = str(request.form["Password_CHK"])
+    if PW == CHK_PW:
+        cursor = conn.cursor()
+        cursor.execute("select User_name from user where Email='"+email+"'")
+        CHK = cursor.fetchall()
+        if CHK:
+            return "이미 이메일이 존재합니다."
+        else:
+            cursor.execute("INSERT INTO user(Email,PW,User_name) VALUE('"+email+"', '"+PW+"', '"+name+"')")
+            conn.commit()
+            conn.close()
+            return "회원가입 완료"
+    else:
+        return "비밀번호와 재입력 비밀번호가 다릅니다."
+
 
 
 #정부 DB 가져오기

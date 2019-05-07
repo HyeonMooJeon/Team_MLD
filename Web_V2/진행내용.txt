@@ -20,3 +20,11 @@
  - DB수정
   => admin 테이블 삭제, user테이블(Email, PW, name) 추가.
  - 샘플 DB추가, 로그인 하나하나 계정 샘플로 만들었음...못찾는 경우 갠톡
+
+(05/07/화)
+ - 로그아웃, 비밀번호 찾기, 회원가입 활성화
+    - 회원 가입시 commit 필★
+ - 인식 정보 테이블(recognize)테이블에 위치 경로 추가.
+    - ALTER TABLE recignize ADD file_location varchar(200); 워크 벤치에서 실해 주시면 됩니다.
+ - 각종 미세한 오류 수정
+    - 정의내린 이름과 매치이 안된것 수정
