@@ -1,6 +1,7 @@
 //db연동 헤더, 메모리할당 헤더 include
 #include "test.h"
 #include <stdlib.h>
+#include <time.h>
 
 #include "network.h"
 #include "detection_layer.h"
@@ -231,10 +232,9 @@ void demo(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int 
 
     //번호판 정렬 변수 선언
     FRAME_NODE * list = NULL;
-    FRAME_INFO newFrame;
-    int countnumber;
     FRAME_NODE * newNode;
     int framecheck = 0;
+    int frame = 0;
 
     while(1){
         ++count;
@@ -260,14 +260,17 @@ void demo(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int 
                 send_json(local_dets, local_nboxes, l.classes, demo_names, frame_id, demo_json_port, timeout);
             }
 
+            //프레임 번호
+            frame++;
+            printf("video frame number : %d\n", frame);
             //번호판 정렬
-            countnumber = 0;
+            int countnumber = 0;
+            FRAME_INFO newFrame;
             memset(&newFrame.car, 0, sizeof(FRAME_INFO));
-
+            //바운딩 박스 그리기
             draw_detections_cv_v3(show_img, local_dets, local_nboxes, demo_thresh, demo_names, demo_alphabet, demo_classes, demo_ext_output, &newFrame, &countnumber);
             free_detections(local_dets, local_nboxes);
-
-            //번호판 정렬
+            //6개 숫자 인식 시 노드 생성 후 리스트 추가
             if (countnumber >= 6) {
                 sort_number(&newFrame);
                 //정렬된 숫자 출력
@@ -275,27 +278,36 @@ void demo(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int 
                     printf("%d", newFrame.car.full[i].num);
                 }
                 printf("\n");
-            }
-
-            if (countnumber >= 6) {
-                sort_number(&newFrame);
-                //정렬된 숫자 출력
-                for (int i = 0; i < 6; i++) {
-                    printf("%d", newFrame.car.full[i].num);
-                }
-                printf("\n");
-                newNode = create_node(newFrame);
+                time_t timer;
+                struct tm *t;
+                timer = time(NULL);
+                t = localtime(&timer);
+                sprintf(newFrame.path, "results/%d_%d_%d_%d_%d_%d_%d.jpg", t->tm_year + 1900, t->tm_mon + 1, t->tm_mday,
+                    t->tm_hour, t->tm_min, t->tm_sec, frame);
+                IplImage* copy_img = cvCreateImage(cvSize(show_img->width, show_img->height), show_img->depth, show_img->nChannels);
+                cvCopy(show_img, copy_img, 0);
+                newFrame.image = copy_img;
+                FRAME_NODE * newNode = create_node(newFrame);
+                //save_cv_jpg(newNode->data.image, newNode->data.path);
                 insert_frame(&list, newNode);
                 framecheck = 0;
             }
             else framecheck++;
-
+            //3프레임 인식 실패 시 최종정보 추출
             if (framecheck > 3) {
                 if (!list == NULL && !list->next == NULL) {
                     int test = get_total_node(list);
-                    get_car_info(list, test);
+                    int *carnumber = get_car_info(list, test);
+                    FRAME_NODE *save_node = saveNode(&list, carnumber);
+                    printf("%s\n", save_node->data.path);
+                    printf("%d%d%d%d%d%d\n", save_node->data.car.full[0].num, save_node->data.car.full[1].num,
+                        save_node->data.car.full[2].num, save_node->data.car.full[3].num,
+                        save_node->data.car.full[4].num, save_node->data.car.full[5].num);
+                    save_cv_jpg(save_node->data.image, save_node->data.path);
+                    printf("12\n");
                     //print_list(&list);
                     releaselist(&list);
+                    printf("123\n");
                     list = NULL;
                 }
             }

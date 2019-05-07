@@ -58,7 +58,7 @@ void sort_number(FRAME_INFO *frame) {
 //프레임 노드 생성
 FRAME_NODE* create_node(FRAME_INFO frame) {
     FRAME_NODE * newNode = (FRAME_NODE*)malloc(sizeof(FRAME_NODE));
-    newNode->data.car = frame.car;
+    newNode->data = frame;
     newNode->next = NULL;
     return newNode;
 }
@@ -87,7 +87,12 @@ void releaselist(FRAME_NODE **list) {
 void print_list(FRAME_NODE ** list) {
     char buffer[10];
     if (*list == NULL) return;
-
+    /*
+    sprintf(buffer, "%d%d%d%d%d%d", list->data.car.full[0].num, list->data.car.full[1].num,
+        list->data.car.full[2].num, list->data.car.full[3].num, list->data.car.full[4].num,
+        list->data.car.full[5].num);
+    printf("%s\n", buffer);
+    */
     printf("%d%d%d%d%d%d\n", (*list)->data.car.full[0].num, (*list)->data.car.full[1].num,
         (*list)->data.car.full[2].num, (*list)->data.car.full[3].num, (*list)->data.car.full[4].num,
         (*list)->data.car.full[5].num);
@@ -98,8 +103,20 @@ int get_total_node(FRAME_NODE * list) {
     if (list == NULL) return 0;
     return (1 + get_total_node(list->next));
 }
+//배열 계산
+int count_number(int arr[]) {
+    int number = 0;
+    for (int i = 0; i < 10; i++) {
+        //printf("%d %d\n", sizeof(arr) / sizeof(int), arr[i]);
+        if (number < arr[i]) number = i;
+    }
+    return number;
+}
 //횟수 계산
-void get_car_info(FRAME_NODE *list, int size) {
+int* get_car_info(FRAME_NODE *list, int size) {
+    int count[10] = { 0, };
+    int *number = (int*)malloc(6);
+
     int ***arr = (int***)malloc(sizeof(int**)*size);
     int a, b, c, i;
     for (a = 0; a < size; a++) {
@@ -109,7 +126,7 @@ void get_car_info(FRAME_NODE *list, int size) {
         }
     }
     if (arr == NULL) {
-        printf("out of memory!!!!!!!\n");
+        printf("outt of memory!!!!!!!\n");
         exit(1);
     }
     else {
@@ -128,6 +145,14 @@ void get_car_info(FRAME_NODE *list, int size) {
         }
     }
 
+    for (i = 0; i < 6; i++) {
+        for (a = 0; a < size; a++) {
+            count[arr[a][0][i]] += 1;
+        }
+        number[i] = count_number(count);
+        memset(count, 0, sizeof(count));
+    }
+
     for (a = 0; a < size; a++) {
         for (b = 0; b < 2; b++) {
             free(*(*(arr + a) + b));
@@ -136,4 +161,20 @@ void get_car_info(FRAME_NODE *list, int size) {
         list = list->next;
     }
     free(arr);
+    return number;
+}
+//저장할 정보 추출
+FRAME_NODE* saveNode(FRAME_NODE ** list, int * carnumber) {
+    //FRAME_NODE * node = (FRAME_NODE*)malloc(sizeof(FRAME_NODE));
+    while (!(*list) == NULL) {
+        if (carnumber[0] == (*list)->data.car.full[0].num)
+            if (carnumber[1] == (*list)->data.car.full[1].num)
+                if (carnumber[2] == (*list)->data.car.full[2].num)
+                    if (carnumber[3] == (*list)->data.car.full[3].num)
+                        if (carnumber[4] == (*list)->data.car.full[4].num)
+                            if (carnumber[5] == (*list)->data.car.full[5].num)
+                                break;
+        *list = (*list)->next;
+    }
+    return *list;
 }

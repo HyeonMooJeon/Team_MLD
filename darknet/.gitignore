@@ -32,3 +32,4 @@ cudnn64_7.dll
 *.iobj
 *.ipdb
 *.pdb
+results/
