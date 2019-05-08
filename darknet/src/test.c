@@ -37,6 +37,16 @@ int insert_car_info(int carnumber) {
     return 0;
     
 }
+//차량정보 저장2
+int insert_car(int *carnumber, char time[], char path[]) {
+    char  query[250];
+    sprintf(query, "insert into carnumber.recognize values(%d%d%d%d%d%d,'%s', '%s')",
+        carnumber[0], carnumber[1], carnumber[2], carnumber[3], carnumber[4],
+        carnumber[5], time, path);
+    if (mysql_query(conn, query)) return 1;
+    return 0;
+
+}
 //DB 연결 종료
 void closemysql() {
     mysql_close(conn);

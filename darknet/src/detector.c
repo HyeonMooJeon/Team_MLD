@@ -1475,6 +1475,14 @@ void run_detector(int argc, char **argv)
         if (strlen(weights) > 0)
             if (weights[strlen(weights) - 1] == 0x0d) weights[strlen(weights) - 1] = 0;
     char *filename = (argc > 6) ? argv[6] : 0;
+
+    //insert code(웸캠,IP카메라 연동)
+    char *filename2 = (argc > 7) ? argv[7] : 0;
+    printf("Video Path : %s\n", filename);
+    //printf("Video Path : index -> %d\n", cam_index);
+    printf("Video Path : %s\n", filename2);
+    //insert code(웸캠,IP카메라 연동)
+
     if (0 == strcmp(argv[2], "test")) test_detector(datacfg, cfg, weights, filename, thresh, hier_thresh, dont_show, ext_output, save_labels, outfile);
     else if (0 == strcmp(argv[2], "train")) train_detector(datacfg, cfg, weights, gpus, ngpus, clear, dont_show, calc_map, mjpeg_port);
     else if (0 == strcmp(argv[2], "valid")) validate_detector(datacfg, cfg, weights, outfile);
@@ -1499,5 +1507,55 @@ void run_detector(int argc, char **argv)
         free_list_contents_kvp(options);
         free_list(options);
     }
+
+    /*
+    else if (0 == strcmp(argv[2], "mld")) {
+        list *options = read_data_cfg(datacfg);
+        int classes = option_find_int(options, "classes", 20);
+        char *name_list = option_find_str(options, "names", "data/names.list");
+        char **names = get_labels(name_list);
+        if (filename)
+            if (strlen(filename) > 0)
+                if (filename[strlen(filename) - 1] == 0x0d) filename[strlen(filename) - 1] = 0;
+        if (filename2)
+            if (strlen(filename2) > 0)
+                if (filename2[strlen(filename2) - 1] == 0x0d) filename2[strlen(filename2) - 1] = 0;
+        mld(cfg, weights, thresh, hier_thresh, cam_index, filename, names, classes, frame_skip, filename2);
+
+        free_list_contents_kvp(options);
+        free_list(options);
+    }
+    else if (0 == strcmp(argv[2], "threadtest")) {
+        int threadTest = 0;
+        list *options = read_data_cfg(datacfg);
+        int classes = option_find_int(options, "classes", 20);
+        char *name_list = option_find_str(options, "names", "data/names.list");
+        char **names = get_labels(name_list);
+        if (filename)
+            if (strlen(filename) > 0)
+                if (filename[strlen(filename) - 1] == 0x0d) filename[strlen(filename) - 1] = 0;
+        if (filename2)
+            if (strlen(filename2) > 0)
+                if (filename2[strlen(filename2) - 1] == 0x0d) filename2[strlen(filename2) - 1] = 0;
+
+        pthread_t p_thread[2];
+        ARGU thread1_argu = setARGU(cfg, weights, thresh, hier_thresh, cam_index, filename, names, classes, frame_skip, prefix, out_filename,
+            mjpeg_port, json_port, dont_show, ext_output);
+        ARGU thread2_argu = setARGU(cfg, weights, thresh, hier_thresh, cam_index, filename2, names, classes, frame_skip, prefix, out_filename,
+            mjpeg_port, json_port, dont_show, ext_output);
+
+
+        pthread_create(&p_thread[0], NULL, demo3, (void*)&thread1_argu);
+        //Sleep(3000);
+        pthread_create(&p_thread[1], NULL, demo4, (void*)&thread2_argu);
+
+        pthread_join(p_thread[0], NULL);
+        pthread_join(p_thread[1], NULL);
+        printf("YOLO close\n");
+
+        free_list_contents_kvp(options);
+        free_list(options);
+    }
+    */
     else printf(" There isn't such command: %s", argv[2]);
 }

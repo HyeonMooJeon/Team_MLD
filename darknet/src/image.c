@@ -537,6 +537,12 @@ void draw_detections_cv_v3(IplImage* show_img, detection *dets, int num, float t
     static int frame_id = 0;
     frame_id++;
 
+    //insert code(인식횟수 확인)
+
+    int numbers = 1;
+    printf("draw_detection start\n");
+    //FILE *file = fopen("results/test.txt","a");
+
     for (i = 0; i < num; ++i) {
         char labelstr[4096] = { 0 };
         int class_id = -1;
@@ -553,12 +559,21 @@ void draw_detections_cv_v3(IplImage* show_img, detection *dets, int num, float t
                 }
                 //인식 정보 저장(이름,확률,x,y)
                 //printf("%s: %.0f%% ", names[j], dets[i].prob[j] * 100);
+                //printf("%s : %d,%d,%.0f, %f, %f", names[j], j,i,dets[i].prob[j]*100, round((dets[i].bbox.x - dets[i].bbox.w / 2)*show_img->width),
+                //    round((dets[i].bbox.y - dets[i].bbox.h / 2)*show_img->height));
                 if (!strcmp(names[j], "LicensePlate")) continue;
                 frame->car.full[*count].num = atoi(names[j]);
                 frame->car.full[*count].prod = dets[i].prob[j] * 100;
                 frame->car.full[*count].x = round((dets[i].bbox.x - dets[i].bbox.w / 2)*show_img->width);
                 frame->car.full[*count].y = round((dets[i].bbox.y - dets[i].bbox.h / 2)*show_img->height);
                 *count += 1;
+                printf("%s : %d,%d,%.0f, %f, %f", names[j], j, i, dets[i].prob[j] * 100, round((dets[i].bbox.x - dets[i].bbox.w / 2)*show_img->width),
+                    round((dets[i].bbox.y - dets[i].bbox.h / 2)*show_img->height));
+                //insert code(인식횟수 확인)
+                //printf("draw_detections_cv_v3 number : %d\n",numbers);
+                //fprintf(file,"Detection number : %d\tObject : %s: %.0f%% \n",numbers, names[j], dets[i].prob[j] * 100);
+                numbers++;
+                //insert code(인식횟수 확인)
             }
         }
         if (class_id >= 0) {
@@ -654,6 +669,10 @@ void draw_detections_cv_v3(IplImage* show_img, detection *dets, int num, float t
             cvPutText(show_img, labelstr, pt_text, &font, black_color);
         }
     }
+    //insert code(result txt파일 출력)
+    //fclose(file);
+    printf("draw_detection close\n");
+    //insert code(result txt파일 출력)
     if (ext_output) {
         fflush(stdout);
     }

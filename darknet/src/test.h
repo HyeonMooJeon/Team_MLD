@@ -15,6 +15,7 @@ typedef struct {
     CARNUMBER car;
     IplImage* image;
     char path[50];
+    char time[50];
 }FRAME_INFO;
 typedef struct frame_node {
     FRAME_INFO data;
@@ -22,6 +23,7 @@ typedef struct frame_node {
 }FRAME_NODE;
 
 void loadmysql();
+int insert_car(int *carnumber, char time[], char path[]);
 int insert_car_info(int carnumber);
 void closemysql();
 
