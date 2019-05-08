@@ -9,7 +9,7 @@ app.secret_key = "super secret key"
 vc = cv2.VideoCapture(0)
 #DB로부터 데이터를 받을때 ASCII코드로 바뀌는걸 방지.
 app.config['JSON_AS_ASCII'] = False
-conn = MySQLdb.connect(host="localhost", user="root", password="sm435", db="team_mld", charset='utf8')
+conn = MySQLdb.connect(host="localhost", user="root", password="sm435", db="testdb", charset='utf8')
 
 def gen():
     while True:
