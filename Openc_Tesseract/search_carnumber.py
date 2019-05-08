@@ -1,4 +1,3 @@
-#2019-05-08 차량 번호 디텍션 (테서렉트 이용) 추가본
 import cv2
 import imutils
 import numpy as np
