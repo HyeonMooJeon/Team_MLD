@@ -1,0 +1,33 @@
+경로 미설정
+charts -> 로그아웃 경로 설정 
+DB_manage -> 로그아웃 경로 설정 
+forgot_password -> 비밀번호 찾기
+index -> 로그아웃 경로 설정  내용첨삭
+intro -> 로그아웃 경로 설정  내용첨삭
+intro_not_regist -> 로그아웃 경로 설정  내용첨삭
+login -> 로그인 경로 설정  관리자 로그인(비밀번호 찾기와 경로 같음)
+lockup -> 로그아웃 경로 설정 / 인식 차량 확인 경로 설정, 범죄 차량 확인 경로 설정
+teal_time ->로그아웃 경로 설정
+register -> 회원등록 
+tables -> 로그아웃 경로 설정, DB 관리 경로 (tables/ 다른 html DB_manage로 경로 설정)
+user_manage -> >로그아웃 경로 설정
+
+
+
+
+=================================================================
+
+home -> index
+검거율 -> charts
+SW소개 -> intro
+비회원 SW소개 -> intro_not_regist
+차량조회 -> lookup
+실시간 감식 -> real_time
+회원관리 ->  user_manage
+DB관리 -> DB_manage
+비밀번호 찾기 -> forgot_password
+로그인 -> login
+차량조회 -> lockup
+회원등록  -> register
+회원관리 -> user_manage
+tables
