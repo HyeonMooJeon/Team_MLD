@@ -238,5 +238,31 @@ def CHK_login():
         return "로그인 다시입력해봐"
 
 
+# DB Excel 다운로드
+@app.route("/csv", methods=["POST"]))
+def csv():
+
+    cursor = conn.cursor()
+
+# 추출할 데이터베이스 / where 문 사용하여 조건 / 대포차량, 노후경유차량 데이터 따로 저장 가능
+    cursor.execute("SELECT * INTO OUTFILE 'C:/Data.csv' FIELDS TERMINATED BY ',' ENCLOSED BY '"' ESCAPED BY '\\' LINES TERMINATED BY '\n' FROM 저장할 테이블;")
+    cursor.close()
+    db.close()
+    return
+
+
+
+# DB txt 다운로드
+@app.route("/txt", methods=["POST"]))
+def csv():
+
+    cursor = conn.cursor()
+
+# 추출할 데이터베이스 / where 문 사용하여 조건 / 대포차량, 노후경유차량 데이터 따로 저장 가능
+    cursor.execute("SELECT * INTO OUTFILE 'C:/Data.txt' FIELDS TERMINATED BY ',' ENCLOSED BY '"' ESCAPED BY '\\' LINES TERMINATED BY '\n' FROM 저장할 테이블;")
+    cursor.close()
+    db.close()
+    return
+
 if __name__ == "__main__":
     app.run(host='127.0.0.1', debug=True, threaded=True)
