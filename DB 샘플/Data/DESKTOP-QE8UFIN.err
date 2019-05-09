@@ -214,3 +214,269 @@
 2019-05-02T20:20:03.992072Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
 2019-05-02T20:20:04.080651Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.15'  socket: ''  port: 3306  MySQL Community Server - GPL.
 2019-05-02T20:20:04.169605Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2019-05-02T20:28:42.626793Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2019-05-02T20:28:44.070489Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.15)  MySQL Community Server - GPL.
+2019-05-03T07:12:47.899501Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2019-05-03T07:12:47.909237Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.15) starting as process 4328
+2019-05-03T07:12:49.332921Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 1, name 'sys/sys_config', file '.\sys\sys_config.ibd' is missing!
+2019-05-03T07:12:49.332977Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 2, name 'sakila/actor', file '.\sakila\actor.ibd' is missing!
+2019-05-03T07:12:49.333032Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 3, name 'sakila/address', file '.\sakila\address.ibd' is missing!
+2019-05-03T07:12:49.333087Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 4, name 'sakila/category', file '.\sakila\category.ibd' is missing!
+2019-05-03T07:12:49.333143Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 5, name 'sakila/city', file '.\sakila\city.ibd' is missing!
+2019-05-03T07:12:49.333198Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 6, name 'sakila/country', file '.\sakila\country.ibd' is missing!
+2019-05-03T07:12:49.333252Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 7, name 'sakila/customer', file '.\sakila\customer.ibd' is missing!
+2019-05-03T07:12:49.333307Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 8, name 'sakila/film', file '.\sakila\film.ibd' is missing!
+2019-05-03T07:12:49.333362Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 9, name 'sakila/film_actor', file '.\sakila\film_actor.ibd' is missing!
+2019-05-03T07:12:49.333415Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 10, name 'sakila/film_category', file '.\sakila\film_category.ibd' is missing!
+2019-05-03T07:12:49.333473Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 11, name 'sakila/film_text', file '.\sakila\film_text.ibd' is missing!
+2019-05-03T07:12:49.333529Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 12, name 'sakila/fts_000000000000042c_being_deleted', file '.\sakila\fts_000000000000042c_being_deleted.ibd' is missing!
+2019-05-03T07:12:49.333585Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 13, name 'sakila/fts_000000000000042c_being_deleted_cache', file '.\sakila\fts_000000000000042c_being_deleted_cache.ibd' is missing!
+2019-05-03T07:12:49.333640Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 14, name 'sakila/fts_000000000000042c_config', file '.\sakila\fts_000000000000042c_config.ibd' is missing!
+2019-05-03T07:12:49.333695Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 15, name 'sakila/fts_000000000000042c_deleted', file '.\sakila\fts_000000000000042c_deleted.ibd' is missing!
+2019-05-03T07:12:49.333750Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 16, name 'sakila/fts_000000000000042c_deleted_cache', file '.\sakila\fts_000000000000042c_deleted_cache.ibd' is missing!
+2019-05-03T07:12:49.333805Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 17, name 'sakila/fts_000000000000042c_00000000000000a8_index_1', file '.\sakila\fts_000000000000042c_00000000000000a8_index_1.ibd' is missing!
+2019-05-03T07:12:49.333859Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 18, name 'sakila/fts_000000000000042c_00000000000000a8_index_2', file '.\sakila\fts_000000000000042c_00000000000000a8_index_2.ibd' is missing!
+2019-05-03T07:12:49.333913Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 19, name 'sakila/fts_000000000000042c_00000000000000a8_index_3', file '.\sakila\fts_000000000000042c_00000000000000a8_index_3.ibd' is missing!
+2019-05-03T07:12:49.333966Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 20, name 'sakila/fts_000000000000042c_00000000000000a8_index_4', file '.\sakila\fts_000000000000042c_00000000000000a8_index_4.ibd' is missing!
+2019-05-03T07:12:49.334024Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 21, name 'sakila/fts_000000000000042c_00000000000000a8_index_5', file '.\sakila\fts_000000000000042c_00000000000000a8_index_5.ibd' is missing!
+2019-05-03T07:12:49.334077Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 22, name 'sakila/fts_000000000000042c_00000000000000a8_index_6', file '.\sakila\fts_000000000000042c_00000000000000a8_index_6.ibd' is missing!
+2019-05-03T07:12:49.334129Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 23, name 'sakila/inventory', file '.\sakila\inventory.ibd' is missing!
+2019-05-03T07:12:49.334180Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 24, name 'sakila/language', file '.\sakila\language.ibd' is missing!
+2019-05-03T07:12:49.334233Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 25, name 'sakila/payment', file '.\sakila\payment.ibd' is missing!
+2019-05-03T07:12:49.334285Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 26, name 'sakila/rental', file '.\sakila\rental.ibd' is missing!
+2019-05-03T07:12:49.334338Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 27, name 'sakila/staff', file '.\sakila\staff.ibd' is missing!
+2019-05-03T07:12:49.334390Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 28, name 'sakila/store', file '.\sakila\store.ibd' is missing!
+2019-05-03T07:12:49.334442Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 29, name 'world/city', file '.\world\city.ibd' is missing!
+2019-05-03T07:12:49.334496Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 30, name 'world/country', file '.\world\country.ibd' is missing!
+2019-05-03T07:12:49.334554Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 31, name 'world/countrylanguage', file '.\world\countrylanguage.ibd' is missing!
+2019-05-03T07:12:50.612987Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2019-05-03T07:12:50.702875Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.15'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2019-05-03T07:12:50.758260Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2019-05-04T16:02:01.921731Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2019-05-04T16:02:01.936746Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.15) starting as process 4292
+2019-05-04T16:02:04.029874Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 1, name 'sys/sys_config', file '.\sys\sys_config.ibd' is missing!
+2019-05-04T16:02:04.029932Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 2, name 'sakila/actor', file '.\sakila\actor.ibd' is missing!
+2019-05-04T16:02:04.029987Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 3, name 'sakila/address', file '.\sakila\address.ibd' is missing!
+2019-05-04T16:02:04.030041Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 4, name 'sakila/category', file '.\sakila\category.ibd' is missing!
+2019-05-04T16:02:04.030097Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 5, name 'sakila/city', file '.\sakila\city.ibd' is missing!
+2019-05-04T16:02:04.030152Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 6, name 'sakila/country', file '.\sakila\country.ibd' is missing!
+2019-05-04T16:02:04.030207Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 7, name 'sakila/customer', file '.\sakila\customer.ibd' is missing!
+2019-05-04T16:02:04.030262Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 8, name 'sakila/film', file '.\sakila\film.ibd' is missing!
+2019-05-04T16:02:04.030316Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 9, name 'sakila/film_actor', file '.\sakila\film_actor.ibd' is missing!
+2019-05-04T16:02:04.030380Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 10, name 'sakila/film_category', file '.\sakila\film_category.ibd' is missing!
+2019-05-04T16:02:04.030433Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 11, name 'sakila/film_text', file '.\sakila\film_text.ibd' is missing!
+2019-05-04T16:02:04.030487Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 12, name 'sakila/fts_000000000000042c_being_deleted', file '.\sakila\fts_000000000000042c_being_deleted.ibd' is missing!
+2019-05-04T16:02:04.030542Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 13, name 'sakila/fts_000000000000042c_being_deleted_cache', file '.\sakila\fts_000000000000042c_being_deleted_cache.ibd' is missing!
+2019-05-04T16:02:04.030597Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 14, name 'sakila/fts_000000000000042c_config', file '.\sakila\fts_000000000000042c_config.ibd' is missing!
+2019-05-04T16:02:04.030655Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 15, name 'sakila/fts_000000000000042c_deleted', file '.\sakila\fts_000000000000042c_deleted.ibd' is missing!
+2019-05-04T16:02:04.030710Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 16, name 'sakila/fts_000000000000042c_deleted_cache', file '.\sakila\fts_000000000000042c_deleted_cache.ibd' is missing!
+2019-05-04T16:02:04.030766Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 17, name 'sakila/fts_000000000000042c_00000000000000a8_index_1', file '.\sakila\fts_000000000000042c_00000000000000a8_index_1.ibd' is missing!
+2019-05-04T16:02:04.030821Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 18, name 'sakila/fts_000000000000042c_00000000000000a8_index_2', file '.\sakila\fts_000000000000042c_00000000000000a8_index_2.ibd' is missing!
+2019-05-04T16:02:04.030876Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 19, name 'sakila/fts_000000000000042c_00000000000000a8_index_3', file '.\sakila\fts_000000000000042c_00000000000000a8_index_3.ibd' is missing!
+2019-05-04T16:02:04.030934Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 20, name 'sakila/fts_000000000000042c_00000000000000a8_index_4', file '.\sakila\fts_000000000000042c_00000000000000a8_index_4.ibd' is missing!
+2019-05-04T16:02:04.030989Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 21, name 'sakila/fts_000000000000042c_00000000000000a8_index_5', file '.\sakila\fts_000000000000042c_00000000000000a8_index_5.ibd' is missing!
+2019-05-04T16:02:04.031043Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 22, name 'sakila/fts_000000000000042c_00000000000000a8_index_6', file '.\sakila\fts_000000000000042c_00000000000000a8_index_6.ibd' is missing!
+2019-05-04T16:02:04.031095Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 23, name 'sakila/inventory', file '.\sakila\inventory.ibd' is missing!
+2019-05-04T16:02:04.031148Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 24, name 'sakila/language', file '.\sakila\language.ibd' is missing!
+2019-05-04T16:02:04.031210Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 25, name 'sakila/payment', file '.\sakila\payment.ibd' is missing!
+2019-05-04T16:02:04.031262Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 26, name 'sakila/rental', file '.\sakila\rental.ibd' is missing!
+2019-05-04T16:02:04.031315Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 27, name 'sakila/staff', file '.\sakila\staff.ibd' is missing!
+2019-05-04T16:02:04.031367Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 28, name 'sakila/store', file '.\sakila\store.ibd' is missing!
+2019-05-04T16:02:04.031422Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 29, name 'world/city', file '.\world\city.ibd' is missing!
+2019-05-04T16:02:04.031474Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 30, name 'world/country', file '.\world\country.ibd' is missing!
+2019-05-04T16:02:04.031527Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 31, name 'world/countrylanguage', file '.\world\countrylanguage.ibd' is missing!
+2019-05-04T16:02:04.184541Z 0 [System] [MY-010229] [Server] Starting crash recovery...
+2019-05-04T16:02:04.197562Z 0 [System] [MY-010232] [Server] Crash recovery finished.
+2019-05-04T16:02:05.379518Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2019-05-04T16:02:05.484065Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.15'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2019-05-04T16:02:05.709328Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2019-05-04T20:40:47.747163Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2019-05-04T20:40:48.806256Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.15)  MySQL Community Server - GPL.
+2019-05-05T14:51:55.293122Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2019-05-05T14:51:55.304908Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.15) starting as process 3116
+2019-05-05T14:51:57.314764Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 1, name 'sys/sys_config', file '.\sys\sys_config.ibd' is missing!
+2019-05-05T14:51:57.314815Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 2, name 'sakila/actor', file '.\sakila\actor.ibd' is missing!
+2019-05-05T14:51:57.314863Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 3, name 'sakila/address', file '.\sakila\address.ibd' is missing!
+2019-05-05T14:51:57.314911Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 4, name 'sakila/category', file '.\sakila\category.ibd' is missing!
+2019-05-05T14:51:57.314959Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 5, name 'sakila/city', file '.\sakila\city.ibd' is missing!
+2019-05-05T14:51:57.315007Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 6, name 'sakila/country', file '.\sakila\country.ibd' is missing!
+2019-05-05T14:51:57.315055Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 7, name 'sakila/customer', file '.\sakila\customer.ibd' is missing!
+2019-05-05T14:51:57.315103Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 8, name 'sakila/film', file '.\sakila\film.ibd' is missing!
+2019-05-05T14:51:57.315150Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 9, name 'sakila/film_actor', file '.\sakila\film_actor.ibd' is missing!
+2019-05-05T14:51:57.315198Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 10, name 'sakila/film_category', file '.\sakila\film_category.ibd' is missing!
+2019-05-05T14:51:57.315245Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 11, name 'sakila/film_text', file '.\sakila\film_text.ibd' is missing!
+2019-05-05T14:51:57.315294Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 12, name 'sakila/fts_000000000000042c_being_deleted', file '.\sakila\fts_000000000000042c_being_deleted.ibd' is missing!
+2019-05-05T14:51:57.315344Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 13, name 'sakila/fts_000000000000042c_being_deleted_cache', file '.\sakila\fts_000000000000042c_being_deleted_cache.ibd' is missing!
+2019-05-05T14:51:57.315392Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 14, name 'sakila/fts_000000000000042c_config', file '.\sakila\fts_000000000000042c_config.ibd' is missing!
+2019-05-05T14:51:57.315441Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 15, name 'sakila/fts_000000000000042c_deleted', file '.\sakila\fts_000000000000042c_deleted.ibd' is missing!
+2019-05-05T14:51:57.315490Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 16, name 'sakila/fts_000000000000042c_deleted_cache', file '.\sakila\fts_000000000000042c_deleted_cache.ibd' is missing!
+2019-05-05T14:51:57.315539Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 17, name 'sakila/fts_000000000000042c_00000000000000a8_index_1', file '.\sakila\fts_000000000000042c_00000000000000a8_index_1.ibd' is missing!
+2019-05-05T14:51:57.315589Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 18, name 'sakila/fts_000000000000042c_00000000000000a8_index_2', file '.\sakila\fts_000000000000042c_00000000000000a8_index_2.ibd' is missing!
+2019-05-05T14:51:57.315638Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 19, name 'sakila/fts_000000000000042c_00000000000000a8_index_3', file '.\sakila\fts_000000000000042c_00000000000000a8_index_3.ibd' is missing!
+2019-05-05T14:51:57.315688Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 20, name 'sakila/fts_000000000000042c_00000000000000a8_index_4', file '.\sakila\fts_000000000000042c_00000000000000a8_index_4.ibd' is missing!
+2019-05-05T14:51:57.315739Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 21, name 'sakila/fts_000000000000042c_00000000000000a8_index_5', file '.\sakila\fts_000000000000042c_00000000000000a8_index_5.ibd' is missing!
+2019-05-05T14:51:57.315789Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 22, name 'sakila/fts_000000000000042c_00000000000000a8_index_6', file '.\sakila\fts_000000000000042c_00000000000000a8_index_6.ibd' is missing!
+2019-05-05T14:51:57.315837Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 23, name 'sakila/inventory', file '.\sakila\inventory.ibd' is missing!
+2019-05-05T14:51:57.315884Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 24, name 'sakila/language', file '.\sakila\language.ibd' is missing!
+2019-05-05T14:51:57.315931Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 25, name 'sakila/payment', file '.\sakila\payment.ibd' is missing!
+2019-05-05T14:51:57.315980Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 26, name 'sakila/rental', file '.\sakila\rental.ibd' is missing!
+2019-05-05T14:51:57.316027Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 27, name 'sakila/staff', file '.\sakila\staff.ibd' is missing!
+2019-05-05T14:51:57.316074Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 28, name 'sakila/store', file '.\sakila\store.ibd' is missing!
+2019-05-05T14:51:57.316122Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 29, name 'world/city', file '.\world\city.ibd' is missing!
+2019-05-05T14:51:57.316170Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 30, name 'world/country', file '.\world\country.ibd' is missing!
+2019-05-05T14:51:57.316219Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 31, name 'world/countrylanguage', file '.\world\countrylanguage.ibd' is missing!
+2019-05-05T14:51:58.512991Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2019-05-05T14:51:58.623760Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.15'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2019-05-05T14:51:58.698248Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2019-05-05T19:35:09.000001Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2019-05-05T19:35:10.515414Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.15)  MySQL Community Server - GPL.
+2019-05-06T13:13:50.979197Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2019-05-06T13:13:50.989856Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.15) starting as process 4388
+2019-05-06T13:13:52.767616Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 1, name 'sys/sys_config', file '.\sys\sys_config.ibd' is missing!
+2019-05-06T13:13:52.767656Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 2, name 'sakila/actor', file '.\sakila\actor.ibd' is missing!
+2019-05-06T13:13:52.767694Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 3, name 'sakila/address', file '.\sakila\address.ibd' is missing!
+2019-05-06T13:13:52.767731Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 4, name 'sakila/category', file '.\sakila\category.ibd' is missing!
+2019-05-06T13:13:52.767772Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 5, name 'sakila/city', file '.\sakila\city.ibd' is missing!
+2019-05-06T13:13:52.767824Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 6, name 'sakila/country', file '.\sakila\country.ibd' is missing!
+2019-05-06T13:13:52.767862Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 7, name 'sakila/customer', file '.\sakila\customer.ibd' is missing!
+2019-05-06T13:13:52.767899Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 8, name 'sakila/film', file '.\sakila\film.ibd' is missing!
+2019-05-06T13:13:52.767936Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 9, name 'sakila/film_actor', file '.\sakila\film_actor.ibd' is missing!
+2019-05-06T13:13:52.767978Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 10, name 'sakila/film_category', file '.\sakila\film_category.ibd' is missing!
+2019-05-06T13:13:52.768031Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 11, name 'sakila/film_text', file '.\sakila\film_text.ibd' is missing!
+2019-05-06T13:13:52.768084Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 12, name 'sakila/fts_000000000000042c_being_deleted', file '.\sakila\fts_000000000000042c_being_deleted.ibd' is missing!
+2019-05-06T13:13:52.768134Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 13, name 'sakila/fts_000000000000042c_being_deleted_cache', file '.\sakila\fts_000000000000042c_being_deleted_cache.ibd' is missing!
+2019-05-06T13:13:52.768183Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 14, name 'sakila/fts_000000000000042c_config', file '.\sakila\fts_000000000000042c_config.ibd' is missing!
+2019-05-06T13:13:52.768238Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 15, name 'sakila/fts_000000000000042c_deleted', file '.\sakila\fts_000000000000042c_deleted.ibd' is missing!
+2019-05-06T13:13:52.768287Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 16, name 'sakila/fts_000000000000042c_deleted_cache', file '.\sakila\fts_000000000000042c_deleted_cache.ibd' is missing!
+2019-05-06T13:13:52.768347Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 17, name 'sakila/fts_000000000000042c_00000000000000a8_index_1', file '.\sakila\fts_000000000000042c_00000000000000a8_index_1.ibd' is missing!
+2019-05-06T13:13:52.768404Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 18, name 'sakila/fts_000000000000042c_00000000000000a8_index_2', file '.\sakila\fts_000000000000042c_00000000000000a8_index_2.ibd' is missing!
+2019-05-06T13:13:52.768456Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 19, name 'sakila/fts_000000000000042c_00000000000000a8_index_3', file '.\sakila\fts_000000000000042c_00000000000000a8_index_3.ibd' is missing!
+2019-05-06T13:13:52.768508Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 20, name 'sakila/fts_000000000000042c_00000000000000a8_index_4', file '.\sakila\fts_000000000000042c_00000000000000a8_index_4.ibd' is missing!
+2019-05-06T13:13:52.768566Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 21, name 'sakila/fts_000000000000042c_00000000000000a8_index_5', file '.\sakila\fts_000000000000042c_00000000000000a8_index_5.ibd' is missing!
+2019-05-06T13:13:52.768622Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 22, name 'sakila/fts_000000000000042c_00000000000000a8_index_6', file '.\sakila\fts_000000000000042c_00000000000000a8_index_6.ibd' is missing!
+2019-05-06T13:13:52.768676Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 23, name 'sakila/inventory', file '.\sakila\inventory.ibd' is missing!
+2019-05-06T13:13:52.768730Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 24, name 'sakila/language', file '.\sakila\language.ibd' is missing!
+2019-05-06T13:13:52.768783Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 25, name 'sakila/payment', file '.\sakila\payment.ibd' is missing!
+2019-05-06T13:13:52.768836Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 26, name 'sakila/rental', file '.\sakila\rental.ibd' is missing!
+2019-05-06T13:13:52.768889Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 27, name 'sakila/staff', file '.\sakila\staff.ibd' is missing!
+2019-05-06T13:13:52.768942Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 28, name 'sakila/store', file '.\sakila\store.ibd' is missing!
+2019-05-06T13:13:52.768995Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 29, name 'world/city', file '.\world\city.ibd' is missing!
+2019-05-06T13:13:52.769048Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 30, name 'world/country', file '.\world\country.ibd' is missing!
+2019-05-06T13:13:52.769111Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 31, name 'world/countrylanguage', file '.\world\countrylanguage.ibd' is missing!
+2019-05-06T13:13:54.067432Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2019-05-06T13:13:54.175374Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.15'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2019-05-06T13:13:54.208591Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2019-05-06T19:36:33.218768Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2019-05-06T19:36:34.623916Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.15)  MySQL Community Server - GPL.
+2019-05-07T13:00:09.165223Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2019-05-07T13:00:09.179884Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.15) starting as process 4348
+2019-05-07T13:00:10.960023Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 1, name 'sys/sys_config', file '.\sys\sys_config.ibd' is missing!
+2019-05-07T13:00:10.960082Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 2, name 'sakila/actor', file '.\sakila\actor.ibd' is missing!
+2019-05-07T13:00:10.960138Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 3, name 'sakila/address', file '.\sakila\address.ibd' is missing!
+2019-05-07T13:00:10.960193Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 4, name 'sakila/category', file '.\sakila\category.ibd' is missing!
+2019-05-07T13:00:10.960249Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 5, name 'sakila/city', file '.\sakila\city.ibd' is missing!
+2019-05-07T13:00:10.960302Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 6, name 'sakila/country', file '.\sakila\country.ibd' is missing!
+2019-05-07T13:00:10.960356Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 7, name 'sakila/customer', file '.\sakila\customer.ibd' is missing!
+2019-05-07T13:00:10.960410Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 8, name 'sakila/film', file '.\sakila\film.ibd' is missing!
+2019-05-07T13:00:10.960462Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 9, name 'sakila/film_actor', file '.\sakila\film_actor.ibd' is missing!
+2019-05-07T13:00:10.960515Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 10, name 'sakila/film_category', file '.\sakila\film_category.ibd' is missing!
+2019-05-07T13:00:10.960571Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 11, name 'sakila/film_text', file '.\sakila\film_text.ibd' is missing!
+2019-05-07T13:00:10.960628Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 12, name 'sakila/fts_000000000000042c_being_deleted', file '.\sakila\fts_000000000000042c_being_deleted.ibd' is missing!
+2019-05-07T13:00:10.960687Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 13, name 'sakila/fts_000000000000042c_being_deleted_cache', file '.\sakila\fts_000000000000042c_being_deleted_cache.ibd' is missing!
+2019-05-07T13:00:10.960743Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 14, name 'sakila/fts_000000000000042c_config', file '.\sakila\fts_000000000000042c_config.ibd' is missing!
+2019-05-07T13:00:10.960799Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 15, name 'sakila/fts_000000000000042c_deleted', file '.\sakila\fts_000000000000042c_deleted.ibd' is missing!
+2019-05-07T13:00:10.960854Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 16, name 'sakila/fts_000000000000042c_deleted_cache', file '.\sakila\fts_000000000000042c_deleted_cache.ibd' is missing!
+2019-05-07T13:00:10.960911Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 17, name 'sakila/fts_000000000000042c_00000000000000a8_index_1', file '.\sakila\fts_000000000000042c_00000000000000a8_index_1.ibd' is missing!
+2019-05-07T13:00:10.960967Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 18, name 'sakila/fts_000000000000042c_00000000000000a8_index_2', file '.\sakila\fts_000000000000042c_00000000000000a8_index_2.ibd' is missing!
+2019-05-07T13:00:10.961022Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 19, name 'sakila/fts_000000000000042c_00000000000000a8_index_3', file '.\sakila\fts_000000000000042c_00000000000000a8_index_3.ibd' is missing!
+2019-05-07T13:00:10.961077Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 20, name 'sakila/fts_000000000000042c_00000000000000a8_index_4', file '.\sakila\fts_000000000000042c_00000000000000a8_index_4.ibd' is missing!
+2019-05-07T13:00:10.961136Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 21, name 'sakila/fts_000000000000042c_00000000000000a8_index_5', file '.\sakila\fts_000000000000042c_00000000000000a8_index_5.ibd' is missing!
+2019-05-07T13:00:10.961188Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 22, name 'sakila/fts_000000000000042c_00000000000000a8_index_6', file '.\sakila\fts_000000000000042c_00000000000000a8_index_6.ibd' is missing!
+2019-05-07T13:00:10.961236Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 23, name 'sakila/inventory', file '.\sakila\inventory.ibd' is missing!
+2019-05-07T13:00:10.961293Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 24, name 'sakila/language', file '.\sakila\language.ibd' is missing!
+2019-05-07T13:00:10.961347Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 25, name 'sakila/payment', file '.\sakila\payment.ibd' is missing!
+2019-05-07T13:00:10.961403Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 26, name 'sakila/rental', file '.\sakila\rental.ibd' is missing!
+2019-05-07T13:00:10.961453Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 27, name 'sakila/staff', file '.\sakila\staff.ibd' is missing!
+2019-05-07T13:00:10.961501Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 28, name 'sakila/store', file '.\sakila\store.ibd' is missing!
+2019-05-07T13:00:10.961550Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 29, name 'world/city', file '.\world\city.ibd' is missing!
+2019-05-07T13:00:10.961607Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 30, name 'world/country', file '.\world\country.ibd' is missing!
+2019-05-07T13:00:10.961671Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 31, name 'world/countrylanguage', file '.\world\countrylanguage.ibd' is missing!
+2019-05-07T13:00:12.205918Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2019-05-07T13:00:12.307649Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.15'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2019-05-07T13:00:12.363703Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2019-05-07T20:27:58.054489Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2019-05-07T20:27:59.634244Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.15)  MySQL Community Server - GPL.
+2019-05-08T02:52:22.117136Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2019-05-08T02:52:22.132792Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.15) starting as process 4400
+2019-05-08T02:52:23.675854Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 1, name 'sys/sys_config', file '.\sys\sys_config.ibd' is missing!
+2019-05-08T02:52:23.675913Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 2, name 'sakila/actor', file '.\sakila\actor.ibd' is missing!
+2019-05-08T02:52:23.675964Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 3, name 'sakila/address', file '.\sakila\address.ibd' is missing!
+2019-05-08T02:52:23.676018Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 4, name 'sakila/category', file '.\sakila\category.ibd' is missing!
+2019-05-08T02:52:23.676067Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 5, name 'sakila/city', file '.\sakila\city.ibd' is missing!
+2019-05-08T02:52:23.676114Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 6, name 'sakila/country', file '.\sakila\country.ibd' is missing!
+2019-05-08T02:52:23.676162Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 7, name 'sakila/customer', file '.\sakila\customer.ibd' is missing!
+2019-05-08T02:52:23.676210Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 8, name 'sakila/film', file '.\sakila\film.ibd' is missing!
+2019-05-08T02:52:23.676258Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 9, name 'sakila/film_actor', file '.\sakila\film_actor.ibd' is missing!
+2019-05-08T02:52:23.676307Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 10, name 'sakila/film_category', file '.\sakila\film_category.ibd' is missing!
+2019-05-08T02:52:23.676355Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 11, name 'sakila/film_text', file '.\sakila\film_text.ibd' is missing!
+2019-05-08T02:52:23.676404Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 12, name 'sakila/fts_000000000000042c_being_deleted', file '.\sakila\fts_000000000000042c_being_deleted.ibd' is missing!
+2019-05-08T02:52:23.676454Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 13, name 'sakila/fts_000000000000042c_being_deleted_cache', file '.\sakila\fts_000000000000042c_being_deleted_cache.ibd' is missing!
+2019-05-08T02:52:23.676503Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 14, name 'sakila/fts_000000000000042c_config', file '.\sakila\fts_000000000000042c_config.ibd' is missing!
+2019-05-08T02:52:23.676553Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 15, name 'sakila/fts_000000000000042c_deleted', file '.\sakila\fts_000000000000042c_deleted.ibd' is missing!
+2019-05-08T02:52:23.676601Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 16, name 'sakila/fts_000000000000042c_deleted_cache', file '.\sakila\fts_000000000000042c_deleted_cache.ibd' is missing!
+2019-05-08T02:52:23.676651Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 17, name 'sakila/fts_000000000000042c_00000000000000a8_index_1', file '.\sakila\fts_000000000000042c_00000000000000a8_index_1.ibd' is missing!
+2019-05-08T02:52:23.676701Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 18, name 'sakila/fts_000000000000042c_00000000000000a8_index_2', file '.\sakila\fts_000000000000042c_00000000000000a8_index_2.ibd' is missing!
+2019-05-08T02:52:23.676751Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 19, name 'sakila/fts_000000000000042c_00000000000000a8_index_3', file '.\sakila\fts_000000000000042c_00000000000000a8_index_3.ibd' is missing!
+2019-05-08T02:52:23.676800Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 20, name 'sakila/fts_000000000000042c_00000000000000a8_index_4', file '.\sakila\fts_000000000000042c_00000000000000a8_index_4.ibd' is missing!
+2019-05-08T02:52:23.676854Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 21, name 'sakila/fts_000000000000042c_00000000000000a8_index_5', file '.\sakila\fts_000000000000042c_00000000000000a8_index_5.ibd' is missing!
+2019-05-08T02:52:23.676904Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 22, name 'sakila/fts_000000000000042c_00000000000000a8_index_6', file '.\sakila\fts_000000000000042c_00000000000000a8_index_6.ibd' is missing!
+2019-05-08T02:52:23.676952Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 23, name 'sakila/inventory', file '.\sakila\inventory.ibd' is missing!
+2019-05-08T02:52:23.676999Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 24, name 'sakila/language', file '.\sakila\language.ibd' is missing!
+2019-05-08T02:52:23.677047Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 25, name 'sakila/payment', file '.\sakila\payment.ibd' is missing!
+2019-05-08T02:52:23.677094Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 26, name 'sakila/rental', file '.\sakila\rental.ibd' is missing!
+2019-05-08T02:52:23.677141Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 27, name 'sakila/staff', file '.\sakila\staff.ibd' is missing!
+2019-05-08T02:52:23.677188Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 28, name 'sakila/store', file '.\sakila\store.ibd' is missing!
+2019-05-08T02:52:23.677235Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 29, name 'world/city', file '.\world\city.ibd' is missing!
+2019-05-08T02:52:23.677283Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 30, name 'world/country', file '.\world\country.ibd' is missing!
+2019-05-08T02:52:23.677340Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 31, name 'world/countrylanguage', file '.\world\countrylanguage.ibd' is missing!
+2019-05-08T02:52:24.962815Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2019-05-08T02:52:25.054868Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.15'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2019-05-08T02:52:25.107678Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
+2019-05-08T19:15:57.153905Z 0 [System] [MY-013105] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Normal shutdown.
+2019-05-08T19:15:58.687010Z 0 [System] [MY-010910] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: Shutdown complete (mysqld 8.0.15)  MySQL Community Server - GPL.
+2019-05-09T09:18:34.405429Z 0 [Warning] [MY-010915] [Server] 'NO_ZERO_DATE', 'NO_ZERO_IN_DATE' and 'ERROR_FOR_DIVISION_BY_ZERO' sql modes should be used with strict mode. They will be merged with strict mode in a future release.
+2019-05-09T09:18:34.426786Z 0 [System] [MY-010116] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe (mysqld 8.0.15) starting as process 4492
+2019-05-09T09:18:35.945318Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 1, name 'sys/sys_config', file '.\sys\sys_config.ibd' is missing!
+2019-05-09T09:18:35.945370Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 2, name 'sakila/actor', file '.\sakila\actor.ibd' is missing!
+2019-05-09T09:18:35.945419Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 3, name 'sakila/address', file '.\sakila\address.ibd' is missing!
+2019-05-09T09:18:35.945468Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 4, name 'sakila/category', file '.\sakila\category.ibd' is missing!
+2019-05-09T09:18:35.945517Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 5, name 'sakila/city', file '.\sakila\city.ibd' is missing!
+2019-05-09T09:18:35.945564Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 6, name 'sakila/country', file '.\sakila\country.ibd' is missing!
+2019-05-09T09:18:35.945612Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 7, name 'sakila/customer', file '.\sakila\customer.ibd' is missing!
+2019-05-09T09:18:35.945660Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 8, name 'sakila/film', file '.\sakila\film.ibd' is missing!
+2019-05-09T09:18:35.945708Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 9, name 'sakila/film_actor', file '.\sakila\film_actor.ibd' is missing!
+2019-05-09T09:18:35.945757Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 10, name 'sakila/film_category', file '.\sakila\film_category.ibd' is missing!
+2019-05-09T09:18:35.945807Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 11, name 'sakila/film_text', file '.\sakila\film_text.ibd' is missing!
+2019-05-09T09:18:35.945869Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 12, name 'sakila/fts_000000000000042c_being_deleted', file '.\sakila\fts_000000000000042c_being_deleted.ibd' is missing!
+2019-05-09T09:18:35.945920Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 13, name 'sakila/fts_000000000000042c_being_deleted_cache', file '.\sakila\fts_000000000000042c_being_deleted_cache.ibd' is missing!
+2019-05-09T09:18:35.945969Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 14, name 'sakila/fts_000000000000042c_config', file '.\sakila\fts_000000000000042c_config.ibd' is missing!
+2019-05-09T09:18:35.946018Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 15, name 'sakila/fts_000000000000042c_deleted', file '.\sakila\fts_000000000000042c_deleted.ibd' is missing!
+2019-05-09T09:18:35.946067Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 16, name 'sakila/fts_000000000000042c_deleted_cache', file '.\sakila\fts_000000000000042c_deleted_cache.ibd' is missing!
+2019-05-09T09:18:35.946117Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 17, name 'sakila/fts_000000000000042c_00000000000000a8_index_1', file '.\sakila\fts_000000000000042c_00000000000000a8_index_1.ibd' is missing!
+2019-05-09T09:18:35.946167Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 18, name 'sakila/fts_000000000000042c_00000000000000a8_index_2', file '.\sakila\fts_000000000000042c_00000000000000a8_index_2.ibd' is missing!
+2019-05-09T09:18:35.946216Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 19, name 'sakila/fts_000000000000042c_00000000000000a8_index_3', file '.\sakila\fts_000000000000042c_00000000000000a8_index_3.ibd' is missing!
+2019-05-09T09:18:35.946266Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 20, name 'sakila/fts_000000000000042c_00000000000000a8_index_4', file '.\sakila\fts_000000000000042c_00000000000000a8_index_4.ibd' is missing!
+2019-05-09T09:18:35.946319Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 21, name 'sakila/fts_000000000000042c_00000000000000a8_index_5', file '.\sakila\fts_000000000000042c_00000000000000a8_index_5.ibd' is missing!
+2019-05-09T09:18:35.946369Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 22, name 'sakila/fts_000000000000042c_00000000000000a8_index_6', file '.\sakila\fts_000000000000042c_00000000000000a8_index_6.ibd' is missing!
+2019-05-09T09:18:35.946417Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 23, name 'sakila/inventory', file '.\sakila\inventory.ibd' is missing!
+2019-05-09T09:18:35.946465Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 24, name 'sakila/language', file '.\sakila\language.ibd' is missing!
+2019-05-09T09:18:35.946512Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 25, name 'sakila/payment', file '.\sakila\payment.ibd' is missing!
+2019-05-09T09:18:35.946559Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 26, name 'sakila/rental', file '.\sakila\rental.ibd' is missing!
+2019-05-09T09:18:35.946607Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 27, name 'sakila/staff', file '.\sakila\staff.ibd' is missing!
+2019-05-09T09:18:35.946653Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 28, name 'sakila/store', file '.\sakila\store.ibd' is missing!
+2019-05-09T09:18:35.946723Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 29, name 'world/city', file '.\world\city.ibd' is missing!
+2019-05-09T09:18:35.946772Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 30, name 'world/country', file '.\world\country.ibd' is missing!
+2019-05-09T09:18:35.946820Z 1 [Warning] [MY-012351] [InnoDB] Tablespace 31, name 'world/countrylanguage', file '.\world\countrylanguage.ibd' is missing!
+2019-05-09T09:18:37.208419Z 0 [Warning] [MY-010068] [Server] CA certificate ca.pem is self signed.
+2019-05-09T09:18:37.309689Z 0 [System] [MY-010931] [Server] C:\Program Files\MySQL\MySQL Server 8.0\bin\mysqld.exe: ready for connections. Version: '8.0.15'  socket: ''  port: 3306  MySQL Community Server - GPL.
+2019-05-09T09:18:37.383956Z 0 [System] [MY-011323] [Server] X Plugin ready for connections. Bind-address: '::' port: 33060
