@@ -1,15 +1,26 @@
+<<<<<<< HEAD
 from flask import Flask, render_template, request, redirect, url_for,  Response, session, jsonify
 import MySQLdb
 import cv2
 import json
 from flask_sqlalchemy import SQLAlchemy
+=======
+from flask import Flask, render_template, request, redirect, url_for, jsonify
+#import MySQLdb
+#from werkzeug.wrappers import json
+>>>>>>> f9e70ceece80a3ee0c9aec73f6840ccfd5fba55e
 
 app = Flask(__name__)
 app.secret_key = "super secret key"
 vc = cv2.VideoCapture(0)
 #DB로부터 데이터를 받을때 ASCII코드로 바뀌는걸 방지.
+<<<<<<< HEAD
 app.config['JSON_AS_ASCII'] = False
 conn = MySQLdb.connect(host="localhost", user="root", password="sm435", db="testdb", charset='utf8')
+=======
+#app.config['JSON_AS_ASCII'] = False
+#conn = MySQLdb.connect(host="localhost", user="root", password="root", db="team_mld", charset='utf8')
+>>>>>>> f9e70ceece80a3ee0c9aec73f6840ccfd5fba55e
 
 def gen():
     while True:
@@ -100,5 +111,20 @@ def chart():
 
 
 
+#YOLO 멀티 쓰레드
+import threading
+import os
+def yolo():
+    #darknet.exe path 설정
+    os.chdir("C:\\Users\\cps435\\Desktop\\Loo\\Team_MLD\\darknet\\build\\darknet\\x64")
+    #웹캠 연동
+    os.system("darknet.exe detector demo data/coco.data cfg/yolov3-tiny.cfg weights/yolov3-tiny.weights data/test.mp4")
+
 if __name__ == "__main__":
+<<<<<<< HEAD
     app.run(host='127.0.0.1', debug=True, threaded=True)
+=======
+    yoloThread = threading.Thread(target = yolo, args = ())
+    yoloThread.start()
+    app.run()
+>>>>>>> f9e70ceece80a3ee0c9aec73f6840ccfd5fba55e
