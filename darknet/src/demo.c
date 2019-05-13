@@ -129,7 +129,7 @@ void demo(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int 
     int frame_skip, char *prefix, char *out_filename, int mjpeg_port, int json_port, int dont_show, int ext_output)
 {
     //db연동 및 정보 삽입
-    //loadmysql();
+    loadmysql();
     //insert_car_info(123456);
     //closemysql();
 
@@ -419,7 +419,8 @@ void demo(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int 
     free_network(net);
     //cudaProfilerStop();
 
-    //closemysql();
+    //db연결해제
+    closemysql();
 }
 #else
 void demo(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int cam_index, const char *filename, char **names, int classes,

@@ -168,7 +168,7 @@ int* get_car_info(FRAME_NODE *list, int size) {
             free(*(*(arr + a) + b));
         }
         free(*(arr + a));
-        list = list->next;
+        //list = list->next;
     }
     free(arr);
     return number;
