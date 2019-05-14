@@ -1,8 +1,16 @@
-from flask import Flask, render_template, request,  Response, session
+import csv
+from csv import excel
+
+import pandas as pd
+from flask import Flask, render_template, request, Response, session, json, send_file
 import MySQLdb
 import cv2
 from flask.json import jsonify
+import json as j
+from pandas.io.json import json_normalize
+from flask_csv import send_csv
 from werkzeug.wrappers import json
+
 
 
 app = Flask(__name__)
@@ -21,6 +29,42 @@ def gen():
                b'Content-Type: image/jpeg\r\n\r\n' + open('t.jpg', 'rb').read() + b'\r\n')
 
 
+#여기 없는 페이지에 대한 에러처리
+@app.errorhandler(404)
+def page_error(error):
+    return render_template("error.html"), 404
+
+
+#json table 테스트용
+@app.route("/test")
+def test():
+    import numpy as np
+
+    cursor = conn.cursor()
+    cursor.execute("SELECT recognize.re_plate, recognize.re_time,  location.location_now, model.model_car FROM recognize LEFT JOIN go ON go.GO_License_Plate = recognize.re_plate INNER JOIN location ON recognize.re_location = location.location_key INNER JOIN model ON recognize.re_model = model.model_key;")
+    r = [dict((cursor.description[i][0], value)
+              for i, value in enumerate(row))
+         for row in cursor.fetchall()]
+
+
+    df = pd.DataFrame(r)
+    df = df.rename(columns={'re_plate': '차량 번호'})
+    df = df.rename(columns={'location_now': '위치'})
+    df = df.rename(columns={'model_car': '차량 모델'})
+    df = df.rename(columns={'re_time': '인식된 시간'})
+    
+
+
+    return df.to_html()
+
+
+
+
+
+
+
+
+
 
 #비디오 동영상 HTML
 @app.route("/video")
@@ -28,7 +72,7 @@ def streaming():
     if 'user' in session:
         return render_template('video.html')
     else:
-        return index()
+        return login()
 
 
 
@@ -50,16 +94,13 @@ def intro():
     if 'user' in session:
         return render_template('intro.html')
     else:
-        return index()
+        return login()
 
 
 
 @app.route("/intro_not_regist")
 def intro_not_regist():
-    if 'user' in session:
-        return index()
-    else:
-        return render_template('intro_not_regist.html')
+     return render_template('intro_not_regist.html')
 
 
 
@@ -79,7 +120,7 @@ def lookup():
     if 'user' in session:
         return render_template('lookup.html')
     else:
-        index()
+        return render_template('login.html')
 
 
 
@@ -118,16 +159,16 @@ def DB_manage():
 @app.route('/logout')
 def logout():
     session.pop('admin', None)
-    return render_template('/homt')
+    return login()
 
 
 #홈페이지
 @app.route("/home")
 def index():
-    if 'user' in session:
+    if session.get('user'):
         return render_template('index.html')
     else:
-        index()
+        return login()
 
 
 
@@ -137,11 +178,48 @@ def forgot_password():
     return render_template('/forgot_password.html')
 
 
+@app.route('/show_my_password',  methods=["POST"])
+def show_my_password():
+    email = str(request.form["Email"])
+    name = str(request.form["real_name"])
+    if len(email) == 0 or len(name) == 0:
+        return "형식을 다 입력해주세요."
+    cursor = conn.cursor()
+    cursor.execute("SELECT PW FROM user where Email='"+email+"' AND User_name='"+name+"'")
+    password = cursor.fetchall()
+    if password:
+        return jsonify(password)
+    else:
+        return "존재하지 않는 이메일입니다."
+
+
+
 #회원 등록
 @app.route('/register')
 def register():
-
     return render_template('/register.html')
+
+
+@app.route("/register_user", methods=["POST"])
+def register_user():
+    email = str(request.form["Email"])
+    name = str(request.form["user_name"])
+    PW = str(request.form["Password"])
+    CHK_PW = str(request.form["Password_CHK"])
+    if PW == CHK_PW:
+        cursor = conn.cursor()
+        cursor.execute("select User_name from user where Email='"+email+"'")
+        CHK = cursor.fetchall()
+        if CHK:
+            return "이미 이메일이 존재합니다."
+        else:
+            cursor.execute("INSERT INTO user(Email,PW,User_name) VALUE('"+email+"', '"+PW+"', '"+name+"')")
+            conn.commit()
+            conn.close()
+            return "회원가입 완료"
+    else:
+        return "비밀번호와 재입력 비밀번호가 다릅니다."
+
 
 
 #정부 DB 가져오기
@@ -188,6 +266,9 @@ def ChkStatus():
 def CHK_login():
     email = str(request.form["Email"])
     PW = str(request.form["Password"])
+    if len(email) == 0 or len(PW) == 0:
+        return "형식을 다 입력해주세요."
+
     cursor = conn.cursor()
     cursor.execute("SELECT User_name FROM user WHERE Email='"+email+"'")
     EmailCHK = cursor.fetchall()
@@ -203,26 +284,24 @@ def CHK_login():
     else:
         return "로그인 다시입력해봐"
 
+#정부 파일 저장하는 로직
+@app.route("/GovINFO")
+def testTable():
+    cursor = conn.cursor()
+    try:
+        cursor.execute("SELECT go.GO_License_Plate, car_status.car_status_now, model.model_car "
+                        "FROM go "
+                        "INNER JOIN car_status ON go.GO_car_state = car_status.car_status_key "
+                        "INNER JOIN model ON go.GO_car_model = model.model_key "
+                        "into outfile 'C:/Users/Public/Goverment_Table.csv.csv' fields terminated by ',' ;")
+    except (MySQLdb.Error, MySQLdb.Warning) as e:
+        print(e)
+    finally:
+        conn.close()
+        return index()
+    #try catch를 통해 파일이 존재할경우 메인 화면으로 이동하도록 만듬
 
-# DB Execl 다운로드
-@app.route('/CSV')
-def Excel():
-    db = MySQLdb.connect(host="hostname",    # 호스트 명
-                     user="id",         # 유저이름
-                     passwd="password",  # 비밀번호
-                     db="db")        # 데이스베이스 명
-
-    cur = db.cursor()
-
-# 추출할 데이터베이스 / where 문 사용하여 조건 / 대포차량, 노후경유차량 데이터 따로 저장 가능
-    cur.execute("SELECT * FROM DB WHERE 조건 = 1")
-
-    for row in cur.fetchall():
-        print row[0]
-
-    db.close()
-    return
 
 
 if __name__ == "__main__":
-    app.run(host='127.0.0.1', debug=True, threaded=True)
+    app.run(debug=True, threaded=True)
