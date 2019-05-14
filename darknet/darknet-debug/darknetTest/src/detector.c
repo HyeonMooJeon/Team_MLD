@@ -1475,6 +1475,12 @@ void run_detector(int argc, char **argv)
         if (strlen(weights) > 0)
             if (weights[strlen(weights) - 1] == 0x0d) weights[strlen(weights) - 1] = 0;
     char *filename = (argc > 6) ? argv[6] : 0;
+    //insert code(À¤Ä·,IPÄ«¸Þ¶ó ¿¬µ¿)
+    char *filename2 = (argc > 7) ? argv[7] : 0;
+    printf("Video Path : %s\n", filename);
+    //printf("Video Path : index -> %d\n", cam_index);
+    printf("Video Path : %s\n", filename2);
+    //insert code(À¤Ä·,IPÄ«¸Þ¶ó ¿¬µ¿)
     if (0 == strcmp(argv[2], "test")) test_detector(datacfg, cfg, weights, filename, thresh, hier_thresh, dont_show, ext_output, save_labels, outfile);
     else if (0 == strcmp(argv[2], "train")) train_detector(datacfg, cfg, weights, gpus, ngpus, clear, dont_show, calc_map, mjpeg_port);
     else if (0 == strcmp(argv[2], "valid")) validate_detector(datacfg, cfg, weights, outfile);
@@ -1491,6 +1497,22 @@ void run_detector(int argc, char **argv)
                 if (filename[strlen(filename) - 1] == 0x0d) filename[strlen(filename) - 1] = 0;
         demo(cfg, weights, thresh, hier_thresh, cam_index, filename, names, classes, frame_skip, prefix, out_filename,
             mjpeg_port, json_port, dont_show, ext_output);
+
+        free_list_contents_kvp(options);
+        free_list(options);
+    }
+    else if (0 == strcmp(argv[2], "mld")) {
+        list *options = read_data_cfg(datacfg);
+        int classes = option_find_int(options, "classes", 20);
+        char *name_list = option_find_str(options, "names", "data/names.list");
+        char **names = get_labels(name_list);
+        if (filename)
+            if (strlen(filename) > 0)
+                if (filename[strlen(filename) - 1] == 0x0d) filename[strlen(filename) - 1] = 0;
+        if (filename2)
+            if (strlen(filename2) > 0)
+                if (filename2[strlen(filename2) - 1] == 0x0d) filename2[strlen(filename2) - 1] = 0;
+        mld(cfg, weights, thresh, hier_thresh, cam_index, filename, names, classes, frame_skip, filename2);
 
         free_list_contents_kvp(options);
         free_list(options);

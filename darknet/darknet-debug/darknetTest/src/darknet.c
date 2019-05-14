@@ -435,7 +435,7 @@ int main(int argc, char **argv)
 #ifdef _DEBUG
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
-    argc = 7;
+    argc = 8;
     //*argv = "C:\\Users\\cps435\\Desktop\\test\\darknetTest\\build_win_debug\\Debug\\darknet.exe detector demo data/carnumber2/obj-new16.data data/carnumber2/yolo-obj.cfg weights/yolo-obj_91000.weights data/carnumber2/cartest.mp4";
     /*
     int i;
@@ -446,11 +446,14 @@ int main(int argc, char **argv)
     */
     argv[0] = "C:\\Users\\cps435\\Desktop\\test\\darknetTest\\build_win_debug\\Debug\\darknet.exe";
     argv[1] = "detector";
-    argv[2] = "demo";
-    argv[3] = "C:\\Users\\cps435\\Desktop\\test\\darknetTest\\build_win_debug\\Debug\\data\\carnumber2\\obj-new16.data";
-    argv[4] = "C:\\Users\\cps435\\Desktop\\test\\darknetTest\\build_win_debug\\Debug\\data\\carnumber2\\yolo-obj.cfg";
-    argv[5] = "C:\\Users\\cps435\\Desktop\\test\\darknetTest\\build_win_debug\\Debug\\weights\\yolo-obj_91000.weights";
-    argv[6] = "C:\\Users\\cps435\\Desktop\\test\\darknetTest\\build_win_debug\\Debug\\data\\carnumber2\\cartest.mp4";
+    argv[2] = "mld";
+    argv[3] = "C:\\Users\\cps435\\Desktop\\test\\darknetTest\\build_win_debug\\Debug\\data\\carnumber2\\coco.data";
+    argv[4] = "C:\\Users\\cps435\\Desktop\\test\\darknetTest\\build_win_debug\\Debug\\data\\carnumber2\\yolov3-tiny.cfg";
+    argv[5] = "C:\\Users\\cps435\\Desktop\\test\\darknetTest\\build_win_debug\\Debug\\weights\\yolov3-tiny.weights";
+    //argv[6] = "C:\\Users\\cps435\\Desktop\\test\\darknetTest\\build_win_debug\\Debug\\data\\carnumber2\\cartest.mp4";
+    //argv[7] = "C:\\Users\\cps435\\Desktop\\test\\darknetTest\\build_win_debug\\Debug\\data\\carnumber2\\numbertest.mp4";
+    argv[6] = "C:\\Users\\cps435\\Downloads\\darknet-master\\build\\darknet\\x64\\data\\test.mp4";
+    argv[7] = "C:\\Users\\cps435\\Downloads\\darknet-master\\build\\darknet\\x64\\data\\test2.mp4";
 
     //test_resize("data/bad.jpg");
     //test_box();

@@ -1,3 +1,8 @@
+//insert code(숫자 좌표)
+#include "test.h"
+#include <stdlib.h>
+#include <string.h>
+
 #include "image.h"
 #include "utils.h"
 #include "blas.h"
@@ -36,6 +41,7 @@
 
 extern int check_mistakes;
 int windows = 0;
+int windows2 = 0;
 
 float colors[6][3] = { {1,0,1}, {0,0,1},{0,1,1},{0,1,0},{1,1,0},{1,0,0} };
 
@@ -524,12 +530,151 @@ void save_cv_jpg(IplImage *img, const char *name)
     cvRelease((void**)&img_rgb);
 }
 
-void draw_detections_cv_v3(IplImage* show_img, detection *dets, int num, float thresh, char **names, image **alphabet, int classes, int ext_output)
+void draw_detections_cv_v3(IplImage* show_img, detection *dets, int num, float thresh, char **names, image **alphabet, int classes, int ext_output, FRAME_INFO *frame, int *count)
 {
     int i, j;
     if (!show_img) return;
     static int frame_id = 0;
     frame_id++;
+
+    //insert code(인식횟수 확인)
+    int numbers = 1;
+    printf("draw_detection start\n");
+    //FILE *file = fopen("results/test.txt","a");
+
+    for (i = 0; i < num; ++i) {
+        char labelstr[4096] = { 0 };
+        int class_id = -1;
+        for (j = 0; j < classes; ++j) {
+            int show = strncmp(names[j], "dont_show", 9);
+            if (dets[i].prob[j] > thresh && show) {
+                if (class_id < 0) {
+                    strcat(labelstr, names[j]);
+                    class_id = j;
+                }
+                else {
+                    strcat(labelstr, ", ");
+                    strcat(labelstr, names[j]);
+                }
+                printf("%s: %.0f%% ", names[j], dets[i].prob[j] * 100);
+                if (strcmp(names[j], "LicensePlate")) {
+                frame->car.full[*count].num = atoi(names[j]);
+                frame->car.full[*count].prod = dets[i].prob[j] * 100;
+                frame->car.full[*count].x = round((dets[i].bbox.x - dets[i].bbox.w / 2)*show_img->width);
+                frame->car.full[*count].y = round((dets[i].bbox.y - dets[i].bbox.h / 2)*show_img->height);
+                *count += 1;
+                }
+            }
+        }
+        if (class_id >= 0) {
+            int width = show_img->height * .006;
+
+            //if(0){
+            //width = pow(prob, 1./2.)*10+1;
+            //alphabet = 0;
+            //}
+
+            //printf("%d %s: %.0f%%\n", i, names[class_id], prob*100);
+            int offset = class_id * 123457 % classes;
+            float red = get_color(2, offset, classes);
+            float green = get_color(1, offset, classes);
+            float blue = get_color(0, offset, classes);
+            float rgb[3];
+
+            //width = prob*20+2;
+
+            rgb[0] = red;
+            rgb[1] = green;
+            rgb[2] = blue;
+            box b = dets[i].bbox;
+            b.w = (b.w < 1) ? b.w : 1;
+            b.h = (b.h < 1) ? b.h : 1;
+            b.x = (b.x < 1) ? b.x : 1;
+            b.y = (b.y < 1) ? b.y : 1;
+            //printf("%f %f %f %f\n", b.x, b.y, b.w, b.h);
+
+            int left = (b.x - b.w / 2.)*show_img->width;
+            int right = (b.x + b.w / 2.)*show_img->width;
+            int top = (b.y - b.h / 2.)*show_img->height;
+            int bot = (b.y + b.h / 2.)*show_img->height;
+
+            if (left < 0) left = 0;
+            if (right > show_img->width - 1) right = show_img->width - 1;
+            if (top < 0) top = 0;
+            if (bot > show_img->height - 1) bot = show_img->height - 1;
+
+            //int b_x_center = (left + right) / 2;
+            //int b_y_center = (top + bot) / 2;
+            //int b_width = right - left;
+            //int b_height = bot - top;
+            //sprintf(labelstr, "%d x %d - w: %d, h: %d", b_x_center, b_y_center, b_width, b_height);
+
+            float const font_size = show_img->height / 1000.F;
+            CvPoint pt1, pt2, pt_text, pt_text_bg1, pt_text_bg2;
+            pt1.x = left;
+            pt1.y = top;
+            pt2.x = right;
+            pt2.y = bot;
+            pt_text.x = left;
+            pt_text.y = top - 12;
+            pt_text_bg1.x = left;
+            pt_text_bg1.y = top - (10 + 25 * font_size);
+            pt_text_bg2.x = right;
+            pt_text_bg2.y = top;
+            CvScalar color;
+            color.val[0] = red * 256;
+            color.val[1] = green * 256;
+            color.val[2] = blue * 256;
+
+            // you should create directory: result_img
+            //static int copied_frame_id = -1;
+            //static IplImage* copy_img = NULL;
+            //if (copied_frame_id != frame_id) {
+            //    copied_frame_id = frame_id;
+            //    if(copy_img == NULL) copy_img = cvCreateImage(cvSize(show_img->width, show_img->height), show_img->depth, show_img->nChannels);
+            //    cvCopy(show_img, copy_img, 0);
+            //}
+            //static int img_id = 0;
+            //img_id++;
+            //char image_name[1024];
+            //sprintf(image_name, "result_img/img_%d_%d_%d_%s.jpg", frame_id, img_id, class_id, names[class_id]);
+            //CvRect rect = cvRect(pt1.x, pt1.y, pt2.x - pt1.x, pt2.y - pt1.y);
+            //cvSetImageROI(copy_img, rect);
+            //cvSaveImage(image_name, copy_img, 0);
+            //cvResetImageROI(copy_img);
+
+            cvRectangle(show_img, pt1, pt2, color, width, 8, 0);
+            if (ext_output)
+                printf("\t(left_x: %4.0f   top_y: %4.0f   width: %4.0f   height: %4.0f)\n",
+                    (float)left, (float)top, b.w*show_img->width, b.h*show_img->height);
+            else
+                printf("\n");
+
+            cvRectangle(show_img, pt_text_bg1, pt_text_bg2, color, width, 8, 0);
+            cvRectangle(show_img, pt_text_bg1, pt_text_bg2, color, CV_FILLED, 8, 0);    // filled
+            CvScalar black_color;
+            black_color.val[0] = 0;
+            CvFont font;
+            cvInitFont(&font, CV_FONT_HERSHEY_SIMPLEX, font_size, font_size, 0, font_size * 3, 8);
+            cvPutText(show_img, labelstr, pt_text, &font, black_color);
+        }
+    }
+    if (ext_output) {
+        fflush(stdout);
+    }
+}
+
+void draw_detections_cv_v33(IplImage* show_img, detection *dets, int num, float thresh, char **names, image **alphabet, int classes, int ext_output)
+{
+    int i, j;
+    if (!show_img) return;
+    static int frame_id = 0;
+    frame_id++;
+
+    //insert code(인식횟수 확인)
+    int numbers = 1;
+    printf("draw_detection start\n");
+    //FILE *file = fopen("results/test.txt","a");
 
     for (i = 0; i < num; ++i) {
         char labelstr[4096] = { 0 };
@@ -628,7 +773,7 @@ void draw_detections_cv_v3(IplImage* show_img, detection *dets, int num, float t
             cvRectangle(show_img, pt1, pt2, color, width, 8, 0);
             if (ext_output)
                 printf("\t(left_x: %4.0f   top_y: %4.0f   width: %4.0f   height: %4.0f)\n",
-                    (float)left, (float)top, b.w*show_img->width, b.h*show_img->height);
+                (float)left, (float)top, b.w*show_img->width, b.h*show_img->height);
             else
                 printf("\n");
 
@@ -1061,6 +1206,20 @@ void show_image_cv_ipl(IplImage *disp, const char *name)
     cvShowImage(buff, disp);
     //cvReleaseImage(&disp);
 }
+//insert code
+void show_image_cv_ipl2(IplImage *disp, const char *name)
+{
+    if (disp == NULL) return;
+    char buff[256];
+    //sprintf(buff, "%s (%d)", name, windows);
+    sprintf(buff, "%s", name);
+    cvNamedWindow(buff, CV_WINDOW_NORMAL);
+    //cvMoveWindow(buff, 100*(windows%10) + 200*(windows/10), 100*(windows%10));
+    ++windows2;
+    cvShowImage(buff, disp);
+    //cvReleaseImage(&disp);
+}
+//insert code
 #endif  // OPENCV
 
 void show_image(image p, const char *name)
@@ -1211,6 +1370,40 @@ image get_image_from_stream_resize(CvCapture *cap, int w, int h, int c, IplImage
     return im;
 }
 
+//insert code
+image get_image_from_stream_resize2(CvCapture *cap, int w, int h, int c, IplImage** in_img, int cpp_video_capture, int dont_close)
+{
+    c = c ? c : 3;
+    IplImage* src;
+    if (cpp_video_capture) {
+        static int once2 = 1;
+        if (once2) {
+            once2 = 0;
+            do {
+                src = get_webcam_frame(cap);
+                if (!src) return make_empty_image(0, 0, 0);
+            } while (src->width < 1 || src->height < 1 || src->nChannels < 1);
+            printf("Video stream: %d x %d \n", src->width, src->height);
+        }
+        else
+            src = get_webcam_frame(cap);
+    }
+    else src = cvQueryFrame(cap);
+
+    if (cpp_video_capture)
+        if (!wait_for_stream(cap, src, dont_close)) return make_empty_image(0, 0, 0);
+    IplImage* new_img = cvCreateImage(cvSize(w, h), IPL_DEPTH_8U, c);
+    *in_img = cvCreateImage(cvSize(src->width, src->height), IPL_DEPTH_8U, c);
+    cvResize(src, *in_img, CV_INTER_LINEAR);
+    cvResize(src, new_img, CV_INTER_LINEAR);
+    image im = ipl_to_image(new_img);
+    cvReleaseImage(&new_img);
+    if (cpp_video_capture) cvReleaseImage(&src);
+    if (c > 1)
+        rgbgr_image(im);
+    return im;
+}
+//insert code
 image get_image_from_stream_letterbox(CvCapture *cap, int w, int h, int c, IplImage** in_img, int cpp_video_capture, int dont_close)
 {
     c = c ? c : 3;

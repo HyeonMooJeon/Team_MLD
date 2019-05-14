@@ -1,7 +1,11 @@
-//db연동 헤더, 메모리할당 헤더 include
+//insert code(result txt���� ���)
+#include <stdio.h>
+#define _CRT_SECURE_NO_WARNINGS
 #include "test.h"
 #include <stdlib.h>
 #include <time.h>
+//#include <crtdbg.h>
+//insert code(result txt���� ���)
 
 #include "network.h"
 #include "detection_layer.h"
@@ -54,7 +58,7 @@ static image images[NFRAMES];
 static IplImage* ipl_images[NFRAMES];
 static float *avg;
 
-void draw_detections_cv_v3(IplImage* show_img, detection *dets, int num, float thresh, char **names, image **alphabet, int classes, int ext_output, FRAME_INFO *frame, int * count);
+void draw_detections_cv_v3(IplImage* show_img, detection *dets, int num, float thresh, char **names, image **alphabet, int classes, int ext_outputF, FRAME_INFO *frame, int * count);
 void show_image_cv_ipl(IplImage *disp, const char *name);
 void save_cv_png(IplImage *img, const char *name);
 void save_cv_jpg(IplImage *img, const char *name);
@@ -70,7 +74,6 @@ static int letter_box = 0;
 
 void *fetch_in_thread(void *ptr)
 {
-    printf("fetch_thread start\n");
     //in = get_image_from_stream(cap);
     int dont_close_stream = 0;    // set 1 if your IP-camera periodically turns off and turns on video-stream
     if(letter_box)
@@ -85,13 +88,12 @@ void *fetch_in_thread(void *ptr)
         return 0;
     }
     //in_s = resize_image(in, net.w, net.h);
-    printf("fetch_thread close\n");
+
     return 0;
 }
 
 void *detect_in_thread(void *ptr)
 {
-    printf("detect_thread start\n");
     layer l = net.layers[net.n-1];
     float *X = det_s.data;
     float *prediction = network_predict(net, X);
@@ -111,8 +113,6 @@ void *detect_in_thread(void *ptr)
     else
         dets = get_network_boxes(&net, net.w, net.h, demo_thresh, demo_thresh, 0, 1, &nboxes, 0); // resized
 
-    printf("detect_thread close\n");
-
     return 0;
 }
 
@@ -128,14 +128,9 @@ double get_wall_time()
 void demo(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int cam_index, const char *filename, char **names, int classes,
     int frame_skip, char *prefix, char *out_filename, int mjpeg_port, int json_port, int dont_show, int ext_output)
 {
-    //db연동 및 정보 삽입
     loadmysql();
-    //insert_car_info(123456);
-    //closemysql();
-
     in_img = det_img = show_img = NULL;
     //skip = frame_skip;
-    //폰트 읽어오기(image.c)
     image **alphabet = load_alphabet();
     int delay = frame_skip;
     demo_names = names;
@@ -145,7 +140,6 @@ void demo(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int 
     demo_ext_output = ext_output;
     demo_json_port = json_port;
     printf("Demo\n");
-    //.cfg파일 network 내용 파씽(parse.c)
     net = parse_network_cfg_custom(cfgfile, 1, 1);    // set batch=1
     if(weightfile){
         load_weights(&net, weightfile);
@@ -184,7 +178,6 @@ void demo(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int 
         getchar();
         exit(0);
     }
-
 
     flag_exit = 0;
 
@@ -234,10 +227,11 @@ void demo(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int 
 
     double before = get_wall_time();
 
-    //번호판 정렬 변수 선언
+    //insert code(count Ƚ������ Ȯ��)
+    int frame = 0;
     FRAME_NODE * list = NULL;
     int framecheck = 0;
-    int frame = 0;
+    //insert code(count Ƚ������ Ȯ��)
 
     while(1){
         ++count;
@@ -263,21 +257,24 @@ void demo(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int 
                 send_json(local_dets, local_nboxes, l.classes, demo_names, frame_id, demo_json_port, timeout);
             }
 
-            //프레임 번호
-            frame++;
+            //insert code(count Ƚ������ Ȯ��)
+            //FILE *file = fopen("results/test.txt","a");
             printf("video frame number : %d\n", frame);
-            //번호판 정렬
-            int countnumber = 0;
             FRAME_INFO newFrame;
+            int countnumber = 0;
             memset(&newFrame.car, 0, sizeof(FRAME_INFO));
-            //바운딩 박스 그리기
+
+            //fprintf(file,"frame number : %d\n",frame);
+            //fclose(file);
+
             draw_detections_cv_v3(show_img, local_dets, local_nboxes, demo_thresh, demo_names, demo_alphabet, demo_classes, demo_ext_output, &newFrame, &countnumber);
             free_detections(local_dets, local_nboxes);
-            //6개 숫자 인식 시 노드 생성 후 리스트 추가
+
+            frame++;
             if (countnumber >= 6) {
                 printf("count check\n");
                 sort_number(&newFrame);
-                //정렬된 숫자 출력
+                //���ĵ� ���� ���
                 //for (int i = 0; i < 6; i++) {
                 //    printf("%d", newFrame.car.full[i].num);
                 //}
@@ -286,7 +283,7 @@ void demo(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int 
                 struct tm *t;
                 timer = time(NULL);
                 t = localtime(&timer);
-                sprintf(newFrame.path, "results/%d_%d_%d_%d_%d_%d_%d.jpg", t->tm_year + 1900, t->tm_mon + 1, t->tm_mday,
+                sprintf(newFrame.path, "C:\\Users\\cps435\\Desktop\\test\\darknetTest\\build_win_debug\\Debug\\results\\%d_%d_%d_%d_%d_%d_%d.jpg", t->tm_year + 1900, t->tm_mon + 1, t->tm_mday,
                     t->tm_hour, t->tm_min, t->tm_sec, frame);
                 sprintf(newFrame.time, "%d-%d-%d %d:%d:%d", t->tm_year + 1900, t->tm_mon + 1, t->tm_mday,
                     t->tm_hour, t->tm_min, t->tm_sec);
@@ -299,7 +296,7 @@ void demo(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int 
                 framecheck = 0;
             }
             else framecheck++;
-            //3프레임 인식 실패 시 최종정보 추출
+
             if (framecheck > 3) {
                 printf("frame check\n");
                 if (!list == NULL && !list->next == NULL) {
@@ -308,20 +305,19 @@ void demo(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int 
                     int *carnumber = get_car_info(list, test);
                     FRAME_NODE *save_node = saveNode(&list, carnumber);
                     printf("%s\n", save_node->data.path);
-                    printf("%d%d%d%d%d%d\n", save_node->data.car.full[0].num, save_node->data.car.full[1].num,
-                        save_node->data.car.full[2].num, save_node->data.car.full[3].num,
-                        save_node->data.car.full[4].num, save_node->data.car.full[5].num);
+                    //printf("%d%d%d%d%d%d\n", save_node->data.car.full[0].num, save_node->data.car.full[1].num,
+                    //    save_node->data.car.full[2].num, save_node->data.car.full[3].num,
+                    //    save_node->data.car.full[4].num, save_node->data.car.full[5].num);
                     save_cv_jpg(save_node->data.image, save_node->data.path);
                     printf("db test\n");
-                    loadmysql();
+                    //loadmysql();
                     if (insert_car(carnumber, save_node->data.time, save_node->data.path))
                         printf("insert error!!\n");
-                    closemysql();
+                    //closemysql();
                     printf("db close\n");
                     //print_list(&list);
                     releaselist(&list);
                     printf("Release list\n");
-                    printf("123\n");
                     list = NULL;
                     printf("list null\n");
                 }
@@ -329,7 +325,6 @@ void demo(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int 
 
             if(!prefix){
                 if (!dont_show) {
-                    printf("dont_show check\n");
                     show_image_cv_ipl(show_img, "Demo");
                     int c = cvWaitKey(1);
                     if (c == 10) {
@@ -362,12 +357,11 @@ void demo(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int 
                 cvWriteFrame(output_video_writer, show_img);
                 printf("\n cvWriteFrame \n");
             }
-            printf("resizeimage start\n");
             cvReleaseImage(&show_img);
-            printf("relaseimage close\n");
+
             pthread_join(fetch_thread, 0);
             pthread_join(detect_thread, 0);
-            printf("thread close\n");
+
             if (flag_exit == 1) break;
 
             if(delay == 0){
@@ -375,7 +369,6 @@ void demo(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int 
             }
             det_img = in_img;
             det_s = in_s;
-            printf("image change\n");
         }
         --delay;
         if(delay < 0){
@@ -388,7 +381,6 @@ void demo(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int 
             fps = curr;
             before = after;
         }
-        printf("while close\n");
     }
     printf("input video stream closed. \n");
     if (output_video_writer) {
@@ -419,7 +411,6 @@ void demo(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int 
     free_network(net);
     //cudaProfilerStop();
 
-    //db연결해제
     closemysql();
 }
 #else

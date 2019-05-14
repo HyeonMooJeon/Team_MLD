@@ -1,4 +1,4 @@
-//정렬 헤더 추가
+//insert code(숫자 좌표)
 #include "test.h"
 #include <stdlib.h>
 #include <string.h>
@@ -273,7 +273,7 @@ image **load_alphabet()
         alphabets[j] = (image*)calloc(128, sizeof(image));
         for(i = 32; i < 127; ++i){
             char buff[256];
-            sprintf(buff, "data/labels/%d_%d.png", i, j);
+            sprintf(buff, "C:\\Users\\cps435\\Desktop\\test\\darknetTest\\build_win_debug\\Debug\\data\\labels/%d_%d.png", i, j);
             alphabets[j][i] = load_image_color(buff, 0, 0);
         }
     }
@@ -529,8 +529,7 @@ void save_cv_jpg(IplImage *img, const char *name)
     cvRelease((void**)&img_rgb);
 }
 
-void draw_detections_cv_v3(IplImage* show_img, detection *dets, int num, float thresh, char **names, image **alphabet, int classes,
-    int ext_output, FRAME_INFO *frame, int *count)
+void draw_detections_cv_v3(IplImage* show_img, detection *dets, int num, float thresh, char **names, image **alphabet, int classes, int ext_output, FRAME_INFO *frame, int *count)
 {
     int i, j;
     if (!show_img) return;
@@ -538,7 +537,6 @@ void draw_detections_cv_v3(IplImage* show_img, detection *dets, int num, float t
     frame_id++;
 
     //insert code(인식횟수 확인)
-
     int numbers = 1;
     printf("draw_detection start\n");
     //FILE *file = fopen("results/test.txt","a");
@@ -557,23 +555,13 @@ void draw_detections_cv_v3(IplImage* show_img, detection *dets, int num, float t
                     strcat(labelstr, ", ");
                     strcat(labelstr, names[j]);
                 }
-                //인식 정보 저장(이름,확률,x,y)
-                //printf("%s: %.0f%% ", names[j], dets[i].prob[j] * 100);
-                //printf("%s : %d,%d,%.0f, %f, %f", names[j], j,i,dets[i].prob[j]*100, round((dets[i].bbox.x - dets[i].bbox.w / 2)*show_img->width),
-                //    round((dets[i].bbox.y - dets[i].bbox.h / 2)*show_img->height));
+                printf("%s: %.0f%% ", names[j], dets[i].prob[j] * 100);
                 if (strcmp(names[j], "LicensePlate")) {
                 frame->car.full[*count].num = atoi(names[j]);
                 frame->car.full[*count].prod = dets[i].prob[j] * 100;
                 frame->car.full[*count].x = round((dets[i].bbox.x - dets[i].bbox.w / 2)*show_img->width);
                 frame->car.full[*count].y = round((dets[i].bbox.y - dets[i].bbox.h / 2)*show_img->height);
                 *count += 1;
-                printf("%s : %d,%d,%.0f, %f, %f", names[j], j, i, dets[i].prob[j] * 100, round((dets[i].bbox.x - dets[i].bbox.w / 2)*show_img->width),
-                    round((dets[i].bbox.y - dets[i].bbox.h / 2)*show_img->height));
-                //insert code(인식횟수 확인)
-                //printf("draw_detections_cv_v3 number : %d\n",numbers);
-                //fprintf(file,"Detection number : %d\tObject : %s: %.0f%% \n",numbers, names[j], dets[i].prob[j] * 100);
-                numbers++;
-                //insert code(인식횟수 확인)
                 }
             }
         }
@@ -670,10 +658,6 @@ void draw_detections_cv_v3(IplImage* show_img, detection *dets, int num, float t
             cvPutText(show_img, labelstr, pt_text, &font, black_color);
         }
     }
-    //insert code(result txt파일 출력)
-    //fclose(file);
-    printf("draw_detection close\n");
-    //insert code(result txt파일 출력)
     if (ext_output) {
         fflush(stdout);
     }
