@@ -156,70 +156,18 @@
           </ul>
 
         </nav>
+        <!-- End of Topbar -->
 
+        <!-- Begin Page Content -->
         <div class="container-fluid">
 
-          <div class="row">
-            <!-- Illustrations -->
-              <div class="card shadow mb-4">
-                <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">인사말</h6>
-                </div>
-                <div class="card-body">
-                  <div class="text-center">
-                    <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="/static/img/undraw_posting_photo.svg" alt="">
-                  </div>
-                  <p>해당 SW는 <a target="_blank" rel="nofollow" href="https://undraw.co/">Team_MLD</a>에서 만들었고 해당 SW는 <a target="_blank" rel="nofollow" href="https://undraw.co/">각종 기능</a>을 통해 제작되었습니다. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~여기에다가 추가로 글 작성</p>
-
-                </div>
-              </div>
+          <!-- 에러페이지 표시되는 부분. -->
+          <div class="text-center">
+            <div class="error mx-auto" data-text={{err_code}}>{{err_code}}</div> <!-- 404 -->
+            <p class="lead text-gray-800 mb-5">{{err_message1}}</p>  <!-- 페이지를 찾을수 없습니다. -->
+            <p class="text-gray-500 mb-0">{{err_message2}}</p>  <!-- 잘못된 페이지를 들어오신것 같군요... -->
+            <a href="javascript:history.back();">&larr; 이전 페이지</a>
           </div>
-          <div class="row">
-
-            <!-- Area Chart -->
-            <div class="col-xl-8 col-lg-7">
-              <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">이번주 검거율</h6>
-                </div>
-                <!-- Card Body -->
-                <div class="card-body">
-                  <div class="chart-area">
-                    <canvas id="myAreaChart"></canvas>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!-- Pie Chart -->
-            <div class="col-xl-4 col-lg-5">
-              <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">검출 위치</h6>
-                </div>
-                <!-- Card Body -->
-                <div class="card-body">
-                  <div class="chart-pie pt-4 pb-2">
-                    <canvas id="myPieChart"></canvas>
-                  </div>
-                  <div class="mt-4 text-center small">
-                    <span class="mr-2">
-                      <i class="fas fa-circle text-primary"></i> 선문대
-                    </span>
-                    <span class="mr-2">
-                      <i class="fas fa-circle text-success"></i> 현충사
-                    </span>
-                    <span class="mr-2">
-                      <i class="fas fa-circle text-info"></i> 트라
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
 
         </div>
         <!-- /.container-fluid -->
@@ -231,7 +179,7 @@
       <footer class="sticky-footer bg-white">
         <div class="container my-auto">
           <div class="copyright text-center my-auto">
-            <span>Copyright &copy; Team_MLD</span>
+            <span>Copyright &copy; Your Website 2019</span>
           </div>
         </div>
       </footer>
@@ -253,36 +201,29 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">로그아웃 하시겠습니까?</h5>
+          <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
           <button class="close" type="button" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">×</span>
           </button>
         </div>
-        <div class="modal-body">로그아웃을 누르시면 로그인창으로 이동됩니다.</div>
+        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
         <div class="modal-footer">
-          <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
-          <a class="btn btn-primary" href="logout">로그아웃</a>
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+          <a class="btn btn-primary" href="login.html">Logout</a>
         </div>
       </div>
     </div>
   </div>
 
   <!-- Bootstrap core JavaScript-->
-  <script src="/static/vendor/jquery/jquery.min.js"></script>
-  <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="static/vendor/jquery/jquery.min.js"></script>
+  <script src="static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
   <!-- Core plugin JavaScript-->
-  <script src="/static/vendor/jquery-easing/jquery.easing.min.js"></script>
+  <script src="static/vendor/jquery-easing/jquery.easing.min.js"></script>
 
   <!-- Custom scripts for all pages-->
-  <script src="/static/js/sb-admin-2.min.js"></script>
-
-  <!-- Page level plugins -->
-  <script src="/static/vendor/chart.js/Chart.min.js"></script>
-
-  <!-- Page level custom scripts -->
-  <script src="/static/js/demo/chart-area-demo.js"></script>
-  <script src="/static/js/demo/chart-pie-demo.js"></script>
+  <script src="static/js/sb-admin-2.min.js"></script>
 
 </body>
 

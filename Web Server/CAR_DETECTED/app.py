@@ -34,11 +34,9 @@ def gen():
 def page_error(error):
     return render_template("error.html"), 404
 
-
-#json table 테스트용
-@app.route("/test")
-def test():
-    import numpy as np
+#table형식으로 표시하는법.
+@app.route("/Show_table")
+def Recognize():
 
     cursor = conn.cursor()
     cursor.execute("SELECT recognize.re_plate, recognize.re_time,  location.location_now, model.model_car FROM recognize LEFT JOIN go ON go.GO_License_Plate = recognize.re_plate INNER JOIN location ON recognize.re_location = location.location_key INNER JOIN model ON recognize.re_model = model.model_key;")
@@ -46,24 +44,13 @@ def test():
               for i, value in enumerate(row))
          for row in cursor.fetchall()]
 
-
     df = pd.DataFrame(r)
     df = df.rename(columns={'re_plate': '차량 번호'})
     df = df.rename(columns={'location_now': '위치'})
     df = df.rename(columns={'model_car': '차량 모델'})
     df = df.rename(columns={'re_time': '인식된 시간'})
-    
-
 
     return df.to_html()
-
-
-
-
-
-
-
-
 
 
 #비디오 동영상 HTML
@@ -73,7 +60,6 @@ def streaming():
         return render_template('video.html')
     else:
         return login()
-
 
 
 #비디오 동영상 동작
@@ -183,14 +169,14 @@ def show_my_password():
     email = str(request.form["Email"])
     name = str(request.form["real_name"])
     if len(email) == 0 or len(name) == 0:
-        return "형식을 다 입력해주세요."
+        return render_template('error.html', err_code="Oops...", err_message1="형식을 마저 입력해주세요.", err_message2="다시 확인해주세요")
     cursor = conn.cursor()
     cursor.execute("SELECT PW FROM user where Email='"+email+"' AND User_name='"+name+"'")
     password = cursor.fetchall()
     if password:
         return jsonify(password)
     else:
-        return "존재하지 않는 이메일입니다."
+        return render_template('error.html', err_code="Oops...", err_message1="존재하지 않는 이메일입니다", err_message2="다시 확인해주세요")
 
 
 
@@ -206,6 +192,12 @@ def register_user():
     name = str(request.form["user_name"])
     PW = str(request.form["Password"])
     CHK_PW = str(request.form["Password_CHK"])
+    if len(email) == 0 or len(PW) == 0 or len(name) == 0 or len(CHK_PW) == 0:
+        return "형식을 다 입력해주세요."
+
+    if len(PW) < 4:
+        return "비밀번호는 최소 4자 이상 해주십시오."
+
     if PW == CHK_PW:
         cursor = conn.cursor()
         cursor.execute("select User_name from user where Email='"+email+"'")
@@ -218,7 +210,7 @@ def register_user():
             conn.close()
             return "회원가입 완료"
     else:
-        return "비밀번호와 재입력 비밀번호가 다릅니다."
+        return "비밀번호와 재입력 한 비밀번호가 다릅니다."
 
 
 
@@ -293,7 +285,7 @@ def testTable():
                         "FROM go "
                         "INNER JOIN car_status ON go.GO_car_state = car_status.car_status_key "
                         "INNER JOIN model ON go.GO_car_model = model.model_key "
-                        "into outfile 'C:/Users/Public/Goverment_Table.csv.csv' fields terminated by ',' ;")
+                        "into outfile 'C:/Users/Public/Goverment_Table.csv' fields terminated by ',' ;")
     except (MySQLdb.Error, MySQLdb.Warning) as e:
         print(e)
     finally:

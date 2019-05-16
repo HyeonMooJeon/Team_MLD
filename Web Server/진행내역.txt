@@ -36,4 +36,11 @@
 (05/14/화)
  - CSV파일 저장 위치 변경 (C:\Users\Public 에 저장되도록 함)
  - 테이블 표시 완료 (보기 허졉해 보일수 있음. pandas의 dataframe을 좀더 배워야함)
+
+(05/17/목)
+ - 에러 페이지 추가
+   -에러페이지형식
+    => return render_template('error.html', err_code="Oops...", err_message1="존재하지 않는 이메일입니다", err_message2="다시 확인해주세요")
+    여기서 Oops는 깜빡이는 화면, 아래 message들은 아래 표시할것,
+ - 에러 페이지에서 "메인화면"이 아닌 "이전페이지"로 이동하도록 바꿈.
  
