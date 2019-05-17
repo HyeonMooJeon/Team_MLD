@@ -7,14 +7,21 @@ typedef struct {
     float y;
 }NUMBER;
 typedef struct {
+    char name[20];
+    float prod;
+}MODEL;
+typedef struct {
     NUMBER front[2];
     NUMBER back[4];
     NUMBER full[6];
-}CARNUMBER;
+    MODEL model;
+}CAR;
 typedef struct {
-    CARNUMBER car;
+    CAR car;
     IplImage* image;
+    IplImage* image_model;
     char path[200];
+    char path_model[50];
     char time[50];
 }FRAME_INFO;
 typedef struct frame_node {
