@@ -1,16 +1,9 @@
-import csv
-from csv import excel
-
 import pandas as pd
-from flask import Flask, render_template, request, Response, session, json, send_file
+from flask import Flask, render_template, request, Response, session, send_from_directory
 import MySQLdb
 import cv2
 from flask.json import jsonify
-import json as j
-from pandas.io.json import json_normalize
-from flask_csv import send_csv
-from werkzeug.wrappers import json
-
+import os
 
 
 app = Flask(__name__)
@@ -35,8 +28,8 @@ def page_error(error):
     return render_template("error.html"), 404
 
 #table형식으로 표시하는법.
-@app.route("/Show_table")
-def Recognize():
+@app.route("/Show_recognize")
+def show_Recognize():
 
     cursor = conn.cursor()
     cursor.execute("SELECT recognize.re_plate, recognize.re_time,  location.location_now, model.model_car FROM recognize LEFT JOIN go ON go.GO_License_Plate = recognize.re_plate INNER JOIN location ON recognize.re_location = location.location_key INNER JOIN model ON recognize.re_model = model.model_key;")
@@ -51,6 +44,28 @@ def Recognize():
     df = df.rename(columns={'re_time': '인식된 시간'})
 
     return df.to_html()
+
+
+
+@app.route("/Show_Goverment")
+def show_goverment():
+     cursor = conn.cursor()
+     cursor.execute("SELECT go.GO_License_Plate, car_status.car_status_now, model.model_car FROM go  INNER JOIN car_status ON go.GO_car_state = car_status.car_status_key INNER JOIN model ON go.GO_car_model = model.model_key;")
+     r = [dict((cursor.description[i][0], value)
+               for i, value in enumerate(row))
+          for row in cursor.fetchall()]
+
+     df = pd.DataFrame(r)
+     df = df.rename(columns={'GO_License_Plate': '차량 번호'})
+     df = df.rename(columns={'car_status_now': '차량 상태'})
+     df = df.rename(columns={'model_car': '차량 모델'})
+
+
+     return df.to_html()
+
+
+
+
 
 
 #비디오 동영상 HTML
