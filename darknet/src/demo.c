@@ -841,7 +841,6 @@ void mld_model(char *cfgfile, char *weightfile, float thresh, float hier_thresh,
     //set_batch_network(&net, 1);
     fuse_conv_batchnorm(net2);
     calculate_binary_weights(net2);
-    srand(2222222);
 
     if (filename) {
         printf("video file: %s\n", filename);
@@ -987,7 +986,6 @@ void mld_model(char *cfgfile, char *weightfile, float thresh, float hier_thresh,
             printf("\nFPS:%.1f\n", fps);
             printf("Objects:\n\n");
 
-
             ++frame_id;
             ++frame_id2;
 
@@ -1047,10 +1045,10 @@ void mld_model(char *cfgfile, char *weightfile, float thresh, float hier_thresh,
                     //    save_node->data.car.full[4].num, save_node->data.car.full[5].num);
                     save_cv_jpg(save_node->data.image, save_node->data.path);
                     save_cv_jpg(save_node->data.image_model, save_node->data.path_model);
-                    //printf("db test\n");
-                    //if (insert_car(carnumber, save_node->data.time, save_node->data.path))
-                    //    printf("insert error!!\n");
-                    //printf("db close\n");
+                    printf("db test\n");
+                    if (insert_car_model(carnumber, save_node->data.time, save_node->data.path,save_node->data.path_model))
+                        printf("insert error!!\n");
+                    printf("db close\n");
                     //print_list(&list);
                     releaselist(&list);
                     printf("Release list\n");
@@ -1573,7 +1571,6 @@ void demo3(ARGU argu)
     free_network(net);
     //cudaProfilerStop();
 }
-
 void demo4(ARGU argu)
 {
     in_img2 = det_img2 = show_img2 = NULL;
