@@ -53,11 +53,11 @@ int insert_car(int *carnumber, char time[], char path[]) {
     return 0;
 }
 //차량정보 저장3(웹캠,ip카메라 연동)
-int insert_car_model(int *carnumber, char time[],char path_number[],char path_model) {
+int insert_car_model(int *carnumber, char model[],char time[],char path_number[],char path_model[]) {
     char  query[250];
-    sprintf(query, "insert into carnumber.recognize values(%d%d%d%d%d%d,'%s', '%s','%s')",
+    sprintf(query, "insert into carnumber.recognize values('%d%d%d%d%d%d','%s',%s', '%s','%s')",
         carnumber[0], carnumber[1], carnumber[2], carnumber[3], carnumber[4],
-        carnumber[5], time, path_number,path_model);
+        carnumber[5], model,time, path_number,path_model);
     if (mysql_query(conn, query)) return 1;
     return 0;
 }

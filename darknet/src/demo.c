@@ -808,6 +808,7 @@ void mld(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int c
 void mld_model(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int cam_index, const char *filename, char **names,
     int classes, int frame_skip, const char * filename2)
 {
+    loadmysql();
     in_img = det_img = show_img = NULL;
     //skip = frame_skip;
     image **alphabet = load_alphabet();
@@ -1046,7 +1047,7 @@ void mld_model(char *cfgfile, char *weightfile, float thresh, float hier_thresh,
                     save_cv_jpg(save_node->data.image, save_node->data.path);
                     save_cv_jpg(save_node->data.image_model, save_node->data.path_model);
                     printf("db test\n");
-                    if (insert_car_model(carnumber, save_node->data.time, save_node->data.path,save_node->data.path_model))
+                    if (insert_car_model(carnumber, save_node->data.car.model.name, save_node->data.time, save_node->data.path,save_node->data.path_model))
                         printf("insert error!!\n");
                     printf("db close\n");
                     //print_list(&list);
@@ -1110,7 +1111,7 @@ void mld_model(char *cfgfile, char *weightfile, float thresh, float hier_thresh,
             before2 = after2;
         }
     }
-
+    closemysql();
     printf("input video stream closed. \n");
 }
 //insert code

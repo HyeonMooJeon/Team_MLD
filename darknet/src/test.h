@@ -40,5 +40,5 @@ void sort_number(FRAME_INFO *frame);
 void loadmysql();
 //int insert_car_info(int carnumber);
 int insert_car(int *carnumber, char time[], char path[]);
-int insert_car_model(int *carnumber, char time[], char path_number[], char path_model);
+int insert_car_model(int *carnumber, char model[],char time[], char path_number[], char path_model[]);
 void closemysql();
