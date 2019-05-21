@@ -551,18 +551,23 @@ void mld(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int c
         cpp_video_capture = 1;
         cap = get_capture_webcam(cam_index);
     }
-
+    printf("ip camera success!\n");
     if (filename2) {
         printf("video file: %s\n", filename2);
         cpp_video_capture2 = 1;
         cap2 = get_capture_video_stream(filename2);
+    }
+    else {
+        printf("Webcam index: %d\n", cam_index);
+        cpp_video_capture2 = 1;
+        cap2 = get_capture_webcam(cam_index);
     }
 
     if (!cap) {
 #ifdef WIN32
         printf("Check that you have copied file opencv_ffmpeg340_64.dll to the same directory where is darknet.exe \n");
 #endif
-        error("Couldn't connect to webcam.\n");
+        error("Couldn't connect to ip cam.\n");
     }
     if (!cap2) {
 #ifdef WIN32
@@ -700,8 +705,8 @@ void mld(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int c
 
             if (frame > 4) {
                 char buff[256], buff2[256];
-                sprintf(buff, "C:\\Users\\cps435\\Desktop\\test\\darknetTest\\build_win_debug\\Debug\\results\\%d_%d.jpg", 1, frame);
-                sprintf(buff2, "C:\\Users\\cps435\\Desktop\\test\\darknetTest\\build_win_debug\\Debug\\results\\%d_%d.jpg", 2, frame);
+                sprintf(buff, "results/%d_%d.jpg", 1, frame);
+                sprintf(buff2, "results/%d_%d.jpg", 2, frame);
                 save_cv_jpg(show_img, buff);
                 save_cv_jpg(show_img2, buff2);
             }

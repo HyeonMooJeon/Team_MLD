@@ -218,6 +218,22 @@ int* get_car_info(FRAME_NODE *list, int size) {
     free(arr);
     return number;
 }
+void get_car_model(FRAME_NODE* list, int size) {
+    char **arrs;
+    arrs = (char**)calloc(size, sizeof(char*));
+    int i;
+    for (i = 0; i < size; i++) {
+        arrs[i] = (char*)calloc(sizeof(char), 20);
+        strcpy(arrs[i], list->data.car.model.name);
+        list = list->next;
+    }
+
+    i = 0;
+    while (i < size) {
+        free(arrs[i]);
+        i++;
+    }
+}
 FRAME_NODE* saveNode(FRAME_NODE ** list, int * carnumber) {
     //FRAME_NODE * node = (FRAME_NODE*)malloc(sizeof(FRAME_NODE));
     while (!(*list) == NULL) {
