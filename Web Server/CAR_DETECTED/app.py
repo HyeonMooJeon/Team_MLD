@@ -3,6 +3,10 @@ from flask import Flask, render_template, request, Response, session
 import MySQLdb
 import cv2
 from flask.json import jsonify
+from random import sample
+import flask_googlecharts
+import json
+
 
 
 app = Flask(__name__)
@@ -11,6 +15,8 @@ vc = cv2.VideoCapture(0)
 #DB로부터 데이터를 받을때 ASCII코드로 바뀌는걸 방지.
 app.config['JSON_AS_ASCII'] = False
 conn = MySQLdb.connect(host="localhost", user="root", password="root", db="team_mld", charset='utf8')
+cursor = conn.cursor()
+
 
 #카메라 동작 방법.
 def gen():
@@ -29,8 +35,6 @@ def page_error(error):
 #table형식으로 표시하는법.
 @app.route("/Show_recognize")
 def show_Recognize():
-
-    cursor = conn.cursor()
     cursor.execute("SELECT recognize.re_plate, recognize.re_time,  location.location_now, model.model_car FROM recognize LEFT JOIN go ON go.GO_License_Plate = recognize.re_plate INNER JOIN location ON recognize.re_location = location.location_key INNER JOIN model ON recognize.re_model = model.model_key;")
     r = [dict((cursor.description[i][0], value)
               for i, value in enumerate(row))
@@ -48,7 +52,6 @@ def show_Recognize():
 
 @app.route("/Show_Goverment")
 def show_goverment():
-     cursor = conn.cursor()
      cursor.execute("SELECT go.GO_License_Plate, car_status.car_status_now, model.model_car FROM go  INNER JOIN car_status ON go.GO_car_state = car_status.car_status_key INNER JOIN model ON go.GO_car_model = model.model_key;")
      r = [dict((cursor.description[i][0], value)
                for i, value in enumerate(row))
@@ -158,7 +161,7 @@ def DB_manage():
 #로그아웃
 @app.route('/logout')
 def logout():
-    session.pop('admin', None)
+    session.pop('user', None)
     return login()
 
 
@@ -184,7 +187,6 @@ def show_my_password():
     name = str(request.form["real_name"])
     if len(email) == 0 or len(name) == 0:
         return render_template('error.html', err_code="Oops...", err_message1="형식을 마저 입력해주세요.", err_message2="다시 확인해주세요")
-    cursor = conn.cursor()
     cursor.execute("SELECT PW FROM user where Email='"+email+"' AND User_name='"+name+"'")
     password = cursor.fetchall()
     if password:
@@ -213,7 +215,6 @@ def register_user():
         return render_template('error.html', err_code="Oops...", err_message1="비밀번호를 재설정 해주세요.", err_message2="최소 4글자 이상으로 해주세요.")
 
     if PW == CHK_PW:
-        cursor = conn.cursor()
         cursor.execute("select User_name from user where Email='"+email+"'")
         CHK = cursor.fetchall()
         if CHK:
@@ -221,7 +222,6 @@ def register_user():
         else:
             cursor.execute("INSERT INTO user(Email,PW,User_name) VALUE('"+email+"', '"+PW+"', '"+name+"')")
             conn.commit()
-            conn.close()
             #회원가입 완료는 alert사용해서 다시 완성할것.
             return "회원가입 완료"
     else:
@@ -231,7 +231,6 @@ def register_user():
 #정부 DB 가져오기
 @app.route("/GetGoverment")
 def goverment():
-     cursor = conn.cursor()
      cursor.execute("SELECT go.GO_License_Plate, car_status.car_status_now, model.model_car FROM go  INNER JOIN car_status ON go.GO_car_state = car_status.car_status_key INNER JOIN model ON go.GO_car_model = model.model_key;")
      r = [dict((cursor.description[i][0], value)
                for i, value in enumerate(row)) for row in cursor.fetchall()]
@@ -239,7 +238,6 @@ def goverment():
 
 @app.route("/GetRecognize")
 def GetRecognize():
-     cursor = conn.cursor()
      cursor.execute("SELECT recognize.re_plate, location.location_now, model.model_car FROM recognize INNER JOIN location ON recognize.re_location = location.location_key INNER JOIN model ON recognize.re_model = model.model_key;")
      r = [dict((cursor.description[i][0], value)
                for i, value in enumerate(row)) for row in cursor.fetchall()]
@@ -248,7 +246,6 @@ def GetRecognize():
 
 @app.route("/Getillegal")
 def getilleal():
-     cursor = conn.cursor()
      cursor.execute("SELECT recognize.re_plate, recognize.re_time,  location.location_now, model.model_car FROM recognize LEFT JOIN go ON go.GO_License_Plate = recognize.re_plate INNER JOIN location ON recognize.re_location = location.location_key INNER JOIN model ON recognize.re_model = model.model_key;")
      r = [dict((cursor.description[i][0], value)
                for i, value in enumerate(row)) for row in cursor.fetchall()]
@@ -259,7 +256,6 @@ def getilleal():
 def ChkStatus():
     LP = str(request.form["license_plate"])
 
-    cursor = conn.cursor()
     cursor.execute("SELECT recognize.re_plate, location.location_now, model.model_car, recognize.re_time FROM recognize INNER JOIN location ON recognize.re_location = location.location_key INNER JOIN model ON recognize.re_model = model.model_key where recognize.re_plate = '"+LP+"';")
     data = cursor.fetchall()
     if data:
@@ -275,7 +271,6 @@ def CHK_login():
     if len(email) == 0 or len(PW) == 0:
         return render_template('error.html', err_code="Oops...", err_message1="형식이 비어있습니다.", err_message2="형식을 다 입력해주세요.")
 
-    cursor = conn.cursor()
     cursor.execute("SELECT User_name FROM user WHERE Email='"+email+"'")
     EmailCHK = cursor.fetchall()
     #fetchall() 은 전부 가져오고 fetchone()은 한줄만 불러옴. 전부 가져와서 비교해야돼니깐..
@@ -293,8 +288,7 @@ def CHK_login():
 
 #정부 파일 저장하는 로직
 @app.route("/GovINFO")
-def testTable():
-    cursor = conn.cursor()
+def GovTable():
     try:
         cursor.execute("SELECT go.GO_License_Plate, car_status.car_status_now, model.model_car "
                         "FROM go "
@@ -304,10 +298,24 @@ def testTable():
     except (MySQLdb.Error, MySQLdb.Warning) as e:
         print(e)
     finally:
-        conn.close()
         return index()
     #try catch를 통해 파일이 존재할경우 메인 화면으로 이동하도록 만듬
 
+@app.route('/data', methods=["GET", "POST"])
+def data():
+    cursor.execute(
+        "select count(case when re_location=1 then 1 end) as '1번 위치',count(case when re_location=2 then 1 end) as '2번 위치',count(case when re_location=3 then 1 end) as '3번 위치'from recognize;")
+    r = [dict((cursor.description[i][0], value)
+              for i, value in enumerate(row)) for row in cursor.fetchall()]
+    jsonData = jsonify(r)
+    conn.commit()
+
+    return jsonData
+
+
+@app.route('/test')
+def test():
+    return render_template('test.html')
 
 
 if __name__ == "__main__":

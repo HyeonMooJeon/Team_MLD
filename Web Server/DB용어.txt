@@ -1,0 +1,13 @@
+@인식 차량에 샘플 데이터 추가하기
+
+INSERT INTO recognize(re_plate, re_location, re_model, file_location) VALUES('22바3456', '3', '1', 'C:');
+ - 뒤에 차번, 위치, 모델, 이미지 파일 저장위치 장소 순서로 하면 저장됩니다.
+ - 위치와 모델은 반드시 숫자로 설정.
+
+@인식된 차량 카운트하여 표시
+select count(case when re_location=1 then 1 end) as '1번 위치',
+count(case when re_location=2 then 1 end) as '2번 위치',
+count(case when re_location=3 then 1 end) as '3번 위치'
+from recognize;
+ - 뒤에 'N번 위치' 에는 설정할 위치의 이름을 적으면 됩니다.
+
