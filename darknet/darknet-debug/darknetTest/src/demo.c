@@ -387,8 +387,10 @@ void demo(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int 
                     printf("list check\n");
                     int test = get_total_node(list);
                     int *carnumber = get_car_info(list, test);
-                    FRAME_NODE *save_node = saveNode(&list, carnumber);
-                    printf("%s\n", save_node->data.path);
+                    char *car_model = get_car_model(list);
+                    printf("number check\n");
+                    FRAME_NODE *save_node = saveNode(&list, carnumber,car_model);
+                    //printf("%s\n", save_node->data.path);
                     //printf("%d%d%d%d%d%d\n", save_node->data.car.full[0].num, save_node->data.car.full[1].num,
                     //    save_node->data.car.full[2].num, save_node->data.car.full[3].num,
                     //    save_node->data.car.full[4].num, save_node->data.car.full[5].num);
@@ -399,6 +401,7 @@ void demo(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int 
                         printf("insert error!!\n");
                     //closemysql();
                     printf("db close\n");
+                    free(carnumber);
                     //print_list(&list);
                     releaselist(&list);
                     printf("Release list\n");
@@ -536,6 +539,7 @@ void mld(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int c
     calculate_binary_weights(net2);
     srand(2222222);
 
+    /*
     if (filename) {
         printf("video file: %s\n", filename);
         cpp_video_capture = 1;
@@ -552,12 +556,19 @@ void mld(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int c
         cpp_video_capture2 = 1;
         cap2 = get_capture_video_stream(filename2);
     }
+    else {
+        printf("Webcam index: %d\n", cam_index);
+        cpp_video_capture = 1;
+        cap = get_capture_webcam(cam_index);
+    }
+    */
+
 
     if (!cap) {
 #ifdef WIN32
         printf("Check that you have copied file opencv_ffmpeg340_64.dll to the same directory where is darknet.exe \n");
 #endif
-        error("Couldn't connect to webcam.\n");
+        error("Couldn't connect to ip cam.\n");
     }
     if (!cap2) {
 #ifdef WIN32

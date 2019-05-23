@@ -1533,36 +1533,5 @@ void run_detector(int argc, char **argv)
         free_list_contents_kvp(options);
         free_list(options);
     }
-    else if (0 == strcmp(argv[2], "threadtest")) {
-        int threadTest = 0;
-        list *options = read_data_cfg(datacfg);
-        int classes = option_find_int(options, "classes", 20);
-        char *name_list = option_find_str(options, "names", "data/names.list");
-        char **names = get_labels(name_list);
-        if (filename)
-            if (strlen(filename) > 0)
-                if (filename[strlen(filename) - 1] == 0x0d) filename[strlen(filename) - 1] = 0;
-        if (filename2)
-            if (strlen(filename2) > 0)
-                if (filename2[strlen(filename2) - 1] == 0x0d) filename2[strlen(filename2) - 1] = 0;
-
-        pthread_t p_thread[2];
-        ARGU thread1_argu = setARGU(cfg, weights, thresh, hier_thresh, cam_index, filename, names, classes, frame_skip, prefix, out_filename,
-            mjpeg_port, json_port, dont_show, ext_output);
-        ARGU thread2_argu = setARGU(cfg, weights, thresh, hier_thresh, cam_index, filename2, names, classes, frame_skip, prefix, out_filename,
-            mjpeg_port, json_port, dont_show, ext_output);
-
-
-        pthread_create(&p_thread[0], NULL, demo3, (void*)&thread1_argu);
-        //Sleep(3000);
-        pthread_create(&p_thread[1], NULL, demo4, (void*)&thread2_argu);
-
-        pthread_join(p_thread[0], NULL);
-        pthread_join(p_thread[1], NULL);
-        printf("YOLO close\n");
-
-        free_list_contents_kvp(options);
-        free_list(options);
-    }
     else printf(" There isn't such command: %s", argv[2]);
 }

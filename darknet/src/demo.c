@@ -365,7 +365,7 @@ void demo(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int 
                 struct tm *t;
                 timer = time(NULL);
                 t = localtime(&timer);
-                sprintf(newFrame.path, "C:\\Users\\cps435\\Desktop\\test\\darknetTest\\build_win_debug\\Debug\\results\\%d_%d_%d_%d_%d_%d_%d.jpg", t->tm_year + 1900, t->tm_mon + 1, t->tm_mday,
+                sprintf(newFrame.path, "results/%d_%d_%d_%d_%d_%d_%d.jpg", t->tm_year + 1900, t->tm_mon + 1, t->tm_mday,
                     t->tm_hour, t->tm_min, t->tm_sec, frame);
                 sprintf(newFrame.time, "%d-%d-%d %d:%d:%d", t->tm_year + 1900, t->tm_mon + 1, t->tm_mday,
                     t->tm_hour, t->tm_min, t->tm_sec);
@@ -494,13 +494,6 @@ void demo(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int 
     //cudaProfilerStop();
 
     closemysql();
-}
-
-//insert code(demo 복사)
-ARGU setARGU(char *cfg, char *weight, float t, float h_thresh, int cam, const char *file, char **name, int cl, int frame, char*pre,
-    char* out_file, int mjpeg, int json, int dont, int ext) {
-    ARGU temp = { cfg,weight,t,h_thresh,cam,file,name,cl,frame,pre,out_file,mjpeg,json,dont,ext };
-    return temp;
 }
 
 void mld(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int cam_index, const char *filename, char **names,
@@ -837,14 +830,14 @@ void mld_model(char *cfgfile, char *weightfile, float thresh, float hier_thresh,
     if (weightfile) {
         load_weights(&net, weightfile);
     }
-    //set_batch_network(&net, 1);
+  
     fuse_conv_batchnorm(net);
     calculate_binary_weights(net);
     net2 = parse_network_cfg_custom(cfgfile, 1, 1);    // set batch=1
     if (weightfile) {
         load_weights(&net2, weightfile);
     }
-    //set_batch_network(&net, 1);
+
     fuse_conv_batchnorm(net2);
     calculate_binary_weights(net2);
 
@@ -863,6 +856,11 @@ void mld_model(char *cfgfile, char *weightfile, float thresh, float hier_thresh,
         printf("video file: %s\n", filename2);
         cpp_video_capture2 = 1;
         cap2 = get_capture_video_stream(filename2);
+    }
+    else {
+        printf("Webcam index: %d\n", cam_index);
+        cpp_video_capture2 = 1;
+        cap2 = get_capture_webcam(cam_index);
     }
 
     if (!cap) {
@@ -947,7 +945,7 @@ void mld_model(char *cfgfile, char *weightfile, float thresh, float hier_thresh,
 
     int count = 0;
 
-    /*
+    /*윈도우 창으로 이미지 추출 시 윈도우창 생성
     cvNamedWindow("Demo", CV_WINDOW_NORMAL);
     cvMoveWindow("Demo", 0, 0);
     cvResizeWindow("Demo", 1352, 1013);
@@ -981,7 +979,6 @@ void mld_model(char *cfgfile, char *weightfile, float thresh, float hier_thresh,
             int local_nboxes2 = nboxes2;
             detection *local_dets2 = dets2;
 
-            //if (nms) do_nms_obj(local_dets, local_nboxes, l.classes, nms);    // bad results
             if (nms) do_nms_sort(local_dets, local_nboxes, l.classes, nms);
 
             if (nms2) do_nms_sort(local_dets2, local_nboxes2, l2.classes, nms2);
@@ -1044,7 +1041,8 @@ void mld_model(char *cfgfile, char *weightfile, float thresh, float hier_thresh,
                     printf("list check\n");
                     int test = get_total_node(list);
                     int *carnumber = get_car_info(list, test);
-                    FRAME_NODE *save_node = saveNode(&list, carnumber);
+                    char *car_model = get_car_model(list);
+                    FRAME_NODE *save_node = saveNode(&list, carnumber, car_model);
                     //printf("%s\n", save_node->data.path);
                     //printf("%d%d%d%d%d%d\n", save_node->data.car.full[0].num, save_node->data.car.full[1].num,
                     //    save_node->data.car.full[2].num, save_node->data.car.full[3].num,
@@ -1063,6 +1061,7 @@ void mld_model(char *cfgfile, char *weightfile, float thresh, float hier_thresh,
                 }
             }
 
+            //윈도우창에 이미지 출력
             //show_image_cv_ipl(show_img, "Demo");
             //show_image_cv_ipl2(show_img2, "test");
             printf("can you come here22?\n");
@@ -1119,693 +1118,6 @@ void mld_model(char *cfgfile, char *weightfile, float thresh, float hier_thresh,
     closemysql();
     printf("input video stream closed. \n");
 }
-//insert code
-void demo2(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int cam_index, const char *filename, char **names, int classes,
-    int frame_skip, char *prefix, char *out_filename, int mjpeg_port, int json_port, int dont_show, int ext_output)
-{
-    in_img2 = det_img2 = show_img2 = NULL;
-    //skip = frame_skip;
-    image **alphabet = load_alphabet();
-    int delay = frame_skip;
-    demo_names2 = names;
-    demo_alphabet2 = alphabet;
-    demo_classes2 = classes;
-    demo_thresh2 = thresh;
-    demo_ext_output2 = ext_output;
-    demo_json_port2 = json_port;
-    printf("Demo\n");
-    net2 = parse_network_cfg_custom(cfgfile, 1, 1);    // set batch=1
-    if (weightfile) {
-        load_weights(&net2, weightfile);
-    }
-    //set_batch_network(&net, 1);
-    fuse_conv_batchnorm(net2);
-    calculate_binary_weights(net2);
-    srand(2222222);
-
-    if (filename) {
-        printf("video file: %s\n", filename);
-        cpp_video_capture2 = 1;
-        cap2 = get_capture_video_stream(filename);
-    }
-    else {
-        printf("Webcam index: %d\n", cam_index);
-        cpp_video_capture2 = 1;
-        cap2 = get_capture_webcam(cam_index);
-    }
-
-    if (!cap2) {
-#ifdef WIN32
-        printf("Check that you have copied file opencv_ffmpeg340_64.dll to the same directory where is darknet.exe \n");
-#endif
-        error("Couldn't connect to webcam.\n");
-    }
-
-    layer l = net2.layers[net2.n - 1];
-    int j;
-
-    avg2 = (float *)calloc(l.outputs, sizeof(float));
-    for (j = 0; j < NFRAMES; ++j) predictions2[j] = (float *)calloc(l.outputs, sizeof(float));
-    for (j = 0; j < NFRAMES; ++j) images2[j] = make_image(1, 1, 3);
-
-    if (l.classes != demo_classes2) {
-        printf("Parameters don't match: in cfg-file classes=%d, in data-file classes=%d \n", l.classes, demo_classes2);
-        getchar();
-        exit(0);
-    }
-
-
-    flag_exit2 = 0;
-
-    pthread_t fetch_thread;
-    pthread_t detect_thread;
-
-    fetch_in_thread2(0);
-    det_img2 = in_img2;
-    det_s2 = in_s2;
-
-    fetch_in_thread2(0);
-    detect_in_thread2(0);
-    det_img2 = in_img2;
-    det_s2 = in_s2;
-
-    for (j = 0; j < NFRAMES / 2; ++j) {
-        fetch_in_thread2(0);
-        detect_in_thread2(0);
-        det_img2 = in_img2;
-        det_s2 = in_s2;
-    }
-
-    int count = 0;
-    if (!prefix && !dont_show) {
-        cvNamedWindow("Demo2", CV_WINDOW_NORMAL);
-        cvMoveWindow("Demo2", 0, 0);
-        cvResizeWindow("Demo2", 1352, 1013);
-    }
-
-    CvVideoWriter* output_video_writer = NULL;    // cv::VideoWriter output_video;
-    if (out_filename && !flag_exit2)
-    {
-        CvSize size;
-        size.width = det_img2->width, size.height = det_img2->height;
-        int src_fps = 25;
-        src_fps = get_stream_fps(cap2, cpp_video_capture2);
-
-        //const char* output_name = "test_dnn_out.avi";
-        //output_video_writer = cvCreateVideoWriter(out_filename, CV_FOURCC('H', '2', '6', '4'), src_fps, size, 1);
-        output_video_writer = cvCreateVideoWriter(out_filename, CV_FOURCC('D', 'I', 'V', 'X'), src_fps, size, 1);
-        //output_video_writer = cvCreateVideoWriter(out_filename, CV_FOURCC('M', 'J', 'P', 'G'), src_fps, size, 1);
-        //output_video_writer = cvCreateVideoWriter(out_filename, CV_FOURCC('M', 'P', '4', 'V'), src_fps, size, 1);
-        //output_video_writer = cvCreateVideoWriter(out_filename, CV_FOURCC('M', 'P', '4', '2'), src_fps, size, 1);
-        //output_video_writer = cvCreateVideoWriter(out_filename, CV_FOURCC('X', 'V', 'I', 'D'), src_fps, size, 1);
-        //output_video_writer = cvCreateVideoWriter(out_filename, CV_FOURCC('W', 'M', 'V', '2'), src_fps, size, 1);
-    }
-
-    double before = get_wall_time();
-    //insert code(count 횟수증가 확인)
-    int frame = 0;
-    //insert code(count 횟수증가 확인)
-    while (1) {
-        ++count;
-        {
-            if (pthread_create(&fetch_thread, 0, fetch_in_thread2, 0)) error("Thread creation failed");
-            if (pthread_create(&detect_thread, 0, detect_in_thread2, 0)) error("Thread creation failed");
-
-            float nms = .45;    // 0.4F
-            int local_nboxes = nboxes;
-            detection *local_dets = dets;
-
-            //if (nms) do_nms_obj(local_dets, local_nboxes, l.classes, nms);    // bad results
-            if (nms) do_nms_sort(local_dets, local_nboxes, l.classes, nms);
-
-            printf("\033[2J");
-            printf("\033[1;1H");
-            printf("\nFPS:%.1f\n", fps2);
-            printf("Objects:\n\n");
-
-            ++frame_id2;
-            if (demo_json_port2 > 0) {
-                int timeout = 400000;
-                send_json(local_dets, local_nboxes, l.classes, demo_names2, frame_id2, demo_json_port2, timeout);
-            }
-            //insert code(count 횟수증가 확인)
-            //FILE *file = fopen("results/test.txt","a");
-            printf("video frame number : %d\n", frame);
-            //fprintf(file,"frame number : %d\n",frame);
-            //fclose(file);
-            //draw_detections_cv_v3(show_img2, local_dets, local_nboxes, demo_thresh2, demo_names2, demo_alphabet2, demo_classes2, demo_ext_output2);
-            frame++;
-            //printf("next stage = %d\n",complete);
-            //insert code(count 횟수증가 확인)
-            free_detections(local_dets, local_nboxes);
-
-            if (!prefix) {
-                if (!dont_show) {
-                    show_image_cv_ipl(show_img2, "Demo2");
-                    int c = cvWaitKey(1);
-                    if (c == 10) {
-                        if (frame_skip == 0) frame_skip = 60;
-                        else if (frame_skip == 4) frame_skip = 0;
-                        else if (frame_skip == 60) frame_skip = 4;
-                        else frame_skip = 0;
-                    }
-                    else if (c == 27 || c == 1048603) // ESC - exit (OpenCV 2.x / 3.x)
-                    {
-                        flag_exit2 = 1;
-                    }
-                }
-            }
-            else {
-                char buff[256];
-                sprintf(buff, "%s_%08d.jpg", prefix, count);
-                if (show_img2) save_cv_jpg(show_img2, buff);
-            }
-
-            // if you run it with param -mjpeg_port 8090  then open URL in your web-browser: http://localhost:8090
-            if (mjpeg_port > 0 && show_img2) {
-                int port = mjpeg_port;
-                int timeout = 400000;
-                int jpeg_quality = 40;    // 1 - 100
-                send_mjpeg(show_img2, port, timeout, jpeg_quality);
-            }
-
-            // save video file
-            if (output_video_writer && show_img2) {
-                cvWriteFrame(output_video_writer, show_img2);
-                printf("\n cvWriteFrame \n");
-            }
-
-            cvReleaseImage(&show_img2);
-
-            pthread_join(fetch_thread, 0);
-            pthread_join(detect_thread, 0);
-
-            if (flag_exit2 == 1) break;
-
-            if (delay == 0) {
-                show_img2 = det_img2;
-            }
-            det_img2 = in_img2;
-            det_s2 = in_s2;
-        }
-        --delay;
-        if (delay < 0) {
-            delay = frame_skip;
-
-            //double after = get_wall_time();
-            //float curr = 1./(after - before);
-            double after = get_time_point();    // more accurate time measurements
-            float curr = 1000000. / (after - before);
-            fps2 = curr;
-            before = after;
-        }
-    }
-    printf("input video stream closed. \n");
-    if (output_video_writer) {
-        cvReleaseVideoWriter(&output_video_writer);
-        printf("output_video_writer closed. \n");
-    }
-
-    // free memory
-    cvReleaseImage(&show_img2);
-    cvReleaseImage(&in_img2);
-    free_image(in_s2);
-
-    free(avg2);
-    for (j = 0; j < NFRAMES; ++j) free(predictions2[j]);
-    for (j = 0; j < NFRAMES; ++j) free_image(images2[j]);
-
-    free_ptrs((void **)names, net2.layers[net2.n - 1].classes);
-
-    int i;
-    const int nsize = 8;
-    for (j = 0; j < nsize; ++j) {
-        for (i = 32; i < 127; ++i) {
-            free_image(alphabet[j][i]);
-        }
-        free(alphabet[j]);
-    }
-    free(alphabet);
-    free_network(net2);
-    //cudaProfilerStop();
-}
-void demo3(ARGU argu)
-{
-    in_img = det_img = show_img = NULL;
-    //skip = frame_skip;
-    image **alphabet = load_alphabet();
-    int delay = argu.frame_skip;
-    demo_names = argu.names;
-    demo_alphabet = alphabet;
-    demo_classes = argu.classes;
-    demo_thresh = argu.thresh;
-    demo_ext_output = argu.ext_output;
-    demo_json_port = argu.json_port;
-    printf("Demo\n");
-    net = parse_network_cfg_custom(argu.cfgfile, 1, 1);    // set batch=1
-    if (argu.weightfile) {
-        load_weights(&net, argu.weightfile);
-    }
-    //set_batch_network(&net, 1);
-    fuse_conv_batchnorm(net);
-    calculate_binary_weights(net);
-    srand(2222222);
-
-    if (argu.filename) {
-        printf("video file: %s\n", argu.filename);
-        cpp_video_capture = 1;
-        cap = get_capture_video_stream(argu.filename);
-    }
-    else {
-        printf("Webcam index: %d\n", argu.cam_index);
-        cpp_video_capture = 1;
-        cap = get_capture_webcam(argu.cam_index);
-    }
-
-    if (!cap) {
-#ifdef WIN32
-        printf("Check that you have copied file opencv_ffmpeg340_64.dll to the same directory where is darknet.exe \n");
-#endif
-        error("Couldn't connect to webcam.\n");
-    }
-
-    layer l = net.layers[net.n - 1];
-    int j;
-
-    avg = (float *)calloc(l.outputs, sizeof(float));
-    for (j = 0; j < NFRAMES; ++j) predictions[j] = (float *)calloc(l.outputs, sizeof(float));
-    for (j = 0; j < NFRAMES; ++j) images[j] = make_image(1, 1, 3);
-
-    if (l.classes != demo_classes) {
-        printf("Parameters don't match: in cfg-file classes=%d, in data-file classes=%d \n", l.classes, demo_classes);
-        getchar();
-        exit(0);
-    }
-
-
-    flag_exit = 0;
-
-    pthread_t fetch_thread;
-    pthread_t detect_thread;
-
-    fetch_in_thread(0);
-    det_img = in_img;
-    det_s = in_s;
-
-    fetch_in_thread(0);
-    detect_in_thread(0);
-    det_img = in_img;
-    det_s = in_s;
-
-    for (j = 0; j < NFRAMES / 2; ++j) {
-        fetch_in_thread(0);
-        detect_in_thread(0);
-        det_img = in_img;
-        det_s = in_s;
-    }
-
-    int count = 0;
-    if (!argu.prefix && !argu.dont_show) {
-        cvNamedWindow("Demo", CV_WINDOW_NORMAL);
-        cvMoveWindow("Demo", 0, 0);
-        cvResizeWindow("Demo", 1352, 1013);
-    }
-
-    CvVideoWriter* output_video_writer = NULL;    // cv::VideoWriter output_video;
-    if (argu.out_filename && !flag_exit)
-    {
-        CvSize size;
-        size.width = det_img->width, size.height = det_img->height;
-        int src_fps = 25;
-        src_fps = get_stream_fps(cap, cpp_video_capture);
-
-        //const char* output_name = "test_dnn_out.avi";
-        //output_video_writer = cvCreateVideoWriter(out_filename, CV_FOURCC('H', '2', '6', '4'), src_fps, size, 1);
-        output_video_writer = cvCreateVideoWriter(argu.out_filename, CV_FOURCC('D', 'I', 'V', 'X'), src_fps, size, 1);
-        //output_video_writer = cvCreateVideoWriter(out_filename, CV_FOURCC('M', 'J', 'P', 'G'), src_fps, size, 1);
-        //output_video_writer = cvCreateVideoWriter(out_filename, CV_FOURCC('M', 'P', '4', 'V'), src_fps, size, 1);
-        //output_video_writer = cvCreateVideoWriter(out_filename, CV_FOURCC('M', 'P', '4', '2'), src_fps, size, 1);
-        //output_video_writer = cvCreateVideoWriter(out_filename, CV_FOURCC('X', 'V', 'I', 'D'), src_fps, size, 1);
-        //output_video_writer = cvCreateVideoWriter(out_filename, CV_FOURCC('W', 'M', 'V', '2'), src_fps, size, 1);
-    }
-
-    double before = get_wall_time();
-    //insert code(count 횟수증가 확인)
-    int frame = 0;
-    //insert code(count 횟수증가 확인)
-    while (1) {
-        ++count;
-        {
-            if (pthread_create(&fetch_thread, 0, fetch_in_thread, 0)) error("Thread creation failed");
-            if (pthread_create(&detect_thread, 0, detect_in_thread, 0)) error("Thread creation failed");
-
-            float nms = .45;    // 0.4F
-            int local_nboxes = nboxes;
-            detection *local_dets = dets;
-
-            //if (nms) do_nms_obj(local_dets, local_nboxes, l.classes, nms);    // bad results
-            if (nms) do_nms_sort(local_dets, local_nboxes, l.classes, nms);
-
-            printf("\033[2J");
-            printf("\033[1;1H");
-            printf("\nFPS:%.1f\n", fps);
-            printf("Objects:\n\n");
-
-            ++frame_id;
-            if (demo_json_port > 0) {
-                int timeout = 400000;
-                send_json(local_dets, local_nboxes, l.classes, demo_names, frame_id, demo_json_port, timeout);
-            }
-            //insert code(count 횟수증가 확인)
-            //FILE *file = fopen("results/test.txt","a");
-            printf("video frame number : %d\n", frame);
-            //fprintf(file,"frame number : %d\n",frame);
-            //fclose(file);
-            //draw_detections_cv_v3(show_img, local_dets, local_nboxes, demo_thresh, demo_names, demo_alphabet, demo_classes, demo_ext_output);
-            frame++;
-            //printf("next stage = %d\n",complete);
-            //insert code(count 횟수증가 확인)
-            free_detections(local_dets, local_nboxes);
-
-            if (!argu.prefix) {
-                if (!argu.dont_show) {
-                    show_image_cv_ipl(show_img, "Demo");
-                    int c = cvWaitKey(1);
-                    if (c == 10) {
-                        if (argu.frame_skip == 0) argu.frame_skip = 60;
-                        else if (argu.frame_skip == 4) argu.frame_skip = 0;
-                        else if (argu.frame_skip == 60) argu.frame_skip = 4;
-                        else argu.frame_skip = 0;
-                    }
-                    else if (c == 27 || c == 1048603) // ESC - exit (OpenCV 2.x / 3.x)
-                    {
-                        flag_exit = 1;
-                    }
-                }
-            }
-            else {
-                char buff[256];
-                sprintf(buff, "%s_%08d.jpg", argu.prefix, count);
-                if (show_img) save_cv_jpg(show_img, buff);
-            }
-
-            // if you run it with param -mjpeg_port 8090  then open URL in your web-browser: http://localhost:8090
-            if (argu.mjpeg_port > 0 && show_img) {
-                int port = argu.mjpeg_port;
-                int timeout = 400000;
-                int jpeg_quality = 40;    // 1 - 100
-                send_mjpeg(show_img, port, timeout, jpeg_quality);
-            }
-
-            // save video file
-            if (output_video_writer && show_img) {
-                cvWriteFrame(output_video_writer, show_img);
-                printf("\n cvWriteFrame \n");
-            }
-
-            cvReleaseImage(&show_img);
-
-            pthread_join(fetch_thread, 0);
-            pthread_join(detect_thread, 0);
-
-            if (flag_exit == 1) break;
-
-            if (delay == 0) {
-                show_img = det_img;
-            }
-            det_img = in_img;
-            det_s = in_s;
-        }
-        --delay;
-        if (delay < 0) {
-            delay = argu.frame_skip;
-
-            //double after = get_wall_time();
-            //float curr = 1./(after - before);
-            double after = get_time_point();    // more accurate time measurements
-            float curr = 1000000. / (after - before);
-            fps = curr;
-            before = after;
-        }
-    }
-    printf("input video stream closed. \n");
-    if (output_video_writer) {
-        cvReleaseVideoWriter(&output_video_writer);
-        printf("output_video_writer closed. \n");
-    }
-
-    // free memory
-    cvReleaseImage(&show_img);
-    cvReleaseImage(&in_img);
-    free_image(in_s);
-
-    free(avg);
-    for (j = 0; j < NFRAMES; ++j) free(predictions[j]);
-    for (j = 0; j < NFRAMES; ++j) free_image(images[j]);
-
-    free_ptrs((void **)argu.names, net.layers[net.n - 1].classes);
-
-    int i;
-    const int nsize = 8;
-    for (j = 0; j < nsize; ++j) {
-        for (i = 32; i < 127; ++i) {
-            free_image(alphabet[j][i]);
-        }
-        free(alphabet[j]);
-    }
-    free(alphabet);
-    free_network(net);
-    //cudaProfilerStop();
-}
-void demo4(ARGU argu)
-{
-    in_img2 = det_img2 = show_img2 = NULL;
-    //skip = frame_skip;
-    image **alphabet = load_alphabet();
-    int delay = argu.frame_skip;
-    demo_names2 = argu.names;
-    demo_alphabet2 = alphabet;
-    demo_classes2 = argu.classes;
-    demo_thresh2 = argu.thresh;
-    demo_ext_output2 = argu.ext_output;
-    demo_json_port2 = argu.json_port;
-    printf("Demo\n");
-    net2 = parse_network_cfg_custom(argu.cfgfile, 1, 1);    // set batch=1
-    if (argu.weightfile) {
-        load_weights(&net2, argu.weightfile);
-    }
-    //set_batch_network(&net, 1);
-    fuse_conv_batchnorm(net2);
-    calculate_binary_weights(net2);
-    srand(2222222);
-
-    if (argu.filename) {
-        printf("video file: %s\n", argu.filename);
-        cpp_video_capture2 = 1;
-        cap2 = get_capture_video_stream(argu.filename);
-    }
-    else {
-        printf("Webcam index: %d\n", argu.cam_index);
-        cpp_video_capture2 = 1;
-        cap2 = get_capture_webcam(argu.cam_index);
-    }
-
-    if (!cap2) {
-#ifdef WIN32
-        printf("Check that you have copied file opencv_ffmpeg340_64.dll to the same directory where is darknet.exe \n");
-#endif
-        error("Couldn't connect to webcam.\n");
-    }
-
-    layer l = net2.layers[net2.n - 1];
-    int j;
-
-    avg2 = (float *)calloc(l.outputs, sizeof(float));
-    for (j = 0; j < NFRAMES; ++j) predictions2[j] = (float *)calloc(l.outputs, sizeof(float));
-    for (j = 0; j < NFRAMES; ++j) images2[j] = make_image(1, 1, 3);
-
-    if (l.classes != demo_classes2) {
-        printf("Parameters don't match: in cfg-file classes=%d, in data-file classes=%d \n", l.classes, demo_classes2);
-        getchar();
-        exit(0);
-    }
-
-
-    flag_exit2 = 0;
-
-    pthread_t fetch_thread;
-    pthread_t detect_thread;
-
-    fetch_in_thread2(0);
-    det_img2 = in_img2;
-    det_s2 = in_s2;
-
-    fetch_in_thread2(0);
-    detect_in_thread2(0);
-    det_img2 = in_img2;
-    det_s2 = in_s2;
-
-    for (j = 0; j < NFRAMES / 2; ++j) {
-        fetch_in_thread2(0);
-        detect_in_thread2(0);
-        det_img2 = in_img2;
-        det_s2 = in_s2;
-    }
-
-    int count = 0;
-    if (!argu.prefix && !argu.dont_show) {
-        cvNamedWindow("Demo2", CV_WINDOW_NORMAL);
-        cvMoveWindow("Demo2", 0, 0);
-        cvResizeWindow("Demo2", 1352, 1013);
-    }
-
-    CvVideoWriter* output_video_writer = NULL;    // cv::VideoWriter output_video;
-    if (argu.out_filename && !flag_exit2)
-    {
-        CvSize size;
-        size.width = det_img2->width, size.height = det_img2->height;
-        int src_fps = 25;
-        src_fps = get_stream_fps(cap2, cpp_video_capture2);
-
-        //const char* output_name = "test_dnn_out.avi";
-        //output_video_writer = cvCreateVideoWriter(out_filename, CV_FOURCC('H', '2', '6', '4'), src_fps, size, 1);
-        output_video_writer = cvCreateVideoWriter(argu.out_filename, CV_FOURCC('D', 'I', 'V', 'X'), src_fps, size, 1);
-        //output_video_writer = cvCreateVideoWriter(out_filename, CV_FOURCC('M', 'J', 'P', 'G'), src_fps, size, 1);
-        //output_video_writer = cvCreateVideoWriter(out_filename, CV_FOURCC('M', 'P', '4', 'V'), src_fps, size, 1);
-        //output_video_writer = cvCreateVideoWriter(out_filename, CV_FOURCC('M', 'P', '4', '2'), src_fps, size, 1);
-        //output_video_writer = cvCreateVideoWriter(out_filename, CV_FOURCC('X', 'V', 'I', 'D'), src_fps, size, 1);
-        //output_video_writer = cvCreateVideoWriter(out_filename, CV_FOURCC('W', 'M', 'V', '2'), src_fps, size, 1);
-    }
-
-    double before = get_wall_time();
-    //insert code(count 횟수증가 확인)
-    int frame = 0;
-    //insert code(count 횟수증가 확인)
-    while (1) {
-        ++count;
-        {
-            if (pthread_create(&fetch_thread, 0, fetch_in_thread2, 0)) error("Thread creation failed");
-            if (pthread_create(&detect_thread, 0, detect_in_thread2, 0)) error("Thread creation failed");
-
-            float nms = .45;    // 0.4F
-            int local_nboxes = nboxes;
-            detection *local_dets = dets;
-
-            //if (nms) do_nms_obj(local_dets, local_nboxes, l.classes, nms);    // bad results
-            if (nms) do_nms_sort(local_dets, local_nboxes, l.classes, nms);
-
-            printf("\033[2J");
-            printf("\033[1;1H");
-            printf("\nFPS:%.1f\n", fps2);
-            printf("Objects:\n\n");
-
-            ++frame_id2;
-            if (demo_json_port2 > 0) {
-                int timeout = 400000;
-                send_json(local_dets, local_nboxes, l.classes, demo_names2, frame_id2, demo_json_port2, timeout);
-            }
-            //insert code(count 횟수증가 확인)
-            //FILE *file = fopen("results/test.txt","a");
-            printf("video frame number : %d\n", frame);
-            //fprintf(file,"frame number : %d\n",frame);
-            //fclose(file);
-            //draw_detections_cv_v3(show_img2, local_dets, local_nboxes, demo_thresh2, demo_names2, demo_alphabet2, demo_classes2, demo_ext_output2);
-            frame++;
-            //printf("next stage = %d\n",complete);
-            //insert code(count 횟수증가 확인)
-            free_detections(local_dets, local_nboxes);
-
-            if (!argu.prefix) {
-                if (!argu.dont_show) {
-                    show_image_cv_ipl(show_img2, "Demo2");
-                    int c = cvWaitKey(1);
-                    if (c == 10) {
-                        if (argu.frame_skip == 0) argu.frame_skip = 60;
-                        else if (argu.frame_skip == 4) argu.frame_skip = 0;
-                        else if (argu.frame_skip == 60) argu.frame_skip = 4;
-                        else argu.frame_skip = 0;
-                    }
-                    else if (c == 27 || c == 1048603) // ESC - exit (OpenCV 2.x / 3.x)
-                    {
-                        flag_exit2 = 1;
-                    }
-                }
-            }
-            else {
-                char buff[256];
-                sprintf(buff, "%s_%08d.jpg", argu.prefix, count);
-                if (show_img2) save_cv_jpg(show_img2, buff);
-            }
-
-            // if you run it with param -mjpeg_port 8090  then open URL in your web-browser: http://localhost:8090
-            if (argu.mjpeg_port > 0 && show_img2) {
-                int port = argu.mjpeg_port;
-                int timeout = 400000;
-                int jpeg_quality = 40;    // 1 - 100
-                send_mjpeg(show_img2, port, timeout, jpeg_quality);
-            }
-
-            // save video file
-            if (output_video_writer && show_img2) {
-                cvWriteFrame(output_video_writer, show_img2);
-                printf("\n cvWriteFrame \n");
-            }
-
-            cvReleaseImage(&show_img2);
-
-            pthread_join(fetch_thread, 0);
-            pthread_join(detect_thread, 0);
-
-            if (flag_exit2 == 1) break;
-
-            if (delay == 0) {
-                show_img2 = det_img2;
-            }
-            det_img2 = in_img2;
-            det_s2 = in_s2;
-        }
-        --delay;
-        if (delay < 0) {
-            delay = argu.frame_skip;
-
-            //double after = get_wall_time();
-            //float curr = 1./(after - before);
-            double after = get_time_point();    // more accurate time measurements
-            float curr = 1000000. / (after - before);
-            fps2 = curr;
-            before = after;
-        }
-    }
-    printf("input video stream closed. \n");
-    if (output_video_writer) {
-        cvReleaseVideoWriter(&output_video_writer);
-        printf("output_video_writer closed. \n");
-    }
-
-    // free memory
-    cvReleaseImage(&show_img2);
-    cvReleaseImage(&in_img2);
-    free_image(in_s2);
-
-    free(avg2);
-    for (j = 0; j < NFRAMES; ++j) free(predictions2[j]);
-    for (j = 0; j < NFRAMES; ++j) free_image(images2[j]);
-
-    free_ptrs((void **)argu.names, net2.layers[net2.n - 1].classes);
-
-    int i;
-    const int nsize = 8;
-    for (j = 0; j < nsize; ++j) {
-        for (i = 32; i < 127; ++i) {
-            free_image(alphabet[j][i]);
-        }
-        free(alphabet[j]);
-    }
-    free(alphabet);
-    free_network(net2);
-    //cudaProfilerStop();
-}
-//insert code(demo 복사)
 #else
 void demo(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int cam_index, const char *filename, char **names, int classes,
     int frame_skip, char *prefix, char *out_filename, int mjpeg_port, int json_port, int dont_show, int ext_output)

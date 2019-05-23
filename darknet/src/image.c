@@ -556,7 +556,7 @@ void draw_detections_cv_v3(IplImage* show_img, detection *dets, int num, float t
                     strcat(labelstr, names[j]);
                 }
                 printf("%s: %.0f%% ", names[j], dets[i].prob[j] * 100);
-                if (strcmp(names[j], "LicensePlate")) {
+                if (strcmp(names[j], "LicensePlate") && (*count) < 6) {
                 frame->car.full[*count].num = atoi(names[j]);
                 frame->car.full[*count].prod = dets[i].prob[j] * 100;
                 frame->car.full[*count].x = round((dets[i].bbox.x - dets[i].bbox.w / 2)*show_img->width);

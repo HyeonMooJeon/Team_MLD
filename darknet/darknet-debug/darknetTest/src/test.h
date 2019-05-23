@@ -29,8 +29,9 @@ typedef struct frame_node {
     struct frame_node* next;
 }FRAME_NODE;
 
-FRAME_NODE* saveNode(FRAME_NODE ** list, int * carnumber);
+FRAME_NODE* saveNode(FRAME_NODE ** list, int * carnumber,char* model);
 int* get_car_info(FRAME_NODE *list, int size);
+char* get_car_model(FRAME_NODE * list);
 FRAME_NODE* create_node(FRAME_INFO frame);
 int get_total_node(FRAME_NODE * list);
 void print_list(FRAME_NODE ** list);
