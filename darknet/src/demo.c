@@ -1007,11 +1007,6 @@ void mld_model(char *cfgfile, char *weightfile, float thresh, float hier_thresh,
             if (countnumber >= 6) {
                 printf("count check\n");
                 sort_number(&newFrame);
-                //정렬된 숫자 출력
-                //for (int i = 0; i < 6; i++) {
-                //    printf("%d", newFrame.car.full[i].num);
-                //}
-                //printf("\n");
                 time_t timer;
                 struct tm *t;
                 timer = time(NULL);
@@ -1029,7 +1024,6 @@ void mld_model(char *cfgfile, char *weightfile, float thresh, float hier_thresh,
                 newFrame.image = copy_img;
                 newFrame.image_model = copy_img_model;
                 FRAME_NODE * newNode = create_node(newFrame);
-                //save_cv_jpg(newNode->data.image, newNode->data.path);
                 insert_frame(&list, newNode);
                 framecheck = 0;
             }
@@ -1043,18 +1037,14 @@ void mld_model(char *cfgfile, char *weightfile, float thresh, float hier_thresh,
                     int *carnumber = get_car_info(list, test);
                     char *car_model = get_car_model(list);
                     FRAME_NODE *save_node = saveNode(&list, carnumber, car_model);
-                    //printf("%s\n", save_node->data.path);
-                    //printf("%d%d%d%d%d%d\n", save_node->data.car.full[0].num, save_node->data.car.full[1].num,
-                    //    save_node->data.car.full[2].num, save_node->data.car.full[3].num,
-                    //    save_node->data.car.full[4].num, save_node->data.car.full[5].num);
                     save_cv_jpg(save_node->data.image, save_node->data.path);
                     save_cv_jpg(save_node->data.image_model, save_node->data.path_model);
                     printf("db test\n");
                     if (insert_car_model(carnumber, save_node->data.car.model.name, save_node->data.time, save_node->data.path,save_node->data.path_model))
                         printf("insert error!!\n");
                     printf("db close\n");
-                    //print_list(&list);
                     releaselist(&list);
+                    free(car_model);
                     printf("Release list\n");
                     list = NULL;
                     printf("list null\n");

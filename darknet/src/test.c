@@ -62,42 +62,28 @@ int insert_car_model(int *carnumber, char model[],char time[],char path_number[]
     if (mysql_query(conn, query)) return 1;
     return 0;
 }
+//차량정보 저장(상태 및 모델 체크 후 삽입)
+int insert_car_infomation(int *carnumber, char model[], char time[], char path_number[], char path_model[]) {
+    char query[300];
+    sprintf(query, "select model_car from go as g, model as m where g.GO_License_Plate = '%d%d%d%d%d%d' and g.GO_car_model = m.model_key;",
+        carnumber[0], carnumber[1], carnumber[2], carnumber[3], carnumber[4], carnumber[5]);
+    mysql_query(conn, query);
+    MYSQL_RES *result = mysql_store_result(conn);
+    MYSQL_ROW row = mysql_fetch_row(result);
+    mysql_free_result(result);
+    if (row == NULL) 
+        sprintf(query,"insert into carnumber.recognize values('%d%d%d%d%d%d',(select model_key from model where model_car = '%s'),'%s','%s', '%s', 102);",
+            carnumber[0], carnumber[1], carnumber[2], carnumber[3], carnumber[4], carnumber[5], model, time, path_number, path_model);
+    else 
+        sprintf(query, "insert into carnumber.recognize values('%d%d%d%d%d%d',(select model_key from model where model_car = '%s'),'%s','%s', '%s',(select GO_car_state from go where GO_License_Plate = '%d%d%d%d%d%d')); ",
+            carnumber[0], carnumber[1], carnumber[2], carnumber[3], carnumber[4], carnumber[5], model, time, path_number, path_model, carnumber[0], carnumber[1], carnumber[2], carnumber[3], carnumber[4], carnumber[5]);
+    if (mysql_query(conn, query)) return 1;
+    return 0;
+}
 void closemysql() {
     mysql_close(conn);
     printf("DB close\n");
 }
-
-//번호판 정렬
-/*
-int selected_number(int number, int numbers[]) {
-    for (int i = 0; i < sizeof(numbers) / sizeof(int); i++) {
-        if (numbers[i] == number) return 0;
-    }
-    return 1;
-}
-void sort_number(FRAME_INFO *frame) {
-    int selected[6];
-    int index;
-    int d = 0;
-
-    float temp;
-    for (int i = 0; i < 6; i++) {
-        if (!selected_number(i, selected)) continue;
-        index = i;
-        temp = frame->x[i];
-        for (int j = 0; j < 6; j++) {
-            if (!selected_number(j, selected) || i==j) continue;
-            if (temp > frame->x[j]) {
-                index = j;
-                temp = frame->x[j];
-            }
-        }
-        frame->order[i] = index;
-        selected[i] = index;
-    }
-
-}
-*/
 //번호판 정렬 알고리즘(선택정렬)
 void sort_number(FRAME_INFO *frame) {
     NUMBER temp;
