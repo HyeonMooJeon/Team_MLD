@@ -1,49 +1,63 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="ko">
 <head>
-<meta charset="EUC-KR">
-<title>Insert title here</title>
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
- <script type="text/javascript">
-
-google.charts.load('current', {packages: ['corechart', 'bar']});
-google.charts.setOnLoadCallback(drawMultSeries);
-
-function drawMultSeries() {
-      var data = google.visualization.arrayToDataTable([
-        ['City', '2010 Population', '2000 Population'],
-        ['New York City, NY', 8175000, 8008000],
-        ['Los Angeles, CA', 3792000, 3694000],
-        ['Chicago, IL', 2695000, 2896000],
-        ['Houston, TX', 2099000, 1953000],
-        ['Philadelphia, PA', 1526000, 1517000]
-      ]);
-
-      var options = {
-        title: 'Population of Largest U.S. Cities',
-        chartArea: {width: '50%'},
-        hAxis: {
-          title: 'Total Population',
-          minValue: 0
-        },
-        vAxis: {
-          title: 'City'
-        }
-      };
-
-      var chart = new google.visualization.BarChart(document.getElementById('chart_div'));
-      chart.draw(data, options);
-    }
-   </script>
+<meta charset="utf-8">
+<title>구글 차트 : 컬럼차트 : 컬럼차트 기초 그리고 시작</title>
+<script src="http://code.jquery.com/jquery-latest.min.js"></script>
 </head>
 <body>
 
-<div id="chart_div"></div>
-<div class="row">
+<!-- 예제 시작 -->
 
-    {{Jdata}}
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script>
+	// 차트를 사용하기 위한 준비입니다.
+	google.charts.load('current', {packages:['corechart']});
+</script>
+
+<div>
+
+</div>
+<div id="chart_div"></div><!-- 여기에 차트가 생성됩니다. -->
+<div>
+    {{test}}
 </div>
 
+
+<script>
+// 로딩 완료시 함수 실행하여 차트 생성
+google.charts.setOnLoadCallback(drawChart);
+
+function drawChart() {
+
+
+	// 차트 데이터 설정
+	var data = google.visualization.arrayToDataTable([
+		['항목', '검거 횟수'], // 항목 정의
+		['선문대학교', {{loc1}}],
+		['지중해마을', {{loc2}}],
+		['학교 정문', {{loc3}}],
+	]);
+
+	// 그래프 옵션
+	var options = {
+		title : '검거 횟수', // 제목
+		width : 600, // 가로 px
+		height : 400, // 세로 px
+		bar : {
+			groupWidth : '80%' // 그래프 너비 설정 %
+		},
+		legend : {
+			position : 'none' // 항목 표시 여부 (현재 설정은 안함)
+		}
+	};
+
+	var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
+	chart.draw(data, options);
+}
+</script>
+
+<!-- 예제 종료 -->
 
 
 </body>

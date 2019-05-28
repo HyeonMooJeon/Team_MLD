@@ -301,6 +301,7 @@ def GovTable():
         return index()
     #try catch를 통해 파일이 존재할경우 메인 화면으로 이동하도록 만듬
 
+#위치는 추후 수정해야함.
 @app.route('/data', methods=["GET", "POST"])
 def data():
     cursor.execute(
@@ -313,9 +314,50 @@ def data():
     return jsonData
 
 
-@app.route('/test')
+@app.route('/test', methods=["GET", "POST"])
 def test():
-    return render_template('test.html')
+    cursor.execute(
+        "select count(case when re_location=1 then 1 end) as 'location1',count(case when re_location=2 then 1 end) as 'location2',count(case when re_location=3 then 1 end) as 'location3'from recognize;")
+    r = [dict((cursor.description[i][0], value)
+              for i, value in enumerate(row)) for row in cursor.fetchall()]
+    json_data=json.dumps(r, ensure_ascii=False)
+    #print(json_data)
+    location1 = 0
+    location2 = 0
+    location3 = 0
+
+    split_data = json_data.split(": ")
+    i=0
+    for temp in split_data:
+        if i==0:
+            i=i+1
+            continue
+        recognize = 0
+        for k in temp:
+            print(k)
+            if CHKnumber(k):
+                if recognize != 0:
+                    recognize = recognize*10
+                recognize=recognize + int(k)
+            else:
+                break
+        if i==1:
+            location1 = recognize
+        if i==2:
+            location2 = recognize
+        if i==3:
+            location3 = recognize
+        #print(recognize,"그리고",i)
+        i=i+1
+
+    return render_template('test.html', loc1 = location1, loc2 = location2, loc3 = location3, test = json_data)
+
+def CHKnumber(i):
+    try:
+        float(i)
+        return True
+    except ValueError:
+        return False
 
 
 if __name__ == "__main__":

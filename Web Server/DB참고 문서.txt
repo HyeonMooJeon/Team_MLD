@@ -157,6 +157,31 @@ INNER JOIN model ON recognize.re_model = model.model_key
 where recognize.re_plate = '11가1111';
 
 
+@차트
+--오늘 해당 위치에서 인식된 횟수 보기.
+select count(case when re_location=1 then 1 end) as 'location1',
+count(case when re_location=2 then 1 end) as 'location2',
+count(case when re_location=3 then 1 end) as 'location3'
+from recognize
+where re_time = date(now());
+
+--최근 1주일간 내역 보기 (하단의 where문만 수정하면됩니다.)
+where re_time >= DATE_SUB(NOW(), INTERVAL 7 DAY);
+--이번달 보기
+where re_time >= DATE_FORMAT(NOW(), '%Y-%m-01');
+--올해 보기
+where re_time  >= DATE_FORMAT(NOW(), '%Y-01-01');
+
+@혹시나...저장위치를 고정값으로 놓을려고 할경우. file_location에서 디폴트 값을 설정해주면됩니다.
+CREATE TABLE recognize (
+  re_plate varchar(8) NOT NULL,
+  re_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  re_location int(3) NOT NULL,
+  re_model int(3) NOT NULL,
+  file_location varchar(200) NOT NULL DEFAULT 'C:/',
+  re_index int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`re_index`)
+);
 
 
 
