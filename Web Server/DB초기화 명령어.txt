@@ -1,0 +1,140 @@
+※DB실행후 use team_mld;(사용할 DB)라고 어느 DB사용할지 알려준뒤 해야합니다..
+
+@Table Create문
+-차량 상태 
+CREATE TABLE car_status (
+  car_status_key int(3) NOT NULL AUTO_INCREMENT,
+  car_status_now varchar(50) NOT NULL,
+  PRIMARY KEY (`car_status_key`,`car_status_now`)
+)
+
+-정부 DB
+CREATE TABLE go (
+  GO_car_model int(3) NOT NULL,
+  GO_License_Plate varchar(8) NOT NULL,
+  GO_car_state int(3) NOT NULL
+) 
+
+-범죄차량
+CREATE TABLE illegal (
+  illegal_plate varchar(8) NOT NULL,
+  illegal_model varchar(20) NOT NULL,
+  illegal_location varchar(20) NOT NULL,
+  illegal_time date NOT NULL
+);
+
+-위치
+CREATE TABLE location (
+  location_key int(3) unsigned NOT NULL AUTO_INCREMENT,
+  location_now varchar(10) NOT NULL,
+  PRIMARY KEY (`location_key`)
+)
+
+-차량 모델
+CREATE TABLE model (
+  model_key int(3) unsigned NOT NULL AUTO_INCREMENT,
+  model_car varchar(10) NOT NULL,
+  PRIMARY KEY (`model_key`)
+)
+
+-인식 차량
+CREATE TABLE recognize (
+  re_plate varchar(8) NOT NULL,
+  re_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  re_location int(3) NOT NULL,
+  re_model int(3) NOT NULL,
+  file_location varchar(200) NOT NULL,
+  re_index int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`re_index`)
+);
+
+-사용자
+CREATE TABLE user (
+  Email varchar(50) NOT NULL,
+  PW varchar(20) NOT NULL,
+  User_name varchar(20) NOT NULL,
+  PRIMARY KEY (`Email`)
+);
+
+
+----------------------------------------------------------------@샘플 DB 추가하기----------------
+@테이블 초기화
+delete from ABCDEF;
+(ABCDEF대신 초기화할 Table명 적으면 됨.)
+
+
+-인식차량 추가 ※시간은 DB에 추가한 시간으로 자동 저장됩니다. 한번에 insert하면 동 시간으로 추가됨.
+INSERT INTO recognize(re_plate, re_location, re_model, file_location) VALUES('11가1111', '1', '1', 'C:');
+INSERT INTO recognize(re_plate, re_location, re_model, file_location) VALUES('22나2222', '2', '2', 'C:');
+INSERT INTO recognize(re_plate, re_location, re_model, file_location) VALUES('33다3333', '3', '3', 'C:');
+INSERT INTO recognize(re_plate, re_location, re_model, file_location) VALUES('44라4444', '1', '2', 'C:');
+INSERT INTO recognize(re_plate, re_location, re_model, file_location) VALUES('52서0521', '2', '3', 'C:');
+INSERT INTO recognize(re_plate, re_location, re_model, file_location) VALUES('13무8326', '3', '1', 'C:');
+INSERT INTO recognize(re_plate, re_location, re_model, file_location) VALUES('74바5376', '1', '3', 'C:');
+INSERT INTO recognize(re_plate, re_location, re_model, file_location) VALUES('03무6826', '2', '1', 'C:');
+INSERT INTO recognize(re_plate, re_location, re_model, file_location) VALUES('89바4759', '3', '2', 'C:');
+
+ - 뒤에 차번, 위치, 모델, 이미지 파일 저장위치 장소 순서로 하면 저장됩니다.
+ - 위치와 모델은 반드시 숫자로 설정.
+
+
+-차량 모델 추가 - 현재까지 인식되는 차종 5종
+insert into model(model_car) value('i40');
+insert into model(model_car) value('morning');
+insert into model(model_car) value('ray');
+insert into model(model_car) value('santafe');
+insert into model(model_car) value('starex');
+
+-위치 정보 추가
+insert into location(location_now) value('선문대학교');
+insert into location(location_now) value('현충사');
+insert into location(location_now) value('트라');
+insert into location(location_now) value('학교 정문');
+insert into location(location_now) value('학교 후문');
+
+-사용자 추가
+insert into user(Email, PW, User_name) value('JHM@sunmoon.ac.kr', 'sunmoon', '전현무');
+insert into user(Email, PW, User_name) value('LCH@sunmoon.ac.kr', 'sunmoon', '류충현');
+insert into user(Email, PW, User_name) value('LGW@sunmoon.ac.kr', 'sunmoon', '이길우');
+insert into user(Email, PW, User_name) value('JBC@sunmoon.ac.kr', 'sunmoon', '정병철');
+insert into user(Email, PW, User_name) value('sample@naver.com', 'sample', '샘플');
+insert into user(Email, PW, User_name) value('test1@naver.com', 'test', '테스터1');
+insert into user(Email, PW, User_name) value('test2@naver.com', 'test', '테스터2');
+
+-차량 상태
+insert into car_status(car_status_now) value('하이패스 수시 무단 통과');
+insert into car_status(car_status_now) value('대포 의심 차량');
+insert into car_status(car_status_now) value('노후 경차');
+insert into car_status(car_status_now) value('고속도로 체납차량');
+insert into car_status(car_status_now) value('뺑소니');
+
+-정부 DB
+insert into go(GO_car_model, GO_License_Plate, GO_car_state) value(1, '11가1111', 1);
+insert into go(GO_car_model, GO_License_Plate, GO_car_state) value(2, '22나2222', 2);
+insert into go(GO_car_model, GO_License_Plate, GO_car_state) value(3, '33다3333', 3);
+insert into go(GO_car_model, GO_License_Plate, GO_car_state) value(1, '79버2764', 3);
+insert into go(GO_car_model, GO_License_Plate, GO_car_state) value(3, '32다3255', 3);
+insert into go(GO_car_model, GO_License_Plate, GO_car_state) value(2, '13무8326', 2);
+insert into go(GO_car_model, GO_License_Plate, GO_car_state) value(2, '93허4758', 1);
+insert into go(GO_car_model, GO_License_Plate, GO_car_state) value(1, '39바1375', 1);
+
+
+-자동 값증가(auto_increment값 초기화하기)
+alter table [Table명] auto_increment = 1;
+set @COUNT = 0;
+update [Table명] set [auto_increment열 이름] = @COUNT:=@COUNT+1;
+
+ex) recognize테이블의 index초기화
+alter table recognize auto_increment = 1;
+set @COUNT = 0;
+update recognize set re_index = @COUNT:=@COUNT+1;
+
+
+
+
+@인식된 차량 카운트하여 표시
+select count(case when re_location=1 then 1 end) as '1번 위치',
+count(case when re_location=2 then 1 end) as '2번 위치',
+count(case when re_location=3 then 1 end) as '3번 위치'
+from recognize;
+ - 뒤에 'N번 위치' 에는 설정할 위치의 이름을 적으면 됩니다.
