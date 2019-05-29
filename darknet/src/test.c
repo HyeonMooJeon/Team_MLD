@@ -1,6 +1,8 @@
 #include <stdio.h>
+#include <string.h>
 #include <mysql.h>
 #include "test.h"
+#include <stdlib.h>
 #pragma comment(lib,"libmysql.lib")
 
 #define MYSQLUSER "root"
@@ -9,11 +11,14 @@
 
 static MYSQL *conn;
 //데이터베이스 연결
+
 void loadmysql()
 {
+    printf("loadmysql start\n");
     conn = mysql_init(NULL);
     if (conn == NULL)
     {
+        printf("conn == NULL\n");
         fprintf(stderr, "%s\n", mysql_error(conn));
         Sleep(1000);
         exit(1);
@@ -35,24 +40,51 @@ int insert_car_info(int carnumber) {
     sprintf(query, "insert into carnumber.car values(%d)", carnumber);
     if (mysql_query(conn, query)) return 1;
     return 0;
-    
+
 }
 //차량정보 저장2
 int insert_car(int *carnumber, char time[], char path[]) {
+    printf("insert db\n");
     char  query[250];
-    sprintf(query, "insert into carnumber.recognize values(%d%d%d%d%d%d,'%s', '%s')",
+    sprintf(query, "insert into carnumber.recognize values('%d%d%d%d%d%d','%s', '%s','ray')",
         carnumber[0], carnumber[1], carnumber[2], carnumber[3], carnumber[4],
         carnumber[5], time, path);
+    printf("%s\n", query);
     if (mysql_query(conn, query)) return 1;
     return 0;
-
 }
-//DB 연결 종료
+//차량정보 저장3(웹캠,ip카메라 연동)
+int insert_car_model(int *carnumber, char model[],char time[],char path_number[],char path_model[]) {
+    char  query[250];
+    sprintf(query, "insert into carnumber.recognize values('%d%d%d%d%d%d','%s',%s', '%s','%s')",
+        carnumber[0], carnumber[1], carnumber[2], carnumber[3], carnumber[4],
+        carnumber[5], model,time, path_number,path_model);
+    if (mysql_query(conn, query)) return 1;
+    return 0;
+}
+//차량정보 저장(상태 및 모델 체크 후 삽입)
+int insert_car_infomation(int *carnumber, char model[], char time[], char path_number[], char path_model[]) {
+    char query[300];
+    sprintf(query, "select model_car from go as g, model as m where g.GO_License_Plate = '%d%d%d%d%d%d' and g.GO_car_model = m.model_key;",
+        carnumber[0], carnumber[1], carnumber[2], carnumber[3], carnumber[4], carnumber[5]);
+    mysql_query(conn, query);
+    MYSQL_RES *result = mysql_store_result(conn);
+    MYSQL_ROW row = mysql_fetch_row(result);
+    mysql_free_result(result);
+    if (row == NULL) 
+        sprintf(query,"insert into carnumber.recognize values('%d%d%d%d%d%d',(select model_key from model where model_car = '%s'),'%s','%s', '%s', 102);",
+            carnumber[0], carnumber[1], carnumber[2], carnumber[3], carnumber[4], carnumber[5], model, time, path_number, path_model);
+    else 
+        sprintf(query, "insert into carnumber.recognize values('%d%d%d%d%d%d',(select model_key from model where model_car = '%s'),'%s','%s', '%s',(select GO_car_state from go where GO_License_Plate = '%d%d%d%d%d%d')); ",
+            carnumber[0], carnumber[1], carnumber[2], carnumber[3], carnumber[4], carnumber[5], model, time, path_number, path_model, carnumber[0], carnumber[1], carnumber[2], carnumber[3], carnumber[4], carnumber[5]);
+    if (mysql_query(conn, query)) return 1;
+    return 0;
+}
 void closemysql() {
     mysql_close(conn);
     printf("DB close\n");
 }
-//번호판 정렬(선택정렬)
+//번호판 정렬 알고리즘(선택정렬)
 void sort_number(FRAME_INFO *frame) {
     NUMBER temp;
     for (int i = 0; i < 5; i++) {
@@ -116,9 +148,12 @@ int get_total_node(FRAME_NODE * list) {
 //배열 계산
 int count_number(int arr[]) {
     int number = 0;
+    int temp = 0;
     for (int i = 0; i < 10; i++) {
-        //printf("%d %d\n", sizeof(arr) / sizeof(int), arr[i]);
-        if (number < arr[i]) number = i;
+        if (temp < arr[i]) {
+            number = i;
+            temp = arr[i];
+        }
     }
     return number;
 }
@@ -168,13 +203,46 @@ int* get_car_info(FRAME_NODE *list, int size) {
             free(*(*(arr + a) + b));
         }
         free(*(arr + a));
-        list = list->next;
+        //list = list->next;
     }
     free(arr);
     return number;
 }
-//저장할 정보 추출
-FRAME_NODE* saveNode(FRAME_NODE ** list, int * carnumber) {
+//최종 차량 모델 추출
+char* get_car_model(FRAME_NODE * list) {
+    int i, last = 0, temp = 0, number[5];
+    char **models = (char**)malloc(sizeof(char*) * 5);
+    for (i = 0; i < 5; i++)
+        models[i] = (char*)malloc(sizeof(char) * 20);
+    strcpy(models[0], "i40");
+    strcpy(models[1], "morning");
+    strcpy(models[2], "ray");
+    strcpy(models[3], "santafe");
+    strcpy(models[4], "starex");
+    int number[5] = { 0, };
+    while (list != NULL) {
+        if (list->data.car.model.name != NULL) continue;
+        if (strcmp(list->data.car.model.name, "i40")) number[0]++;
+        else if (strcmp(list->data.car.model.name, "morning")) number[1]++;
+        else if (strcmp(list->data.car.model.name, "ray")) number[2]++;
+        else if (strcmp(list->data.car.model.name, "santafe")) number[3]++;
+        else if (strcmp(list->data.car.model.name, "starex")) number[4]++;
+    }
+    for (i = 0; i < 5; i++) {
+        if (temp < number[i]) {
+            temp = number[i];
+            last = i;
+        }
+    }
+    char *last_model = (char*)malloc(sizeof(char) * 20);
+    strcpy(last_model, models[i]);
+    for (i = 0; i < 5; i++)
+        free(models[i]);
+    free(models);
+    return last_model;
+}
+//최종 차량 노드 추출
+FRAME_NODE* saveNode(FRAME_NODE ** list, int * carnumber, char* model) {
     //FRAME_NODE * node = (FRAME_NODE*)malloc(sizeof(FRAME_NODE));
     while (!(*list) == NULL) {
         if (carnumber[0] == (*list)->data.car.full[0].num)
@@ -183,7 +251,8 @@ FRAME_NODE* saveNode(FRAME_NODE ** list, int * carnumber) {
                     if (carnumber[3] == (*list)->data.car.full[3].num)
                         if (carnumber[4] == (*list)->data.car.full[4].num)
                             if (carnumber[5] == (*list)->data.car.full[5].num)
-                                break;
+                                if (strcmp(model, (*list)->data.car.model.name))
+                                    break;
         *list = (*list)->next;
     }
     return *list;

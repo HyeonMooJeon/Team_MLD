@@ -3,6 +3,8 @@
 *.csv
 *.out
 *.png
+!darknet-debug/camera-debug-values/demo/*.png
+!darknet-debug/camera-debug-values/mld/*.png
 *.so
 *.exe
 mnist/
