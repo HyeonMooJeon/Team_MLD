@@ -1,0 +1,28 @@
+현재
+ 번호판인식 80% (멀리 있는건 화소가 낮아서 인식이 잘 되지 않음 고화소일 경우 가능)
+ 번호판 안의 번호 80% (멀리 있는건 화소가 낮아서 인식이 잘 되지 않음 고화소일 경우 가능)
+ 차량 인식 가능  80% (멀리 있는건 화소가 낮아서 인식이 잘 되지 않음 고화소일 경우 가능)
+ 가중치 파일에 대해 통합이 필요함.
+
+TP  TN
+True Negative 객체를 성공했는데 거짓이었던 것  (객테 탐색 성공 했으나 거짓)
+True Positive 객체 탐색에 성공했는데 긍정이었던 것 (올바른 객체 탐색 성공)
+
+FP, FN
+False Negative 객체 탐색에 실패 했으나 거짓 이었던것 ()
+False Positive 객체 탐색에 실패 했으나 긍정이었던 것0
+
+1. mAP (mean Average Precision)
+Precision
+분류기의 성능평가지표로 사용하는 Precision-Recall 에서의 Precision과 같은 의미이다. 
+인식기 (object-detector) 가 검출한 정보들 중에서 Ground-Truth 와 일치하는 비율을 의미한다.
+
+AP (Average Precision) 
+Recall value [0.0, 0.1, …, 1.0] 값들에 대응하는 Precision 값들의 Average 이다.
+
+mAP (mean Average Precision) 
+1개의 object당 1개의 AP 값을 구하고, 여러 object-detector 에 대해서 mean 값을 구한 것이 mAP 이다.
+
+* Note: mAP 를 이해하기 위해서는 Precision-Recall 값에대한 이해가 필요하다. Precision / Recall 를 참고하자. *
+즉 mAP란 mutiple object detection 알고리즘에 대한 성능을 1개의 scalar value로 표현한 것이다.
+
