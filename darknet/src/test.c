@@ -62,21 +62,34 @@ int insert_car_model(int *carnumber, char model[],char time[],char path_number[]
     if (mysql_query(conn, query)) return 1;
     return 0;
 }
-//차량정보 저장(상태 및 모델 체크 후 삽입)
-int insert_car_infomation(int *carnumber, char model[], char time[], char path_number[], char path_model[]) {
-    char query[300];
-    sprintf(query, "select model_car from go as g, model as m where g.GO_License_Plate = '%d%d%d%d%d%d' and g.GO_car_model = m.model_key;",
+char* get_model(int *carnumber) {
+    char query[200];
+    sprintf(query, "select model_car from carnumber.go as g, carnumber.model as m where g.GO_License_Plate = '%d%d%d%d%d%d' and g.GO_car_model = m.model_key",
         carnumber[0], carnumber[1], carnumber[2], carnumber[3], carnumber[4], carnumber[5]);
     mysql_query(conn, query);
     MYSQL_RES *result = mysql_store_result(conn);
     MYSQL_ROW row = mysql_fetch_row(result);
     mysql_free_result(result);
-    if (row == NULL) 
-        sprintf(query,"insert into carnumber.recognize values('%d%d%d%d%d%d',(select model_key from model where model_car = '%s'),'%s','%s', '%s', 102);",
+    return row[0];
+}
+//차량정보 저장(상태 및 모델 체크 후 삽입)
+int insert_car_infomation(int *carnumber, char model[], char time[], char path_number[], char path_model[]) {
+    char query[300];
+    //sprintf(query, "select model_car from carnumber.go as g, carnumber.model as m where g.GO_License_Plate = '%d%d%d%d%d%d' and g.GO_car_model = m.model_key",
+    //    carnumber[0], carnumber[1], carnumber[2], carnumber[3], carnumber[4], carnumber[5]);
+    //mysql_query(conn, query);
+    //MYSQL_RES *result = mysql_store_result(conn);
+    //MYSQL_ROW row = mysql_fetch_row(result);
+    //mysql_free_result(result);
+    char *row = get_model(carnumber);
+    printf("%s\n", row);
+    if (row == NULL || strcmp(row, model))
+        sprintf(query, "insert into carnumber.recognize values('%d%d%d%d%d%d',(select model_key from carnumber.model where model_car = '%s'),'%s','%s', '%s', 102);",
             carnumber[0], carnumber[1], carnumber[2], carnumber[3], carnumber[4], carnumber[5], model, time, path_number, path_model);
-    else 
-        sprintf(query, "insert into carnumber.recognize values('%d%d%d%d%d%d',(select model_key from model where model_car = '%s'),'%s','%s', '%s',(select GO_car_state from go where GO_License_Plate = '%d%d%d%d%d%d')); ",
+    else
+        sprintf(query, "insert into carnumber.recognize values('%d%d%d%d%d%d',(select model_key from carnumber.model where model_car = '%s'),'%s','%s', '%s',(select GO_car_state from carnumber.go where GO_License_Plate = '%d%d%d%d%d%d')); ",
             carnumber[0], carnumber[1], carnumber[2], carnumber[3], carnumber[4], carnumber[5], model, time, path_number, path_model, carnumber[0], carnumber[1], carnumber[2], carnumber[3], carnumber[4], carnumber[5]);
+    printf("%s\n", query);
     if (mysql_query(conn, query)) return 1;
     return 0;
 }
@@ -210,7 +223,7 @@ int* get_car_info(FRAME_NODE *list, int size) {
 }
 //최종 차량 모델 추출
 char* get_car_model(FRAME_NODE * list) {
-    int i, last = 0, temp = 0, number[5];
+    int i, last = 0, temp = 0, number[5] = { 0, };
     char **models = (char**)malloc(sizeof(char*) * 5);
     for (i = 0; i < 5; i++)
         models[i] = (char*)malloc(sizeof(char) * 20);
@@ -219,14 +232,14 @@ char* get_car_model(FRAME_NODE * list) {
     strcpy(models[2], "ray");
     strcpy(models[3], "santafe");
     strcpy(models[4], "starex");
-    int number[5] = { 0, };
     while (list != NULL) {
-        if (list->data.car.model.name != NULL) continue;
-        if (strcmp(list->data.car.model.name, "i40")) number[0]++;
-        else if (strcmp(list->data.car.model.name, "morning")) number[1]++;
-        else if (strcmp(list->data.car.model.name, "ray")) number[2]++;
-        else if (strcmp(list->data.car.model.name, "santafe")) number[3]++;
-        else if (strcmp(list->data.car.model.name, "starex")) number[4]++;
+        if (list->data.car.model.name == NULL) continue;
+        if (!strcmp(list->data.car.model.name, "i40")) number[0]++;
+        else if (!strcmp(list->data.car.model.name, "morning")) number[1]++;
+        else if (!strcmp(list->data.car.model.name, "ray")) number[2]++;
+        else if (!strcmp(list->data.car.model.name, "santafe")) number[3]++;
+        else if (!strcmp(list->data.car.model.name, "starex")) number[4]++;
+        list = list->next;
     }
     for (i = 0; i < 5; i++) {
         if (temp < number[i]) {
@@ -235,7 +248,7 @@ char* get_car_model(FRAME_NODE * list) {
         }
     }
     char *last_model = (char*)malloc(sizeof(char) * 20);
-    strcpy(last_model, models[i]);
+    strcpy(last_model, models[last]);
     for (i = 0; i < 5; i++)
         free(models[i]);
     free(models);
@@ -251,7 +264,7 @@ FRAME_NODE* saveNode(FRAME_NODE ** list, int * carnumber, char* model) {
                     if (carnumber[3] == (*list)->data.car.full[3].num)
                         if (carnumber[4] == (*list)->data.car.full[4].num)
                             if (carnumber[5] == (*list)->data.car.full[5].num)
-                                if (strcmp(model, (*list)->data.car.model.name))
+                                if (!strcmp(model, (*list)->data.car.model.name))
                                     break;
         *list = (*list)->next;
     }

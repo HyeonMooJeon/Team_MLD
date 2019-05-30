@@ -1046,7 +1046,8 @@ void mld_model(char *cfgfile, char *weightfile, float thresh, float hier_thresh,
                     printf("list check\n");
                     int test = get_total_node(list);
                     int *carnumber = get_car_info(list, test);
-                    FRAME_NODE *save_node = saveNode(&list, carnumber);
+                    char *car_model = get_car_model(list);
+                    FRAME_NODE *save_node = saveNode(&list, carnumber, car_model);
                     //printf("%s\n", save_node->data.path);
                     //printf("%d%d%d%d%d%d\n", save_node->data.car.full[0].num, save_node->data.car.full[1].num,
                     //    save_node->data.car.full[2].num, save_node->data.car.full[3].num,
