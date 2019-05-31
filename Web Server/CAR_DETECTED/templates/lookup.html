@@ -162,21 +162,9 @@
         <!-- Begin Page Content -->
         <div class="container-fluid">
 
-          <!-- Page Heading -->
-          <a href="GetGoverment" class="btn btn-secondary btn-icon-split">
-                    <span class="icon text-white-50">
-                      <i class="fas fa-arrow-right"></i>
-                    </span>
-                    <span class="text">정부 DB 조회</span>
-          </a>
-          <a href="GetRecognize" class="btn btn-secondary btn-icon-split">
-                    <span class="icon text-white-50">
-                      <i class="fas fa-arrow-right"></i>
-                    </span>
-                    <span class="text">인식 차량 확인</span>
-          </a>
 
-           <a href="Getillegal" class="btn btn-secondary btn-icon-split">
+
+           <a href="show_illegal" class="btn btn-secondary btn-icon-split">
                     <span class="icon text-white-50">
                       <i class="fas fa-arrow-right"></i>
                     </span>
@@ -207,17 +195,16 @@
           <div class="row">
 
             <form>
-                  <div class="form-group">
-                      <form action="/ChkStatus" method="post">
-                     <input type="text" class="form-control" placeholder="차량 번호 입력" name = "license_plate">
-                  </div>
-                  <button type="submit" class="btn btn-black">차량 조회</button>
+              <form action="carStatus" method="post" class="user">
+                <input type="text" class="form-control-user" placeholder="차량 번호 입력" name = "license_plate">
+                <button type="submit" class="btn btn-primary btn-user btn-block">
+                  차량조회
+                </button>
+
+              </form>
             </form>
 
-
           </div>
-
-
 
         </div>
         <!-- /.container-fluid -->

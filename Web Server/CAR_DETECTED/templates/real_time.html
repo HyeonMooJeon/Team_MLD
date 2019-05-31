@@ -1,6 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
 
+<!--
+다음 지도 API
+5b2d55c9c7a71bef6487f9dd732012a3
+-->
+
 <head>
 
   <meta charset="utf-8">
@@ -141,7 +146,7 @@
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                <span class="mr-2 d-none d-lg-inline text-gray-600 small">사용자 이름</span>
+                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{name}}</span>
                 <img class="img-profile rounded-circle" src="https://cdn4.iconfinder.com/data/icons/basic-ui-elements/700/012_power-512.png">
               </a>
               <!-- Dropdown - User Information -->
@@ -164,23 +169,58 @@
 
           <div class="row">
             <!-- Illustrations -->
+            <div class="col-xl-8 col-lg-8">
               <div class="card shadow mb-4">
                 <div class="card-header py-3">
                   <h6 class="m-0 font-weight-bold text-primary">실시간 카메라</h6>
                 </div>
-                <div class="card-body">
+                <div class="card-body"  align="center">
                   <div class="image fit">
                     <img src="{{ url_for('video_feed') }}">
                   </div>
                 </div>
               </div>
+            </div>
+            <div class="col-xl-4 col-lg-4">
+              <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">카카오맵(다음 지도)</h6>
+                </div>
+                <div class="card-body"  align="center">
+                  <div class="image fit">
+                    <a href="https://map.kakao.com/">
+                    <img src="/static/img/mapicon.png">
+                  </div>
+                  <p>카카오맵 바로가기</p>
+                    </a>
+                  <div class="row">
+                    <p>하단의 카카오 맵(다음 지도)에 있는 마커를 누름으로서 좌측의 화면에서 실시간으로 해당 위치의 정보를 볼수 있습니다.</p>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+
+
           </div>
 
-
-
-        </div>
         <!-- /.container-fluid -->
-
+          <div class="row">
+            <!-- Illustrations -->
+            <div class="col-xl-12 col-lg-12">
+              <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                  <h6 class="m-0 font-weight-bold text-primary">지도</h6>
+                </div>
+                <div class="card-body">
+                  <div class="text-center">
+                  </div>
+                  <div id="map" style="width:100%;height:350px;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+       </div>
       </div>
       <!-- End of Main Content -->
 
@@ -234,7 +274,81 @@
 
   <!-- Custom scripts for all pages-->
   <script src="/static/js/sb-admin-2.min.js"></script>
+  <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=5b2d55c9c7a71bef6487f9dd732012a3"></script>
+  <script>
+    var mapContainer = document.getElementById('map'), // 지도를 표시할 div
+        mapOption = {
+            center: new daum.maps.LatLng(36.799581630745, 127.07502962007766), // 지도의 중심좌표
+            level: 6 // 지도의 확대 레벨
+        };
 
+    // 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
+    var map = new daum.maps.Map(mapContainer, mapOption);
+
+    //교통량 표시
+    map.addOverlayMapTypeId(daum.maps.MapTypeId.TRAFFIC);
+
+    //고정 마커 추가 순서대로 학교 정문, 후문, 트라 입구 삼거리(초등학교 삼거리), 현충사 앞 4거리
+    var positions = [
+      {
+          title: '학교정문',
+          content: '<div>학교정문</div>',
+          latlng: new daum.maps.LatLng(36.79808380083178, 127.07810951220478)
+      },
+      {
+          title: '학교후문 회차로',
+          content: '<div>학교후문 회차로</div>',
+          latlng: new daum.maps.LatLng(36.801928720906126, 127.06805089509167)
+      },
+      {
+          title: '트라 입구 3거리',
+          content: '<div>트라 입구 3거리</div>',
+          latlng: new daum.maps.LatLng(36.79738092055048, 127.06293187210684)
+      },
+      {
+          title: '현충사 앞 4거리',
+          content: '<div>현충사 앞 4거리</div>',
+          latlng: new daum.maps.LatLng(36.80032313597945,  127.02693741909361)
+      }
+    ];
+
+    for (var i = 0; i < positions.length; i ++) {
+        // 마커를 생성합니다
+        var marker = new daum.maps.Marker({
+            map: map, // 마커를 표시할 지도
+            position: positions[i].latlng // 마커의 위치
+        });
+
+        // 마커에 표시할 인포윈도우를 생성합니다
+        var infowindow = new daum.maps.InfoWindow({
+            content: positions[i].content // 인포윈도우에 표시할 내용
+        });
+
+        // 마커에 mouseover 이벤트와 mouseout 이벤트를 등록합니다
+        // 이벤트 리스너로는 클로저를 만들어 등록합니다
+        // for문에서 클로저를 만들어 주지 않으면 마지막 마커에만 이벤트가 등록됩니다
+        daum.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
+        daum.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
+    }
+
+
+
+    // 인포윈도우를 표시하는 클로저를 만드는 함수입니다
+      function makeOverListener(map, marker, infowindow) {
+          return function() {
+              infowindow.open(map, marker);
+          };
+      }
+
+      // 인포윈도우를 닫는 클로저를 만드는 함수입니다
+      function makeOutListener(infowindow) {
+          return function() {
+              infowindow.close();
+          };
+      }
+
+
+  </script>
 </body>
 
 </html>

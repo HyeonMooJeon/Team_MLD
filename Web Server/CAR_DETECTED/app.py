@@ -6,9 +6,10 @@ from flask.json import jsonify
 from random import sample
 import flask_googlecharts
 import json
+import re
 
 
-
+User_Name=""
 app = Flask(__name__)
 app.secret_key = "super secret key"
 vc = cv2.VideoCapture(0)
@@ -67,6 +68,19 @@ def show_goverment():
 
 
 
+@app.route("/show_illegal")
+def show_illegal():
+     cursor.execute("SELECT recognize.re_plate, recognize.re_time,  location.location_now, model.model_car FROM recognize LEFT JOIN go ON go.GO_License_Plate = recognize.re_plate INNER JOIN location ON recognize.re_location = location.location_key INNER JOIN model ON recognize.re_model = model.model_key where go.GO_License_Plate = recognize.re_plate;")
+     r = [dict((cursor.description[i][0], value)
+               for i, value in enumerate(row)) for row in cursor.fetchall()]
+
+     df = pd.DataFrame(r)
+     df = df.rename(columns={'location_now':'위치'})
+     df = df.rename(columns={'model_car':'차종'})
+     df = df.rename(columns={'re_plate':'차량번호'})
+     df = df.rename(columns={'re_time':'인식 시간'})
+
+     return df.to_html()
 
 
 
@@ -95,7 +109,7 @@ def login():
 @app.route("/intro")
 def intro():
     if 'user' in session:
-        return render_template('intro.html')
+        return render_template('intro.html', name = User_Name)
     else:
         return login()
 
@@ -108,12 +122,7 @@ def intro_not_regist():
 
 
 
-@app.route("/chart")
-def chart():
-    if 'user' in session:
-        return render_template('charts.html')
-    else:
-        index()
+
 
 
 
@@ -121,7 +130,7 @@ def chart():
 @app.route("/lookup")
 def lookup():
     if 'user' in session:
-        return render_template('lookup.html')
+        return render_template('lookup.html' ,name = User_Name)
     else:
         return render_template('login.html')
 
@@ -131,7 +140,7 @@ def lookup():
 @app.route("/user_manage")
 def user_manage():
     if 'user' in session:
-        return render_template('user_manage.html')
+        return render_template('user_manage.html' ,name = User_Name)
     else:
         index()
 
@@ -141,7 +150,7 @@ def user_manage():
 @app.route("/real_time")
 def real_time():
     if 'user' in session:
-        return render_template('real_time.html')
+        return render_template('real_time.html' , name = User_Name)
     else:
         index()
 
@@ -151,10 +160,9 @@ def real_time():
 @app.route("/DB_manage")
 def DB_manage():
     if 'user' in session:
-        return render_template('DB_manage.html')
+        return render_template('DB_manage.html' ,name = User_Name)
     else:
         index()
-
 
 
 
@@ -166,13 +174,13 @@ def logout():
 
 
 #홈페이지
+@app.route("/")
 @app.route("/home")
 def index():
     if session.get('user'):
-        return render_template('index.html')
+        return render_template('index.html' ,name = User_Name)
     else:
         return login()
-
 
 
 #비밀번호 분실
@@ -202,6 +210,8 @@ def register():
     return render_template('/register.html')
 
 
+
+
 @app.route("/register_user", methods=["POST"])
 def register_user():
     email = str(request.form["Email"])
@@ -228,40 +238,25 @@ def register_user():
         return render_template('error.html', err_code="Oops...", err_message1="비밀번호가 서로 다릅니다.",err_message2="다른 확인해주세요.")
 
 
-#정부 DB 가져오기
-@app.route("/GetGoverment")
-def goverment():
-     cursor.execute("SELECT go.GO_License_Plate, car_status.car_status_now, model.model_car FROM go  INNER JOIN car_status ON go.GO_car_state = car_status.car_status_key INNER JOIN model ON go.GO_car_model = model.model_key;")
-     r = [dict((cursor.description[i][0], value)
-               for i, value in enumerate(row)) for row in cursor.fetchall()]
-     return jsonify(r)
-
-@app.route("/GetRecognize")
-def GetRecognize():
-     cursor.execute("SELECT recognize.re_plate, location.location_now, model.model_car FROM recognize INNER JOIN location ON recognize.re_location = location.location_key INNER JOIN model ON recognize.re_model = model.model_key;")
-     r = [dict((cursor.description[i][0], value)
-               for i, value in enumerate(row)) for row in cursor.fetchall()]
-     return jsonify(r)
-
-
-@app.route("/Getillegal")
-def getilleal():
-     cursor.execute("SELECT recognize.re_plate, recognize.re_time,  location.location_now, model.model_car FROM recognize LEFT JOIN go ON go.GO_License_Plate = recognize.re_plate INNER JOIN location ON recognize.re_location = location.location_key INNER JOIN model ON recognize.re_model = model.model_key;")
-     r = [dict((cursor.description[i][0], value)
-               for i, value in enumerate(row)) for row in cursor.fetchall()]
-     return jsonify(r)
-
-
-@app.route("/ChkStatus", methods=["POST"])
+@app.route("/carStatus", methods=["POST"])
 def ChkStatus():
     LP = str(request.form["license_plate"])
+    print(LP)
 
     cursor.execute("SELECT recognize.re_plate, location.location_now, model.model_car, recognize.re_time FROM recognize INNER JOIN location ON recognize.re_location = location.location_key INNER JOIN model ON recognize.re_model = model.model_key where recognize.re_plate = '"+LP+"';")
-    data = cursor.fetchall()
-    if data:
-        return jsonify(data)
+    r = [dict((cursor.description[i][0], value)
+              for i, value in enumerate(row)) for row in cursor.fetchall()]
+    conn.commit()
+    print(r)
+
+    if r:
+        df = pd.DataFrame(r)
+        print(12345)
+        return df.to_html
     else:
         return render_template('error.html', err_code="Oops...", err_message1="인식된 차량이 없어요.",err_message2="기다려주세요.")
+
+
 
 
 @app.route("/login_CHK", methods=["POST"])
@@ -276,10 +271,21 @@ def CHK_login():
     #fetchall() 은 전부 가져오고 fetchone()은 한줄만 불러옴. 전부 가져와서 비교해야돼니깐..
     #대소 문자 구별이 안되게 로그인이 되고있음.. //charset="utf8"로 수정됨.
     if EmailCHK:
-        final_chk= cursor.execute("SELECT User_name FROM user WHERE Email='"+email+"' AND PW='"+PW+"' ")
+        cursor.execute("SELECT User_name FROM user WHERE Email='"+email+"' AND PW='"+PW+"' ")
+        final_chk = [dict((cursor.description[i][0], value)
+                  for i, value in enumerate(row)) for row in cursor.fetchall()]
+        split_data = json.dumps(final_chk, ensure_ascii=False)
+
+        #사용자 이름 알아내기 session['user']이걸로는 숫자 1만 나옴....큰따음표 사이로 split으로 나누어서 데이터 뽑아냄
         if final_chk:
             session['user'] = final_chk
-            return index()
+            #print(split_data)
+            data = split_data.split("\"")
+            print(data[3])
+            global User_Name
+            User_Name = data[3]
+
+            return render_template("index.html", name = User_Name)
         else:
             return render_template('error.html', err_code="Oops...", err_message1="비밀번호가 틀렸습니다..",err_message2="다시 입력해 주세요.")
     else:
@@ -314,8 +320,8 @@ def data():
     return jsonData
 
 
-@app.route('/test', methods=["GET", "POST"])
-def test():
+@app.route('/chart', methods=["GET", "POST"])
+def chart():
     cursor.execute(
         "select count(case when re_location=1 then 1 end) as 'location1',count(case when re_location=2 then 1 end) as 'location2',count(case when re_location=3 then 1 end) as 'location3'from recognize;")
     r = [dict((cursor.description[i][0], value)
@@ -325,6 +331,7 @@ def test():
     location1 = 0
     location2 = 0
     location3 = 0
+    location4 = 0
 
     split_data = json_data.split(": ")
     i=0
@@ -334,7 +341,7 @@ def test():
             continue
         recognize = 0
         for k in temp:
-            print(k)
+            #print(k)
             if CHKnumber(k):
                 if recognize != 0:
                     recognize = recognize*10
@@ -347,10 +354,14 @@ def test():
             location2 = recognize
         if i==3:
             location3 = recognize
+        if i==4:
+            location4 = recognize
+
         #print(recognize,"그리고",i)
         i=i+1
 
-    return render_template('test.html', loc1 = location1, loc2 = location2, loc3 = location3, test = json_data)
+
+    return render_template('charts.html', loc1 = location1, loc2 = location2, loc3 = location3, loc4 = location4, name= User_Name)
 
 def CHKnumber(i):
     try:

@@ -1,64 +1,25 @@
 <!doctype html>
 <html lang="ko">
-<head>
-<meta charset="utf-8">
-<title>구글 차트 : 컬럼차트 : 컬럼차트 기초 그리고 시작</title>
-<script src="http://code.jquery.com/jquery-latest.min.js"></script>
-</head>
-<body>
+    <head>
+        <meta charset="utf-8">
+        <title>button Test</title>
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+        <script>
 
-<!-- 예제 시작 -->
+            $( document ).ready( function() {
 
-<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
-<script>
-	// 차트를 사용하기 위한 준비입니다.
-	google.charts.load('current', {packages:['corechart']});
-</script>
+                $("#button").click(function(){
 
-<div>
+                        alert($(this).attr('value'));
 
-</div>
-<div id="chart_div"></div><!-- 여기에 차트가 생성됩니다. -->
-<div>
-    {{test}}
-</div>
+                });
 
+            });
 
-<script>
-// 로딩 완료시 함수 실행하여 차트 생성
-google.charts.setOnLoadCallback(drawChart);
-
-function drawChart() {
-
-
-	// 차트 데이터 설정
-	var data = google.visualization.arrayToDataTable([
-		['항목', '검거 횟수'], // 항목 정의
-		['선문대학교', {{loc1}}],
-		['지중해마을', {{loc2}}],
-		['학교 정문', {{loc3}}],
-	]);
-
-	// 그래프 옵션
-	var options = {
-		title : '검거 횟수', // 제목
-		width : 600, // 가로 px
-		height : 400, // 세로 px
-		bar : {
-			groupWidth : '80%' // 그래프 너비 설정 %
-		},
-		legend : {
-			position : 'none' // 항목 표시 여부 (현재 설정은 안함)
-		}
-	};
-
-	var chart = new google.visualization.ColumnChart(document.getElementById('chart_div'));
-	chart.draw(data, options);
-}
-</script>
-
-<!-- 예제 종료 -->
-
-
-</body>
+        </script>
+    </head>
+    <body>
+        <input type="text" id="test">
+        <button id="button" value=test 클릭 </button>
+    </body>
 </html>
