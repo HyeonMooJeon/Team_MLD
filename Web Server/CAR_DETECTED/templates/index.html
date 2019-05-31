@@ -22,7 +22,29 @@
 </head>
 
 <body id="page-top">
-
+<style>
+  *{margin:0;padding:0;}
+  ul,li{list-style:none;}
+  #slide{height:400px;position:relative;overflow:hidden;}
+  #slide ul{width:400%;height:100%;transition:1s;}
+  #slide ul:after{content:"";display:block;clear:both;}
+  #slide li{float:left;width:25%;height:100%;}
+  #slide li:nth-child(1){background:#faa;}
+  #slide li:nth-child(2){background:#ffa;}
+  #slide li:nth-child(3){background:#faF;}
+  #slide li:nth-child(4){background:#aaf;}
+  #slide input{display:none;}
+  #slide label{display:inline-block;vertical-align:middle;width:10px;height:10px;border:2px solid #666;background:#fff;transition:0.3s;border-radius:50%;cursor:pointer;}
+  #slide .pos{text-align:center;position:absolute;bottom:10px;left:0;width:100%;text-align:center;}
+  #pos1:checked~ul{margin-left:0%;}
+  #pos2:checked~ul{margin-left:-100%;}
+  #pos3:checked~ul{margin-left:-200%;}
+  #pos4:checked~ul{margin-left:-300%;}
+  #pos1:checked~.pos>label:nth-child(1){background:#666;}
+  #pos2:checked~.pos>label:nth-child(2){background:#666;}
+  #pos3:checked~.pos>label:nth-child(3){background:#666;}
+  #pos4:checked~.pos>label:nth-child(4){background:#666;}
+</style>
   <!-- Page Wrapper -->
   <div id="wrapper">
 
@@ -31,8 +53,8 @@
 
       <!-- Sidebar - Brand -->
       <a class="sidebar-brand d-flex align-items-center justify-content-center" href="home">
-        <div class="sidebar-brand-icon rotate-n-15">
-          <i class="fas fa-laugh-wink"></i>
+        <div class="sidebar-brand-icon">
+          <img src="/static/img/car_icon.png">
         </div>
         <div class="sidebar-brand-text mx-3">차량 인식</div>
       </a>
@@ -57,7 +79,7 @@
 
       <!-- Nav Item - Charts -->
       <li class="nav-item">
-        <a class="nav-link" href="intro">
+        <a class="nav-link" href="intro_main">
           <i class="fas fa-fw fa-chart-area"></i>
           <span>SW소개</span></a>
       </li>
@@ -85,28 +107,7 @@
         </div>
       </li>
 
-      <!-- Divider -->
-      <hr class="sidebar-divider">
 
-      <!-- Heading -->
-      <div class="sidebar-heading">
-        관리자
-      </div>
-
-
-      <!-- Nav Item - Charts -->
-      <li class="nav-item">
-        <a class="nav-link" href="user_manage">
-          <i class="fas fa-fw fa-chart-area"></i>
-          <span>회원 관리</span></a>
-      </li>
-
-      <!-- Nav Item - Tables -->
-      <li class="nav-item">
-        <a class="nav-link" href="DB_manage">
-          <i class="fas fa-fw fa-table"></i>
-          <span>DB 관리</span></a>
-      </li>
 
       <!-- Divider -->
       <hr class="sidebar-divider d-none d-md-block">
@@ -165,13 +166,27 @@
             <div class="col-xl-12 col-lg-12">
               <div class="card shadow mb-4">
                 <div class="card-header py-3">
-                  <h6 class="m-0 font-weight-bold text-primary">인사말</h6>
+                  <h6 class="m-0 font-weight-bold text-primary">공지사항</h6>
                 </div>
                 <div class="card-body">
-                  <div class="text-center">
-                    <img class="img-fluid px-3 px-sm-4 mt-3 mb-4" style="width: 25rem;" src="/static/img/undraw_posting_photo.svg" alt="">
-                  </div>
-                  <p>해당 SW는 <a target="_blank" rel="nofollow" href="/intro">Team_MLD</a>에서 만들었고 해당 SW는 <a target="_blank" rel="nofollow" href="/intro">각종 기능</a>을 통해 제작되었습니다. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~여기에다가 추가로 글 작성</p>
+
+                  <!-- 슬라이드 배너-->
+<div id="slide">
+  <input type="radio" name="pos" id="pos1" checked>
+  <input type="radio" name="pos" id="pos2">
+  <input type="radio" name="pos" id="pos3">
+  <ul>
+    <li><a href="https://emissiongrade.mecar.or.kr/"><img class="image-fit" src="static/img/gas_grade.png" height="400px" width="100%"></a></li>
+    <li><a href="http://www.korea.kr/news/cardnewsView.do?newsId=148855936#cardnews"><img class="image-fit" src="static/img/payback.png" height="400px" width="100%"></a></li>
+    <li><a href="http://www.me.go.kr/mamo/web/index.do?menuId=16208"><img class="image-fit" src="static/img/fee.jpg" height="400px" width="100%"></a></li>
+  </ul>
+  <p class="pos">
+    <label for="pos1"></label>
+    <label for="pos2"></label>
+    <label for="pos3"></label>
+  </p>
+</div>
+                  <!-- 배너 끝-->
 
                 </div>
               </div>
@@ -180,47 +195,20 @@
           <div class="row">
 
             <!-- Area Chart -->
-            <div class="col-xl-8 col-lg-7">
+            <div class="col-xl-12 col-lg-12">
               <div class="card shadow mb-4">
                 <!-- Card Header - Dropdown -->
                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">이번주 검거율</h6>
+                  <h6 class="m-0 font-weight-bold text-primary">이번주 공지사항</h6>
                 </div>
                 <!-- Card Body -->
                 <div class="card-body">
-                  <div class="chart-area">
-                    <canvas id="myAreaChart"></canvas>
-                  </div>
+                  <p>이번주 공지사항입니다.</p>
                 </div>
               </div>
             </div>
 
-            <!-- Pie Chart -->
-            <div class="col-xl-4 col-lg-5">
-              <div class="card shadow mb-4">
-                <!-- Card Header - Dropdown -->
-                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                  <h6 class="m-0 font-weight-bold text-primary">검출 위치</h6>
-                </div>
-                <!-- Card Body -->
-                <div class="card-body">
-                  <div class="chart-pie pt-4 pb-2">
-                    <canvas id="myPieChart"></canvas>
-                  </div>
-                  <div class="mt-4 text-center small">
-                    <span class="mr-2">
-                      <i class="fas fa-circle text-primary"></i> 선문대
-                    </span>
-                    <span class="mr-2">
-                      <i class="fas fa-circle text-success"></i> 현충사
-                    </span>
-                    <span class="mr-2">
-                      <i class="fas fa-circle text-info"></i> 트라
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
+
           </div>
 
 

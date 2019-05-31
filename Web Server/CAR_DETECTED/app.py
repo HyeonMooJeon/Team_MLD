@@ -15,7 +15,7 @@ app.secret_key = "super secret key"
 vc = cv2.VideoCapture(0)
 #DB로부터 데이터를 받을때 ASCII코드로 바뀌는걸 방지.
 app.config['JSON_AS_ASCII'] = False
-conn = MySQLdb.connect(host="localhost", user="root", password="sm435", db="team_mld", charset='utf8')
+conn = MySQLdb.connect(host="localhost", user="root", password="root", db="team_mld", charset='utf8')
 cursor = conn.cursor()
 
 
@@ -47,7 +47,7 @@ def show_Recognize():
     df = df.rename(columns={'model_car': '차량 모델'})
     df = df.rename(columns={'re_time': '인식된 시간'})
 
-    return df.to_html()
+    return render_template("lookup.html", tables=[df.to_html(classes='data')], titles="인식차량 확인하기")
 
 
 
@@ -64,11 +64,11 @@ def show_goverment():
      df = df.rename(columns={'model_car': '차량 모델'})
 
 
-     return df.to_html()
+     return render_template("lookup.html", tables=[df.to_html(classes='data')], titles="정부 데이터베이스 확인하기")
 
 
 
-@app.route("/show_illegal")
+@app.route("/show_illegal", methods=("POST", "GET"))
 def show_illegal():
      cursor.execute("SELECT recognize.re_plate, recognize.re_time,  location.location_now, model.model_car FROM recognize LEFT JOIN go ON go.GO_License_Plate = recognize.re_plate INNER JOIN location ON recognize.re_location = location.location_key INNER JOIN model ON recognize.re_model = model.model_key where go.GO_License_Plate = recognize.re_plate;")
      r = [dict((cursor.description[i][0], value)
@@ -80,7 +80,8 @@ def show_illegal():
      df = df.rename(columns={'re_plate':'차량번호'})
      df = df.rename(columns={'re_time':'인식 시간'})
 
-     return df.to_html()
+
+     return render_template("lookup.html", tables=[df.to_html(classes='data')], titles="범죄차량 확인하기")
 
 
 
@@ -106,34 +107,13 @@ def login():
     return render_template('/login.html')
 
 
-@app.route("/intro")
-def intro():
-    if 'user' in session:
-        return render_template('intro.html', name = User_Name)
-    else:
-        return login()
-
-
-
-@app.route("/intro_not_regist")
-def intro_not_regist():
-     return render_template('intro_not_regist.html')
-
-
-
-
-
-
-
-
 #차량 검색
 @app.route("/lookup")
 def lookup():
     if 'user' in session:
-        return render_template('lookup.html' ,name = User_Name)
+        return render_template("lookup.html" ,name = User_Name)
     else:
         return render_template('login.html')
-
 
 
 #사용자 관리
@@ -194,7 +174,7 @@ def show_my_password():
     email = str(request.form["Email"])
     name = str(request.form["real_name"])
     if len(email) == 0 or len(name) == 0:
-        return render_template('error.html', err_code="FAIL.", err_message1="형식을 마저 입력해주세요.", err_message2="다시 확인해주세요")
+        return render_template('error.html', err_code="FAIL", err_message1="형식을 마저 입력해주세요.", err_message2="다시 확인해주세요")
     cursor.execute("SELECT PW FROM user where Email='"+email+"' AND User_name='"+name+"'")
     password = cursor.fetchall()
     if password:
@@ -219,23 +199,23 @@ def register_user():
     PW = str(request.form["Password"])
     CHK_PW = str(request.form["Password_CHK"])
     if len(email) == 0 or len(PW) == 0 or len(name) == 0 or len(CHK_PW) == 0:
-        return render_template('error.html', err_code="Oops...", err_message1="위의 형식이 비어있습니다.", err_message2="형식을 다 입력해주세요.")
+        return render_template('error.html', err_code="FAIL", err_message1="위의 형식이 비어있습니다.", err_message2="형식을 다 입력해주세요.")
 
     if len(PW) < 4:
-        return render_template('error.html', err_code="Oops...", err_message1="비밀번호를 재설정 해주세요.", err_message2="최소 4글자 이상으로 해주세요.")
+        return render_template('error.html', err_code="FAIL", err_message1="비밀번호를 재설정 해주세요.", err_message2="최소 4글자 이상으로 해주세요.")
 
     if PW == CHK_PW:
         cursor.execute("select User_name from user where Email='"+email+"'")
         CHK = cursor.fetchall()
         if CHK:
-            return render_template('error.html', err_code="Oops...", err_message1="해당 이메일이 존재합니다.", err_message2="다른 이메일을 입력해주세요.")
+            return render_template('error.html', err_code="FAIL", err_message1="해당 이메일이 존재합니다.", err_message2="다른 이메일을 입력해주세요.")
         else:
             cursor.execute("INSERT INTO user(Email,PW,User_name) VALUE('"+email+"', '"+PW+"', '"+name+"')")
             conn.commit()
             #회원가입 완료는 alert사용해서 다시 완성할것.
             return "회원가입 완료"
     else:
-        return render_template('error.html', err_code="Oops...", err_message1="비밀번호가 서로 다릅니다.",err_message2="다른 확인해주세요.")
+        return render_template('error.html', err_code="FAIL", err_message1="비밀번호가 서로 다릅니다.",err_message2="다른 확인해주세요.")
 
 
 @app.route("/carStatus", methods=["POST"])
@@ -254,7 +234,7 @@ def ChkStatus():
         print(12345)
         return df.to_html
     else:
-        return render_template('error.html', err_code="Oops...", err_message1="인식된 차량이 없어요.",err_message2="기다려주세요.")
+        return render_template('error.html', err_code="FAIL", err_message1="인식된 차량이 없어요.",err_message2="기다려주세요.")
 
 
 
@@ -264,7 +244,7 @@ def CHK_login():
     email = str(request.form["Email"])
     PW = str(request.form["Password"])
     if len(email) == 0 or len(PW) == 0:
-        return render_template('error.html', err_code="Oops...", err_message1="형식이 비어있습니다.", err_message2="형식을 다 입력해주세요.")
+        return render_template('error.html', err_code="FAIL", err_message1="형식이 비어있습니다.", err_message2="형식을 다 입력해주세요.")
 
     cursor.execute("SELECT User_name FROM user WHERE Email='"+email+"'")
     EmailCHK = cursor.fetchall()
@@ -287,9 +267,9 @@ def CHK_login():
 
             return render_template("index.html", name = User_Name)
         else:
-            return render_template('error.html', err_code="Oops...", err_message1="비밀번호가 틀렸습니다..",err_message2="다시 입력해 주세요.")
+            return render_template('error.html', err_code="FAIL", err_message1="비밀번호가 틀렸습니다..",err_message2="다시 입력해 주세요.")
     else:
-            return render_template('error.html', err_code="Oops...", err_message1="비밀번호나 이메일이 틀렸습니다.",err_message2="다시 입력해 주세요.")
+            return render_template('error.html', err_code="FAIL", err_message1="비밀번호나 이메일이 틀렸습니다.",err_message2="다시 입력해 주세요.")
 
 
 #정부 파일 저장하는 로직
@@ -318,6 +298,10 @@ def data():
     conn.commit()
 
     return jsonData
+
+@app.route('/intro_main')
+def intro_main():
+    return render_template('intro_main.html')
 
 
 @app.route('/chart', methods=["GET", "POST"])
