@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -19,6 +19,25 @@
   <!-- Custom styles for this template-->
   <link href="/static/css/sb-admin-2.min.css" rel="stylesheet">
 
+
+    <style type="text/css">
+
+        table {
+            width: 75%;
+            border-bottom: 1px solid green;
+            border-top: 1px solid green;
+            margin: 30px 30px 30px 30px;
+            border-collapse: collapse;
+        }
+        tr, td, th {
+            border-bottom: 1px solid green;
+            border-top: 1px solid green;
+            border-right:hidden;
+            border-left:hidden;
+            padding: 20px 20px 20px 20px;
+            text-align: center;
+        }
+    </style>
 </head>
 
 <body id="page-top">
@@ -162,48 +181,55 @@
         <!-- Begin Page Content -->
         <div class="container-fluid">
 
+            <table>
+                <tr>
+                    <td>
+                        <a href="show_illegal" class="btn btn-secondary btn-icon-split">
+                            <span class="icon text-white-50">
+                                <i class="fas fa-arrow-right"></i>
+                            </span>
+                            <span class="text">범죄 차량 확인</span>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="Show_recognize" class="btn btn-secondary btn-icon-split">
+                            <span class="icon text-white-50">
+                                <i class="fas fa-arrow-right"></i>
+                            </span>
+                            <span class="text">인식 차량 확인하기</span>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="Show_Goverment" class="btn btn-secondary btn-icon-split">
+                            <span class="icon text-white-50">
+                                <i class="fas fa-arrow-right"></i>
+                            </span>
+                            <span class="text">정부 DB 확인하기</span>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="GovINFO" class="btn btn-secondary btn-icon-split">
+                            <span class="icon text-white-50">
+                                <i class="fas fa-arrow-right"></i>
+                            </span>
+                            <span class="text">정부 DB 다운받기</span>
+                        </a>
+                    </td>
 
-
-           <a href="show_illegal" class="btn btn-secondary btn-icon-split">
-                    <span class="icon text-white-50">
-                      <i class="fas fa-arrow-right"></i>
-                    </span>
-                    <span class="text">범죄 차량 확인</span>
-          </a>
-
-          <a href="Show_recognize" class="btn btn-secondary btn-icon-split" >
-                    <span class="icon text-white-50">
-                      <i class="fas fa-arrow-right"></i>
-                    </span>
-                    <span class="text">인식 차량 확인하기</span>
-          </a>
-
-          <a href="Show_Goverment" class="btn btn-secondary btn-icon-split" >
-                    <span class="icon text-white-50">
-                      <i class="fas fa-arrow-right"></i>
-                    </span>
-                    <span class="text">정부 DB 확인하기</span>
-          </a>
-
-          <a href="GovINFO" class="btn btn-secondary btn-icon-split" >
-                    <span class="icon text-white-50">
-                      <i class="fas fa-arrow-right"></i>
-                    </span>
-                    <span class="text">정부 DB 다운받기</span>
-          </a>
-
-          <div class="row">
-
-            <form>
-              <form action="carStatus" method="post" class="user">
-                <input type="text" class="form-control-user" placeholder="차량 번호 입력" name = "license_plate">
-                <button type="submit" class="btn btn-primary btn-user btn-block">
-                  차량조회
-                </button>
-
-              </form>
-            </form>
-          </div>
+                    <td>
+                        <div class="row">
+                            <form >
+                                <form action="carStatus" method="post" class="user" >
+                                    <input type="text" class="form-control-user" placeholder="차량 번호 입력" name="license_plate" >
+                                    <button type="submit" class="btn btn-primary btn-user btn-block" >
+                                        차량조회
+                                    </button>
+                                </form>
+                            </form>
+                        </div>
+                    </td>
+                </tr>
+            </table>
             {% for table in tables %}
             {{titles}}
             {{ table|safe }}
