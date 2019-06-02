@@ -1265,6 +1265,7 @@ void mld_last(char *cfgfile, char *cfgfile_model, char *weightfile, char *weight
     int frame = 0;
     FRAME_NODE * list = NULL;
     int framecheck = 0;
+    struct tm *t;
 
     while (1) {
         ++count;
@@ -1312,7 +1313,6 @@ void mld_last(char *cfgfile, char *cfgfile_model, char *weightfile, char *weight
                 printf("count check\n");
                 sort_number(&newFrame);
                 time_t timer;
-                struct tm *t;
                 timer = time(NULL);
                 t = localtime(&timer);
                 sprintf(newFrame.path, "results/%d_%d_%d_%d_%d_%d_%d.jpg", t->tm_year + 1900, t->tm_mon + 1, t->tm_mday,
@@ -1341,12 +1341,18 @@ void mld_last(char *cfgfile, char *cfgfile_model, char *weightfile, char *weight
                     int *carnumber = get_car_info(list, test);
                     char *car_model = get_car_model(list);
                     FRAME_NODE *save_node = saveNode(&list, carnumber, car_model);
+                    int car_last[6] = { save_node->data.car.full[0].num,save_node->data.car.full[1].num, save_node->data.car.full[2].num,
+                   save_node->data.car.full[3].num ,save_node->data.car.full[4].num ,save_node->data.car.full[5].num };
                     save_cv_jpg(save_node->data.image, save_node->data.path);
                     save_cv_jpg(save_node->data.image_model, save_node->data.path_model);
                     printf("db test\n");
-                    if (insert_car_model(carnumber, save_node->data.car.model.name, save_node->data.time, save_node->data.path, save_node->data.path_model))
+                    if (insert_car_infomation(carnumber, save_node->data.car.model.name, save_node->data.time, save_node->data.path, save_node->data.path_model))
                         printf("insert error!!\n");
                     printf("db close\n");
+                    //free(save_node->data.image);
+                    //free(save_node->data.image_model);
+                    //free(save_node->next);
+                    //free(save_node);
                     releaselist(&list);
                     free(car_model);
                     free(carnumber);

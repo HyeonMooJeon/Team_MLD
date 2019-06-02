@@ -964,7 +964,7 @@ void mld_model(char *cfgfile, char *weightfile, float thresh, float hier_thresh,
     int frame = 0;
     FRAME_NODE * list = NULL;
     int framecheck = 0;
-
+    struct tm *t;
     while (1) {
         ++count;
         {
@@ -1018,7 +1018,6 @@ void mld_model(char *cfgfile, char *weightfile, float thresh, float hier_thresh,
                 //}
                 //printf("\n");
                 time_t timer;
-                struct tm *t;
                 timer = time(NULL);
                 t = localtime(&timer);
                 sprintf(newFrame.path, "results/%d_%d_%d_%d_%d_%d_%d.jpg", t->tm_year + 1900, t->tm_mon + 1, t->tm_mday,
@@ -1059,6 +1058,8 @@ void mld_model(char *cfgfile, char *weightfile, float thresh, float hier_thresh,
                     //    printf("insert error!!\n");
                     //printf("db close\n");
                     //print_list(&list);
+                    free(carnumber);
+                    free(car_model);
                     releaselist(&list);
                     printf("Release list\n");
                     list = NULL;
@@ -1265,9 +1266,9 @@ void mld_last(char *cfgfile, char *cfgfile_model,char *weightfile,char *weightfi
     int count = 0;
 
     
-    cvNamedWindow("Demo", CV_WINDOW_NORMAL);
-    cvMoveWindow("Demo", 0, 0);
-    cvResizeWindow("Demo", 1352, 1013);
+    //cvNamedWindow("Demo", CV_WINDOW_NORMAL);
+    //cvMoveWindow("Demo", 0, 0);
+    //cvResizeWindow("Demo", 1352, 1013);
 
     //cvNamedWindow("test", CV_WINDOW_NORMAL);
     //cvMoveWindow("test", 100, 150);
@@ -1377,7 +1378,7 @@ void mld_last(char *cfgfile, char *cfgfile_model,char *weightfile,char *weightfi
                 }
             }
 
-            show_image_cv_ipl(show_img, "Demo");
+            //show_image_cv_ipl(show_img, "Demo");
             //show_image_cv_ipl2(show_img2, "test");
             printf("can you come here22?\n");
             cvReleaseImage(&show_img);

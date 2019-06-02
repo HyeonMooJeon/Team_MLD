@@ -89,6 +89,7 @@ int insert_car_infomation(int *carnumber, char model[], char time[], char path_n
         sprintf(query, "insert into carnumber.recognize values('%d%d%d%d%d%d',(select model_key from carnumber.model where model_car = '%s'),'%s','%s', '%s',(select GO_car_state from carnumber.go where GO_License_Plate = '%d%d%d%d%d%d')); ",
             carnumber[0], carnumber[1], carnumber[2], carnumber[3], carnumber[4], carnumber[5], model, time, path_number, path_model, carnumber[0], carnumber[1], carnumber[2], carnumber[3], carnumber[4], carnumber[5]);
     printf("%s\n", query);
+    free(row);
     if (mysql_query(conn, query)) return 1;
     return 0;
 }
@@ -165,6 +166,8 @@ void releaselist(FRAME_NODE **list) {
     while (!(*list)->next == NULL) {
         remove = *list;
         *list = (*list)->next;
+        cvReleaseImage(&(remove->data.image));
+        cvReleaseImage(&(remove->data.image_model));
         free(remove);
     }
     free(*list);

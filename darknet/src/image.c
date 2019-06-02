@@ -698,8 +698,10 @@ void draw_detections_cv_v3_carmodel(IplImage* show_img, detection *dets, int num
                 //printf("%s : %d,%d,%.0f, %f, %f", names[j], j,i,dets[i].prob[j]*100, round((dets[i].bbox.x - dets[i].bbox.w / 2)*show_img->width),
                 //    round((dets[i].bbox.y - dets[i].bbox.h / 2)*show_img->height));
                 printf("%s: %.0f%% ", names[j], dets[i].prob[j] * 100);
+                if(frame->car.model.prod < dets[i].prob[j] * 100){
                 strcpy(frame->car.model.name, names[j]);
                 frame->car.model.prod = dets[i].prob[j] * 100;
+                }
                 //printf("%s : %d,%d,%.0f, %f, %f", names[j], j, i, dets[i].prob[j] * 100, round((dets[i].bbox.x - dets[i].bbox.w / 2)*show_img->width),
                 //round((dets[i].bbox.y - dets[i].bbox.h / 2)*show_img->height));
                 //insert code(인식횟수 확인)

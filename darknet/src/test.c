@@ -64,13 +64,18 @@ int insert_car_model(int *carnumber, char model[],char time[],char path_number[]
 }
 char* get_model(int *carnumber) {
     char query[200];
-    sprintf(query, "select model_car from carnumber.go as g, carnumber.model as m where g.GO_License_Plate = '%d%d%d%d%d%d' and g.GO_car_model = m.model_key",
+    //sprintf(query, "select model_car from carnumber.go as g, carnumber.model as m where g.GO_License_Plate = '%d%d%d%d%d%d' and g.GO_car_model = m.model_key",
+    //    carnumber[0], carnumber[1], carnumber[2], carnumber[3], carnumber[4], carnumber[5]);
+    sprintf(query, "select model_car from (select *,concat(left(GO_License_Plate, 2), right(GO_License_Plate, 4) )as plate from team_mld.go) as g, team_mld.model as m where g.plate = '%d%d%d%d%d%d' and g.GO_car_model = m.model_key",
         carnumber[0], carnumber[1], carnumber[2], carnumber[3], carnumber[4], carnumber[5]);
     mysql_query(conn, query);
     MYSQL_RES *result = mysql_store_result(conn);
     MYSQL_ROW row = mysql_fetch_row(result);
     mysql_free_result(result);
-    return row[0];
+    if (row == NULL) return NULL;
+    char *model = (char*)malloc(sizeof(char) * 20);
+    strcpy(model, row[0]);
+    return model;
 }
 //차량정보 저장(상태 및 모델 체크 후 삽입)
 int insert_car_infomation(int *carnumber, char model[], char time[], char path_number[], char path_model[]) {
@@ -82,14 +87,14 @@ int insert_car_infomation(int *carnumber, char model[], char time[], char path_n
     //MYSQL_ROW row = mysql_fetch_row(result);
     //mysql_free_result(result);
     char *row = get_model(carnumber);
-    printf("%s\n", row);
     if (row == NULL || strcmp(row, model))
-        sprintf(query, "insert into carnumber.recognize values('%d%d%d%d%d%d',(select model_key from carnumber.model where model_car = '%s'),'%s','%s', '%s', 102);",
+        sprintf(query, "insert into carnumber.recognize values('%d%d%d%d%d%d',(select model_key from carnumber.model where model_car = '%s'),'%s',1,'%s', '%s', 102);",
             carnumber[0], carnumber[1], carnumber[2], carnumber[3], carnumber[4], carnumber[5], model, time, path_number, path_model);
     else
-        sprintf(query, "insert into carnumber.recognize values('%d%d%d%d%d%d',(select model_key from carnumber.model where model_car = '%s'),'%s','%s', '%s',(select GO_car_state from carnumber.go where GO_License_Plate = '%d%d%d%d%d%d')); ",
+        sprintf(query, "insert into carnumber.recognize values('%d%d%d%d%d%d',(select model_key from carnumber.model where model_car = '%s'),'%s',1,'%s', '%s',(select GO_car_state from (select *,concat(left(GO_License_Plate, 2), right(GO_License_Plate, 4) ) as plate from team_mld.go)goes where plate = '%d%d%d%d%d%d')); ",
             carnumber[0], carnumber[1], carnumber[2], carnumber[3], carnumber[4], carnumber[5], model, time, path_number, path_model, carnumber[0], carnumber[1], carnumber[2], carnumber[3], carnumber[4], carnumber[5]);
     printf("%s\n", query);
+    free(row);
     if (mysql_query(conn, query)) return 1;
     return 0;
 }
@@ -134,6 +139,8 @@ void releaselist(FRAME_NODE **list) {
     while (!(*list)->next == NULL) {
         remove = *list;
         *list = (*list)->next;
+        cvReleaseImage(&(remove->data.image));
+        cvReleaseImage(&(remove->data.image_model));
         free(remove);
     }
     free(*list);

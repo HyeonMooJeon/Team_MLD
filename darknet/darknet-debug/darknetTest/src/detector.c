@@ -1538,13 +1538,13 @@ void run_detector(int argc, char **argv)
         free_list(options);
     }
     else if (0 == strcmp(argv[2], "mld_last")) {
-        char *datacfg_model = (argc > 7) ? argv[7] : 0;
-        char *cfg_model = (argc > 8) ? argv[8] : 0;
-        char *weights_model = (argc > 9) ? argv[9] : 0;
+        char *datacfg_model = (argc > 7) ? argv[10] : 0;
+        char *cfg_model = (argc > 8) ? argv[11] : 0;
+        char *weights_model = (argc > 9) ? argv[12] : 0;
         if (weights)
             if (strlen(weights) > 0)
                 if (weights[strlen(weights) - 1] == 0x0d) weights[strlen(weights) - 1] = 0;
-        char *filename2 = (argc > 10) ? argv[10] : 0;
+        char *filename2 = (argc > 10) ? argv[13] : NULL;
         printf("datafile : %s\n", datacfg_model);
         printf("cfgfile : %s\n", cfg_model);
         printf("weightsfile : %s\n", weights_model);
