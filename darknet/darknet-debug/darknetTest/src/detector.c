@@ -1476,10 +1476,10 @@ void run_detector(int argc, char **argv)
             if (weights[strlen(weights) - 1] == 0x0d) weights[strlen(weights) - 1] = 0;
     char *filename = (argc > 6) ? argv[6] : 0;
     //insert code(À¤Ä·,IPÄ«¸Þ¶ó ¿¬µ¿)
-    char *filename2 = (argc > 7) ? argv[7] : 0;
+    //char *filename2 = (argc > 7) ? argv[7] : 0;
     printf("Video Path : %s\n", filename);
     //printf("Video Path : index -> %d\n", cam_index);
-    printf("Video Path : %s\n", filename2);
+    //printf("Video Path : %s\n", filename2);
     //insert code(À¤Ä·,IPÄ«¸Þ¶ó ¿¬µ¿)
     if (0 == strcmp(argv[2], "test")) test_detector(datacfg, cfg, weights, filename, thresh, hier_thresh, dont_show, ext_output, save_labels, outfile);
     else if (0 == strcmp(argv[2], "train")) train_detector(datacfg, cfg, weights, gpus, ngpus, clear, dont_show, calc_map, mjpeg_port);
@@ -1502,6 +1502,8 @@ void run_detector(int argc, char **argv)
         free_list(options);
     }
     else if (0 == strcmp(argv[2], "mld")) {
+        char *filename2 = (argc > 7) ? argv[7] : 0;
+        printf("Video Path : %s\n", filename2);
         list *options = read_data_cfg(datacfg);
         int classes = option_find_int(options, "classes", 20);
         char *name_list = option_find_str(options, "names", "data/names.list");
@@ -1518,6 +1520,8 @@ void run_detector(int argc, char **argv)
         free_list(options);
     }
     else if (0 == strcmp(argv[2], "mld2")) {
+        char *filename2 = (argc > 7) ? argv[7] : 0;
+        printf("Video Path : %s\n", filename2);
         list *options = read_data_cfg(datacfg);
         int classes = option_find_int(options, "classes", 20);
         char *name_list = option_find_str(options, "names", "data/names.list");
@@ -1529,6 +1533,37 @@ void run_detector(int argc, char **argv)
             if (strlen(filename2) > 0)
                 if (filename2[strlen(filename2) - 1] == 0x0d) filename2[strlen(filename2) - 1] = 0;
         mld_model(cfg, weights, thresh, hier_thresh, cam_index, filename, names, classes, frame_skip, filename2);
+
+        free_list_contents_kvp(options);
+        free_list(options);
+    }
+    else if (0 == strcmp(argv[2], "mld_last")) {
+        char *datacfg_model = (argc > 7) ? argv[7] : 0;
+        char *cfg_model = (argc > 8) ? argv[8] : 0;
+        char *weights_model = (argc > 9) ? argv[9] : 0;
+        if (weights)
+            if (strlen(weights) > 0)
+                if (weights[strlen(weights) - 1] == 0x0d) weights[strlen(weights) - 1] = 0;
+        char *filename2 = (argc > 10) ? argv[10] : 0;
+        printf("datafile : %s\n", datacfg_model);
+        printf("cfgfile : %s\n", cfg_model);
+        printf("weightsfile : %s\n", weights_model);
+        printf("Video Path : %s\n", filename2);
+        list *options = read_data_cfg(datacfg);
+        int classes = option_find_int(options, "classes", 20);
+        char *name_list = option_find_str(options, "names", "data/names.list");
+        char **names = get_labels(name_list);
+        list *options_model = read_data_cfg(datacfg_model);
+        int classes_model = option_find_int(options_model, "classes", 20);
+        char *name_list_model = option_find_str(options_model, "names", "data/names.list");
+        char **names_model = get_labels(name_list_model);
+        if (filename)
+            if (strlen(filename) > 0)
+                if (filename[strlen(filename) - 1] == 0x0d) filename[strlen(filename) - 1] = 0;
+        if (filename2)
+            if (strlen(filename2) > 0)
+                if (filename2[strlen(filename2) - 1] == 0x0d) filename2[strlen(filename2) - 1] = 0;
+        mld_last(cfg, cfg_model, weights, weights_model, thresh, hier_thresh, cam_index, filename, names, names_model, classes, classes_model, frame_skip, filename2);
 
         free_list_contents_kvp(options);
         free_list(options);

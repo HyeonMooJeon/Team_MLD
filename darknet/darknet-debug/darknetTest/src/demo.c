@@ -1122,7 +1122,317 @@ void mld_model(char *cfgfile, char *weightfile, float thresh, float hier_thresh,
 
     printf("input video stream closed. \n");
 }
+void mld_last(char *cfgfile, char *cfgfile_model,char *weightfile,char *weightfile_model, float thresh, float hier_thresh, int cam_index, const char *filename, char **names,char **names_model,
+    int classes,int classes_model, int frame_skip, const char * filename2)
+{
+    in_img = det_img = show_img = NULL;
+    //skip = frame_skip;
+    image **alphabet = load_alphabet();
+    int delay = frame_skip;
+    demo_names = names;
+    demo_alphabet = alphabet;
+    demo_classes = classes;
+    demo_thresh = thresh;
 
+    in_img2 = det_img2 = show_img2 = NULL;
+    //skip = frame_skip;
+    image **alphabet2 = load_alphabet();
+    int delay2 = frame_skip;
+    demo_names2 = names_model;
+    demo_alphabet2 = alphabet2;
+    demo_classes2 = classes_model;
+    demo_thresh2 = thresh;
+
+    printf("MLD_LAST\n");
+    net = parse_network_cfg_custom(cfgfile, 1, 1);    // set batch=1
+    if (weightfile) {
+        load_weights(&net, weightfile);
+    }
+    //set_batch_network(&net, 1);
+    fuse_conv_batchnorm(net);
+    calculate_binary_weights(net);
+    net2 = parse_network_cfg_custom(cfgfile_model, 1, 1);    // set batch=1
+    if (weightfile_model) {
+        load_weights(&net2, weightfile_model);
+    }
+    //set_batch_network(&net, 1);
+    fuse_conv_batchnorm(net2);
+    calculate_binary_weights(net2);
+    srand(2222222);
+
+    if (filename) {
+        printf("video file: %s\n", filename);
+        cpp_video_capture = 1;
+        cap = get_capture_video_stream(filename);
+    }
+    else {
+        printf("Webcam index: %d\n", cam_index);
+        cpp_video_capture = 1;
+        cap = get_capture_webcam(cam_index);
+    }
+
+    if (filename2) {
+        printf("video file: %s\n", filename2);
+        cpp_video_capture2 = 1;
+        cap2 = get_capture_video_stream(filename2);
+    }
+    else {
+        printf("Webcam index: %d\n", cam_index);
+        cpp_video_capture = 1;
+        cap2 = get_capture_webcam(cam_index);
+    }
+
+    if (!cap) {
+#ifdef WIN32
+        printf("Check that you have copied file opencv_ffmpeg340_64.dll to the same directory where is darknet.exe \n");
+#endif
+        error("Couldn't connect to filename.\n");
+    }
+    if (!cap2) {
+#ifdef WIN32
+        printf("Check that you have copied file opencv_ffmpeg340_64.dll to the same directory where is darknet.exe \n");
+#endif
+        error("Couldn't connect to webcam.\n");
+    }
+
+    layer l = net.layers[net.n - 1];
+    int j;
+    layer l2 = net2.layers[net2.n - 1];
+    int j2;
+
+    avg = (float *)calloc(l.outputs, sizeof(float));
+    for (j = 0; j < NFRAMES; ++j) predictions[j] = (float *)calloc(l.outputs, sizeof(float));
+    for (j = 0; j < NFRAMES; ++j) images[j] = make_image(1, 1, 3);
+
+    avg2 = (float *)calloc(l2.outputs, sizeof(float));
+    for (j2 = 0; j2 < NFRAMES; ++j2) predictions2[j2] = (float *)calloc(l2.outputs, sizeof(float));
+    for (j2 = 0; j2 < NFRAMES; ++j2) images2[j2] = make_image(1, 1, 3);
+
+    if (l.classes != demo_classes) {
+        printf("Parameters don't match: in cfg-file classes=%d, in data-file classes=%d \n", l.classes, demo_classes);
+        getchar();
+        exit(0);
+    }
+
+    if (l2.classes != demo_classes2) {
+        printf("Parameters don't match: in cfg-file classes=%d, in data-file classes=%d \n", l2.classes, demo_classes2);
+        getchar();
+        exit(0);
+    }
+
+    flag_exit = 0;
+
+    pthread_t fetch_thread;
+    pthread_t detect_thread;
+
+    fetch_in_thread(0);
+    det_img = in_img;
+    det_s = in_s;
+
+    fetch_in_thread(0);
+    detect_in_thread(0);
+    det_img = in_img;
+    det_s = in_s;
+
+    for (j = 0; j < NFRAMES / 2; ++j) {
+        fetch_in_thread(0);
+        detect_in_thread(0);
+        det_img = in_img;
+        det_s = in_s;
+    }
+
+    flag_exit2 = 0;
+
+    pthread_t fetch_thread2;
+    pthread_t detect_thread2;
+
+    fetch_in_thread2(0);
+    det_img2 = in_img2;
+    det_s2 = in_s2;
+
+    fetch_in_thread2(0);
+    detect_in_thread2(0);
+    det_img2 = in_img2;
+    det_s2 = in_s2;
+
+    for (j = 0; j < NFRAMES / 2; ++j) {
+        fetch_in_thread2(0);
+        detect_in_thread2(0);
+        det_img2 = in_img2;
+        det_s2 = in_s2;
+    }
+
+    int count = 0;
+
+    
+    cvNamedWindow("Demo", CV_WINDOW_NORMAL);
+    cvMoveWindow("Demo", 0, 0);
+    cvResizeWindow("Demo", 1352, 1013);
+
+    //cvNamedWindow("test", CV_WINDOW_NORMAL);
+    //cvMoveWindow("test", 100, 150);
+    //cvResizeWindow("test", 1352, 1013);
+    
+
+    double before = get_wall_time();
+    double before2 = get_wall_time();
+
+    int frame = 0;
+    FRAME_NODE * list = NULL;
+    int framecheck = 0;
+
+    while (1) {
+        ++count;
+        {
+            if (pthread_create(&fetch_thread, 0, fetch_in_thread, 0)) error("Thread creation failed");
+            if (pthread_create(&detect_thread, 0, detect_in_thread, 0)) error("Thread creation failed");
+
+            if (pthread_create(&fetch_thread2, 0, fetch_in_thread2, 0)) error("Thread creation failed");
+            if (pthread_create(&detect_thread2, 0, detect_in_thread2, 0)) error("Thread creation failed");
+
+            float nms = .45;    // 0.4F
+            int local_nboxes = nboxes;
+            detection *local_dets = dets;
+
+            float nms2 = .45;    // 0.4F
+            int local_nboxes2 = nboxes2;
+            detection *local_dets2 = dets2;
+
+            //if (nms) do_nms_obj(local_dets, local_nboxes, l.classes, nms);    // bad results
+            if (nms) do_nms_sort(local_dets, local_nboxes, l.classes, nms);
+
+            if (nms2) do_nms_sort(local_dets2, local_nboxes2, l2.classes, nms2);
+            printf("1234\n");
+
+            printf("\033[2J");
+            printf("\033[1;1H");
+            printf("\nFPS:%.1f\n", fps);
+            printf("Objects:\n\n");
+
+
+            ++frame_id;
+            ++frame_id2;
+
+            printf("video frame number : %d\n", frame);
+            FRAME_INFO newFrame;
+            int countnumber = 0;
+            memset(&newFrame.car, 0, sizeof(CAR));
+
+            draw_detections_cv_v3(show_img, local_dets, local_nboxes, demo_thresh, demo_names, demo_alphabet, demo_classes, demo_ext_output, &newFrame, &countnumber);
+            free_detections(local_dets, local_nboxes);
+
+            draw_detections_cv_v3_carmodel(show_img2, local_dets2, local_nboxes2, demo_thresh2, demo_names2, demo_alphabet2, demo_classes2, demo_ext_output2, &newFrame);
+            free_detections(local_dets2, local_nboxes2);
+            frame++;
+
+            if (countnumber >= 6) {
+                printf("count check\n");
+                sort_number(&newFrame);
+                //정렬된 숫자 출력
+                //for (int i = 0; i < 6; i++) {
+                //    printf("%d", newFrame.car.full[i].num);
+                //}
+                //printf("\n");
+                time_t timer;
+                struct tm *t;
+                timer = time(NULL);
+                t = localtime(&timer);
+                sprintf(newFrame.path, "C:\\Users\\cps435\\Desktop\\test\\darknetTest\\build_win_debug\\Debug\\results\\%d_%d_%d_%d_%d_%d_%d.jpg", t->tm_year + 1900, t->tm_mon + 1, t->tm_mday,
+                    t->tm_hour, t->tm_min, t->tm_sec, frame);
+                sprintf(newFrame.path_model, "C:\\Users\\cps435\\Desktop\\test\\darknetTest\\build_win_debug\\Debug\\results\\model_%d_%d_%d_%d_%d_%d_%d.jpg", t->tm_year + 1900, t->tm_mon + 1, t->tm_mday,
+                    t->tm_hour, t->tm_min, t->tm_sec, frame);
+                sprintf(newFrame.time, "%d-%d-%d %d:%d:%d", t->tm_year + 1900, t->tm_mon + 1, t->tm_mday,
+                    t->tm_hour, t->tm_min, t->tm_sec);
+                IplImage* copy_img = cvCreateImage(cvSize(show_img->width, show_img->height), show_img->depth, show_img->nChannels);
+                IplImage* copy_img_model = cvCreateImage(cvSize(show_img2->width, show_img2->height), show_img2->depth, show_img2->nChannels);
+                cvCopy(show_img, copy_img, 0);
+                cvCopy(show_img2, copy_img_model, 0);
+                newFrame.image = copy_img;
+                newFrame.image_model = copy_img_model;
+                FRAME_NODE * newNode = create_node(newFrame);
+                //save_cv_jpg(newNode->data.image, newNode->data.path);
+                insert_frame(&list, newNode);
+                framecheck = 0;
+            }
+            else framecheck++;
+
+            if (framecheck > 5) {
+                printf("frame check\n");
+                if (!list == NULL && !list->next == NULL) {
+                    printf("list check\n");
+                    int test = get_total_node(list);
+                    int *carnumber = get_car_info(list, test);
+                    char *car_model = get_car_model(list);
+                    FRAME_NODE *save_node = saveNode(&list, carnumber, car_model);
+                    save_cv_jpg(save_node->data.image, save_node->data.path);
+                    save_cv_jpg(save_node->data.image_model, save_node->data.path_model);
+                    printf("carnumber : %d%d%d%d%d%d, model : %s, time : %s, path_number : %s, path_model : %s\n", carnumber[0], carnumber[1], carnumber[2], carnumber[3], carnumber[4], carnumber[5],
+                        save_node->data.car.model.name, save_node->data.time, save_node->data.path, save_node->data.path_model);
+                    free(carnumber);
+                    free(car_model);
+                    releaselist(&list);
+                    printf("Release list\n");
+                    list = NULL;
+                    printf("list null\n");
+                }
+            }
+
+            show_image_cv_ipl(show_img, "Demo");
+            //show_image_cv_ipl2(show_img2, "test");
+            printf("can you come here22?\n");
+            cvReleaseImage(&show_img);
+            cvReleaseImage(&show_img2);
+
+            pthread_join(fetch_thread, 0);
+            pthread_join(detect_thread, 0);
+
+            pthread_join(fetch_thread2, 0);
+            pthread_join(detect_thread2, 0);
+
+            if (flag_exit == 1) break;
+            if (flag_exit2 == 1) break;
+
+            if (delay == 0) {
+                show_img = det_img;
+            }
+            det_img = in_img;
+            det_s = in_s;
+
+            if (delay2 == 0) {
+                show_img2 = det_img2;
+            }
+            det_img2 = in_img2;
+            det_s2 = in_s2;
+        }
+
+        --delay;
+        --delay2;
+
+        if (delay < 0) {
+            delay = frame_skip;
+
+            //double after = get_wall_time();
+            //float curr = 1./(after - before);
+            double after = get_time_point();    // more accurate time measurements
+            float curr = 1000000. / (after - before);
+            fps = curr;
+            before = after;
+        }
+
+        if (delay2 < 0) {
+            delay2 = frame_skip;
+
+            //double after = get_wall_time();
+            //float curr = 1./(after - before);
+            double after2 = get_time_point();    // more accurate time measurements
+            float curr2 = 1000000. / (after2 - before2);
+            fps2 = curr2;
+            before2 = after2;
+        }
+    }
+
+    printf("input video stream closed. \n");
+}
 #else
 void demo(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int cam_index, const char *filename, char **names, int classes,
     int frame_skip, char *prefix, char *out_filename, int mjpeg_port, int json_port, int dont_show, int ext_output)

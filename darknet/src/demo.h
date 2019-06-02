@@ -10,6 +10,8 @@ void demo(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int 
 void mld(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int cam_index, const char *filename, char **names, int classes, int frame_skip, const char * filename2);
 void mld_model(char *cfgfile, char *weightfile, float thresh, float hier_thresh, int cam_index, const char *filename, char **names,
     int classes, int frame_skip, const char * filename2);
+void mld_last(char *cfgfile, char *cfgfile_model, char *weightfile, char *weightfile_model, float thresh, float hier_thresh, int cam_index, const char *filename, char **names, char **names_model,
+    int classes, int classes_model, int frame_skip, const char * filename2);
 #ifdef __cplusplus
 }
 #endif

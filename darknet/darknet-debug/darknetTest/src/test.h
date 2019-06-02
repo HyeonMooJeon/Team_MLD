@@ -21,7 +21,7 @@ typedef struct {
     IplImage* image;
     IplImage* image_model;
     char path[200];
-    char path_model[50];
+    char path_model[200];
     char time[50];
 }FRAME_INFO;
 typedef struct frame_node {

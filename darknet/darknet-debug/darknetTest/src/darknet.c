@@ -435,7 +435,7 @@ int main(int argc, char **argv)
 #ifdef _DEBUG
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 #endif
-    argc = 8;
+    argc = 11;
     //*argv = "C:\\Users\\cps435\\Desktop\\test\\darknetTest\\build_win_debug\\Debug\\darknet.exe detector demo data/carnumber2/obj-new16.data data/carnumber2/yolo-obj.cfg weights/yolo-obj_91000.weights data/carnumber2/cartest.mp4";
     /*
     int i;
@@ -446,19 +446,25 @@ int main(int argc, char **argv)
     */
     argv[0] = "C:\\Users\\cps435\\Desktop\\test\\darknetTest\\build_win_debug\\Debug\\darknet.exe";
     argv[1] = "detector";
-    argv[2] = "mld2";
+    argv[2] = "mld_last";
     //argv[3] = "C:\\Users\\cps435\\Desktop\\Loo\\Team_MLD\\darknet\\build\\darknet\\x64\\data\\coco.data";
     //argv[4] = "C:\\Users\\cps435\\Desktop\\Loo\\Team_MLD\\darknet\\build\\darknet\\x64\\cfg\\yolov3-tiny.cfg";
     //argv[5] = "C:\\Users\\cps435\\Desktop\\Loo\\Team_MLD\\darknet\\build\\darknet\\x64\\weights\\yolov3-tiny.weights";
-    argv[3] = "C:\\Users\\cps435\\Desktop\\Loo\\Team_MLD\\darknet\\build\\darknet\\x64\\data\\carnumber2\\obj-new16.data";
-    argv[4] = "C:\\Users\\cps435\\Desktop\\Loo\\Team_MLD\\darknet\\build\\darknet\\x64\\data\\carnumber2\\yolo-obj.cfg";
-    argv[5] = "C:\\Users\\cps435\\Desktop\\Loo\\Team_MLD\\darknet\\build\\darknet\\x64\\weights\\yolo-obj_91000.weights";
+    //argv[3] = "C:\\Users\\cps435\\Desktop\\Loo\\Team_MLD\\darknet\\build\\darknet\\x64\\data\\carnumber2\\obj-new16.data";
+    //argv[4] = "C:\\Users\\cps435\\Desktop\\Loo\\Team_MLD\\darknet\\build\\darknet\\x64\\data\\carnumber2\\yolo-obj.cfg";
+    //argv[5] = "C:\\Users\\cps435\\Desktop\\Loo\\Team_MLD\\darknet\\build\\darknet\\x64\\weights\\yolo-obj_91000.weights";
+    argv[3] = "C:\\Users\\cps435\\Desktop\\test\\darknetTest\\build_win_debug\\Debug\\data\\carnumber2\\obj-carnumber.data";
+    argv[4] = "C:\\Users\\cps435\\Desktop\\test\\darknetTest\\build_win_debug\\Debug\\data\\carnumber2\\yolo-obj-carnumber.cfg";
+    argv[5] = "C:\\Users\\cps435\\Desktop\\test\\darknetTest\\build_win_debug\\Debug\\data\\carnumber2\\yolo-obj_9000.weights";
     //argv[6] = "C:\\Users\\cps435\\Desktop\\Loo\\Team_MLD\\darknet\\build\\darknet\\x64\\data\\carnumber2\\imagetest.mp4";
     //argv[6] = "http://10.10.10.106:48927/videostream.cgi?user=admin&pwd=12345678";
     //argv[7] = "-c";
     //argv[8] = "0";
     argv[6] = "C:\\Users\\cps435\\Desktop\\Loo\\Team_MLD\\darknet\\build\\darknet\\x64\\data\\carnumber2\\numbertest.mp4";
-    argv[7] = "C:\\Users\\cps435\\Desktop\\Loo\\Team_MLD\\darknet\\build\\darknet\\x64\\data\\carnumber2\\cartest.mp4";
+    argv[7] = "C:\\Users\\cps435\\Desktop\\test\\darknetTest\\build_win_debug\\Debug\\data\\carnumber2\\obj-new16.data";
+    argv[8] = "C:\\Users\\cps435\\Desktop\\test\\darknetTest\\build_win_debug\\Debug\\data\\carnumber2\\yolo-obj.cfg";
+    argv[9] = "C:\\Users\\cps435\\Desktop\\test\\darknetTest\\build_win_debug\\Debug\\weights\\yolo-obj_91000.weights";
+    argv[10] = "C:\\Users\\cps435\\Desktop\\Loo\\Team_MLD\\darknet\\build\\darknet\\x64\\data\\carnumber2\\cartest.mp4";
 
     //test_resize("data/bad.jpg");
     //test_box();
