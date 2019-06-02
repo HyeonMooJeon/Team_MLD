@@ -5,14 +5,17 @@
 CREATE TABLE car_status (
   car_status_key int(3) NOT NULL AUTO_INCREMENT,
   car_status_now varchar(50) NOT NULL,
-  PRIMARY KEY (`car_status_key`,`car_status_now`)
+  PRIMARY KEY (`car_status_key`)
 )
 
 -정부 DB
 CREATE TABLE go (
   GO_car_model int(3) NOT NULL,
   GO_License_Plate varchar(8) NOT NULL,
-  GO_car_state int(3) NOT NULL
+  GO_car_state int(3) NOT NULL,
+  PRIMARY KEY (GO_License_Plate),
+  foreign key(GO_car_model) references model(model_key),
+  foreign key(GO_car_state) references car_status(car_status_key)
 ) 
 
 -범죄차량
@@ -46,6 +49,21 @@ CREATE TABLE recognize (
   file_location varchar(200) NOT NULL,
   re_index int(11) NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`re_index`)
+);
+-인식 차량 수정
+-인식 차량
+CREATE TABLE recognize (
+  re_plate varchar(8) NOT NULL,
+  re_model int(3) NOT NULL,
+  re_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  re_location int(3) NOT NULL,
+  file_location varchar(200) NOT NULL,
+  file_model_location varchar(200) NOT NULL,
+  re_status int(3) not null,
+  re_index int(11) NOT NULL AUTO_INCREMENT,
+  PRIMARY KEY (`re_index`),
+  foreign key(re_model) references model(model_key), 
+  foreign key(re_status) references car_status(car_status_key)
 );
 
 -사용자
