@@ -136,6 +136,10 @@ set @COUNT = 0;
 update recognize set re_index = @COUNT:=@COUNT+1;
 
 
+@한글 인식이 안되서 숫자만 뽑는 법.
+select concat(left(re_plate, 2), right(re_plate, 4) )as sample_plate from recognize;
+
+
 
 
 @인식된 차량 카운트하여 표시

@@ -19,32 +19,51 @@
   <!-- Custom styles for this template-->
   <link href="/static/css/sb-admin-2.min.css" rel="stylesheet">
 
+  <style type="text/css">
+	/* banner */
+	.banner {position: relative; width: 600px; height: 400px; top: 0px;  margin:0 auto; padding:0; overflow: hidden;}
+	.banner ul {position: absolute; margin: 0px; padding:0; list-style: none; }
+	.banner ul li {float: left; width: 600px; height: 400px; margin:0; padding:0;}
+
+</style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<script language="JavaScript">
+<!--
+	$(document).ready(function() {
+		var $banner = $(".banner").find("ul");
+
+		var $bannerWidth = $banner.children().outerWidth();//이미지의 폭
+		var $bannerHeight = $banner.children().outerHeight(); // 높이
+		var $length = $banner.children().length;//이미지의 갯수
+		var rollingId;
+
+		//정해진 초마다 함수 실행
+		rollingId = setInterval(function() { rollingStart(); }, 3000);//다음 이미지로 롤링 애니메이션 할 시간차
+
+		function rollingStart() {
+			$banner.css("width", $bannerWidth * $length + "px");
+			$banner.css("height", $bannerHeight + "px");
+			//alert(bannerHeight);
+			//배너의 좌측 위치를 옮겨 준다.
+			$banner.animate({left: - $bannerWidth + "px"}, 1500, function() { //숫자는 롤링 진행되는 시간이다.
+				//첫번째 이미지를 마지막 끝에 복사(이동이 아니라 복사)해서 추가한다.
+				$(this).append("<li>" + $(this).find("li:first").html() + "</li>");
+				//뒤로 복사된 첫번재 이미지는 필요 없으니 삭제한다.
+				$(this).find("li:first").remove();
+				//다음 움직임을 위해서 배너 좌측의 위치값을 초기화 한다.
+				$(this).css("left", 0);
+				//이 과정을 반복하면서 계속 롤링하는 배너를 만들 수 있다.
+			});
+		}
+	});
+//-->
+</script>
+
 </head>
 
 <body id="page-top">
-<style>
-  *{margin:0;padding:0;}
-  ul,li{list-style:none;}
-  #slide{height:400px;position:relative;overflow:hidden;}
-  #slide ul{width:400%;height:100%;transition:1s;}
-  #slide ul:after{content:"";display:block;clear:both;}
-  #slide li{float:left;width:25%;height:100%;}
-  #slide li:nth-child(1){background:#faa;}
-  #slide li:nth-child(2){background:#ffa;}
-  #slide li:nth-child(3){background:#faF;}
-  #slide li:nth-child(4){background:#aaf;}
-  #slide input{display:none;}
-  #slide label{display:inline-block;vertical-align:middle;width:10px;height:10px;border:2px solid #666;background:#fff;transition:0.3s;border-radius:50%;cursor:pointer;}
-  #slide .pos{text-align:center;position:absolute;bottom:10px;left:0;width:100%;text-align:center;}
-  #pos1:checked~ul{margin-left:0%;}
-  #pos2:checked~ul{margin-left:-100%;}
-  #pos3:checked~ul{margin-left:-200%;}
-  #pos4:checked~ul{margin-left:-300%;}
-  #pos1:checked~.pos>label:nth-child(1){background:#666;}
-  #pos2:checked~.pos>label:nth-child(2){background:#666;}
-  #pos3:checked~.pos>label:nth-child(3){background:#666;}
-  #pos4:checked~.pos>label:nth-child(4){background:#666;}
-</style>
+
   <!-- Page Wrapper -->
   <div id="wrapper">
 
@@ -171,21 +190,13 @@
                 <div class="card-body">
 
                   <!-- 슬라이드 배너-->
-<div id="slide">
-  <input type="radio" name="pos" id="pos1" checked>
-  <input type="radio" name="pos" id="pos2">
-  <input type="radio" name="pos" id="pos3">
-  <ul>
-    <li><a href="https://emissiongrade.mecar.or.kr/"><img class="image-fit" src="static/img/gas_grade.png" height="400px" width="100%"></a></li>
-    <li><a href="http://www.korea.kr/news/cardnewsView.do?newsId=148855936#cardnews"><img class="image-fit" src="static/img/payback.png" height="400px" width="100%"></a></li>
-    <li><a href="http://www.me.go.kr/mamo/web/index.do?menuId=16208"><img class="image-fit" src="static/img/fee.jpg" height="400px" width="100%"></a></li>
-  </ul>
-  <p class="pos">
-    <label for="pos1"></label>
-    <label for="pos2"></label>
-    <label for="pos3"></label>
-  </p>
-</div>
+		<div class="banner">
+			<ul>
+                    <li><p style="text-align: center;"><a href="https://emissiongrade.mecar.or.kr/"><img class="image-fit" src="static/img/gasCHK.png" height="400px" width="600px"></a></p></li>
+    <li><p style="text-align: center;"><a href="http://www.korea.kr/news/cardnewsView.do?newsId=148855936#cardnews"><img class="image-fit" src="static/img/pay_back.png" height="400px" width="600px"></a></p></li>
+    <li><p style="text-align: center;"><a href="http://www.me.go.kr/mamo/web/index.do?menuId=16208"><img class="image-fit" src="static/img/fee.jpg" height="400px" width="600px"></a></p></li>
+            </ul>
+		</div>
                   <!-- 배너 끝-->
 
                 </div>

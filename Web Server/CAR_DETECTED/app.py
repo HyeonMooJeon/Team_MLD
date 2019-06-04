@@ -3,11 +3,8 @@ from flask import Flask, render_template, request, Response, session
 import MySQLdb
 import cv2
 from flask.json import jsonify
-from random import sample
-import flask_googlecharts
 import json
-import re
-
+import webbrowser
 
 User_Name=""
 app = Flask(__name__)
@@ -15,7 +12,7 @@ app.secret_key = "super secret key"
 vc = cv2.VideoCapture(0)
 #DB로부터 데이터를 받을때 ASCII코드로 바뀌는걸 방지.
 app.config['JSON_AS_ASCII'] = False
-conn = MySQLdb.connect(host="localhost", user="root", password="sm435", db="team_mld", charset='utf8')
+conn = MySQLdb.connect(host="localhost", user="root", password="root", db="team_mld", charset='utf8')
 cursor = conn.cursor()
 
 
@@ -36,16 +33,21 @@ def page_error(error):
 #table형식으로 표시하는법.
 @app.route("/Show_recognize")
 def show_Recognize():
-    cursor.execute("SELECT recognize.re_plate, recognize.re_time,  location.location_now, model.model_car FROM recognize LEFT JOIN go ON go.GO_License_Plate = recognize.re_plate INNER JOIN location ON recognize.re_location = location.location_key INNER JOIN model ON recognize.re_model = model.model_key;")
+    cursor.execute("SELECT recognize.re_plate, recognize.re_time,  location.location_now, model.model_car, recognize.file_location, recognize.file_model_location, car_status.car_status_now  FROM recognize  LEFT JOIN go ON go.GO_License_Plate = recognize.re_plate  INNER JOIN location ON recognize.re_location = location.location_key  INNER JOIN model ON recognize.re_model = model.model_key INNER JOIN car_status ON car_status.car_status_key = recognize.re_status;")
     r = [dict((cursor.description[i][0], value)
               for i, value in enumerate(row))
          for row in cursor.fetchall()]
-
+    conn.commit()
     df = pd.DataFrame(r)
+    df.columns.name = '인덱스'
     df = df.rename(columns={'re_plate': '차량 번호'})
     df = df.rename(columns={'location_now': '위치'})
     df = df.rename(columns={'model_car': '차량 모델'})
     df = df.rename(columns={'re_time': '인식된 시간'})
+    df = df.rename(columns={'file_location': '인식된 차번'})
+    df = df.rename(columns={'file_model_location': '인식된 차종'})
+    df = df.rename(columns={'car_status_now': '범죄 유형'})
+
 
     return render_template("lookup.html", tables=[df.to_html(classes='data')], titles="인식차량 확인하기")
 
@@ -57,10 +59,13 @@ def show_goverment():
      r = [dict((cursor.description[i][0], value)
                for i, value in enumerate(row))
           for row in cursor.fetchall()]
+     conn.commit()
 
      df = pd.DataFrame(r)
+     df.columns.name = '인덱스'
+
      df = df.rename(columns={'GO_License_Plate': '차량 번호'})
-     df = df.rename(columns={'car_status_now': '차량 상태'})
+     df = df.rename(columns={'car_status_now': '범죄 유형'})
      df = df.rename(columns={'model_car': '차량 모델'})
 
 
@@ -70,15 +75,20 @@ def show_goverment():
 
 @app.route("/show_illegal", methods=("POST", "GET"))
 def show_illegal():
-     cursor.execute("SELECT recognize.re_plate, recognize.re_time,  location.location_now, model.model_car FROM recognize LEFT JOIN go ON go.GO_License_Plate = recognize.re_plate INNER JOIN location ON recognize.re_location = location.location_key INNER JOIN model ON recognize.re_model = model.model_key where go.GO_License_Plate = recognize.re_plate;")
+     cursor.execute("SELECT recognize.re_plate, recognize.re_time,  location.location_now, model.model_car, car_status.car_status_now FROM recognize LEFT JOIN go ON go.GO_License_Plate = recognize.re_plate INNER JOIN location ON recognize.re_location = location.location_key INNER JOIN model ON recognize.re_model = model.model_key INNER JOIN car_status ON recognize.re_status = car_status_key where go.GO_License_Plate = recognize.re_plate;")
      r = [dict((cursor.description[i][0], value)
+
                for i, value in enumerate(row)) for row in cursor.fetchall()]
+     conn.commit()
 
      df = pd.DataFrame(r)
+     df.columns.name = '인덱스'
+
      df = df.rename(columns={'location_now':'위치'})
      df = df.rename(columns={'model_car':'차종'})
      df = df.rename(columns={'re_plate':'차량번호'})
      df = df.rename(columns={'re_time':'인식 시간'})
+     df = df.rename(columns={'car_status_now':'범죄 유형'})
 
 
      return render_template("lookup.html", tables=[df.to_html(classes='data')], titles="범죄차량 확인하기")
@@ -116,15 +126,6 @@ def lookup():
         return render_template('login.html')
 
 
-#사용자 관리
-@app.route("/user_manage")
-def user_manage():
-    if 'user' in session:
-        return render_template('user_manage.html' ,name = User_Name)
-    else:
-        index()
-
-
 
 #실시간 영상
 @app.route("/real_time")
@@ -134,15 +135,6 @@ def real_time():
     else:
         index()
 
-
-
-#DB관리
-@app.route("/DB_manage")
-def DB_manage():
-    if 'user' in session:
-        return render_template('DB_manage.html' ,name = User_Name)
-    else:
-        index()
 
 
 
@@ -218,21 +210,32 @@ def register_user():
         return render_template('error.html', err_code="FAIL", err_message1="비밀번호가 서로 다릅니다.",err_message2="다른 확인해주세요.")
 
 
+#차량조회
 @app.route("/carStatus", methods=["POST"])
 def ChkStatus():
-    LP = str(request.form["license_plate"])
-    print(LP)
+    LP = str(request.form["LP"])
+    #print(LP)
 
     cursor.execute("SELECT recognize.re_plate, location.location_now, model.model_car, recognize.re_time FROM recognize INNER JOIN location ON recognize.re_location = location.location_key INNER JOIN model ON recognize.re_model = model.model_key where recognize.re_plate = '"+LP+"';")
     r = [dict((cursor.description[i][0], value)
               for i, value in enumerate(row)) for row in cursor.fetchall()]
     conn.commit()
-    print(r)
+    #print(r)
+    if len(r) == 0:
+        return render_template('error.html', err_code="FAIL", err_message1="데이터 형식이 비어있습니다..",err_message2="차번을 입력해주세요.")
 
     if r:
         df = pd.DataFrame(r)
-        print(12345)
-        return df.to_html
+        #print("test")
+        df.columns.name = '인덱스'
+
+        df = df.rename(columns={'re_plate': '차량 번호'})
+        df = df.rename(columns={'location_now': '위치'})
+        df = df.rename(columns={'model_car': '차량 모델'})
+        df = df.rename(columns={'re_time': '인식된 시간'})
+
+        return render_template("lookup.html", tables=[df.to_html(classes='data')], titles="인식차량 확인하기")
+
     else:
         return render_template('error.html', err_code="FAIL", err_message1="인식된 차량이 없어요.",err_message2="기다려주세요.")
 
@@ -281,6 +284,8 @@ def GovTable():
                         "INNER JOIN car_status ON go.GO_car_state = car_status.car_status_key "
                         "INNER JOIN model ON go.GO_car_model = model.model_key "
                         "into outfile 'C:/Users/Public/Goverment_Table.csv' fields terminated by ',' ;")
+        conn.commit()
+
     except (MySQLdb.Error, MySQLdb.Warning) as e:
         print(e)
     finally:
@@ -353,6 +358,10 @@ def CHKnumber(i):
         return True
     except ValueError:
         return False
+
+
+
+
 
 
 if __name__ == "__main__":
