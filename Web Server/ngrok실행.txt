@@ -1,0 +1,10 @@
+1. 실행시킨다.
+2. ngrok http 5000 을 입력.
+   만약 port번호가 8080이라면 5000대신 8080입력하면 됩니다.
+3. 실행시키고 나오는 Forwarding URL을 입력하면 나오게 됩니다.
+
+주의사항*
+세션 유지는 8시간이니 테스트나 뭐 할경우 8시간 이내 마무리 할수 있도록 합시다.
+
+다운로드
+https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip
