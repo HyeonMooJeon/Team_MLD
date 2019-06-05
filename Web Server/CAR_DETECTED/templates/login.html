@@ -18,7 +18,7 @@
 
   <!-- Custom styles for this template-->
   <link href="/static/css/sb-admin-2.min.css" rel="stylesheet">
-  <style>
+  <style type="text/css">
        body {
       }
       .bg {
@@ -27,93 +27,112 @@
           background-position: center center;
           background-size: cover;
       }
+
+      #videobcg {
+          position: absolute;
+          top: 0px;
+          left: 0px;
+          min-width: 100%;
+          min-height: 100%;
+          width: auto;
+          height: auto;
+          z-index: -1000;
+          overflow: hidden;
+          opacity: 1;
+      }
+
   </style>
 </head>
 
 <body class="bg">
 
-  <div class="container">
+    <video id="videobcg" role="presentation" preload="auto" autoplay="true" loop="loop" muted="muted" volume="0">
+        <source src="https://video.wixstatic.com/video/11062b_6743da5900054f1f8e69f53302930a6a/1080p/mp4/file.mp4" type="video/mp4">
+        <source src="https://video.wixstatic.com/video/11062b_6743da5900054f1f8e69f53302930a6a/1080p/mp4/file.mp4" type="video/webm">
+    </video>
 
-    <!-- Outer Row -->
-    <div class="row justify-content-center">
+    <div class="container">
 
-      <div class="col-xl-6 col-lg-6 col-md-9">
+        <!-- Outer Row -->
+        <div class="row justify-content-center">
 
-        <div class="card o-hidden border-0 shadow-lg my-5" style="background-color: rgba( 0, 0, 0, 0.0);" >
-                                        <!-- 로그인창 투명 해제하려먄 상단의 style 백그라운드 제거하시면됩니다. -->
-          <div class="card-body p-0">
-            <!-- Nested Row within Card Body -->
-            <div class="row">
-              <div class="col-lg-12">
-                <div class="p-5">
-                  <div class="text-center">
-                    <h3 class="h1 text-gray-900 mb-4">Login</h3>
-                  </div>
-                  <!-- 로그인 파트 -->
-                  <form action="login_CHK" method="POST" class="user">
-                      <input type="email" class="form-control form-control-user" name="Email" aria-describedby="emailHelp" placeholder="이메일을 입력해주세요...">
-                    <div class="form-group">
+            <div class="col-xl-6 col-lg-6 col-md-9">
+
+                <div class="card o-hidden border-0 shadow-lg my-5" style="background-color: rgba( 0, 0, 0, 0.0);">
+                    <!-- 로그인창 투명 해제하려먄 상단의 style 백그라운드 제거하시면됩니다. -->
+                    <div class="card-body p-0">
+                        <!-- Nested Row within Card Body -->
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="p-5">
+                                    <div class="text-center">
+                                        <h3 class="h1 text-gray-900 mb-4">Login</h3>
+                                    </div>
+                                    <!-- 로그인 파트 -->
+                                    <form action="login_CHK" method="POST" class="user">
+                                        <input type="email" class="form-control form-control-user" name="Email" aria-describedby="emailHelp" placeholder="이메일을 입력해주세요...">
+                                        <div class="form-group">
+                                        </div>
+                                        <input type="password" class="form-control form-control-user" name="Password" placeholder="비밀번호를 입력해주세요...">
+                                        <div class="form-group">
+                                        </div>
+                                        <!--E-mail기억하기 버튼 삭제
+                                        <div class="form-group">
+                                          <div class="custom-control custom-checkbox small">
+                                            <input type="checkbox" class="custom-control-input" id="customCheck">
+                                            <label class="custom-control-label" for="customCheck">기억하기</label>
+                                          </div>
+                                        </div>
+                                          -->
+                                        <!-- 여기 href에다가 로그인 기능이 있는곳으로 움겨야됩니다.. -->
+                                        <button type="submit" class="btn btn-primary btn-user btn-block">
+                                            로그인
+                                        </button>
+                                        <hr>
+                                        <a href="register" class="btn btn-google btn-user btn-block">
+                                            새로운 계정 생성
+                                        </a>
+                                        <a href="intro_main" class="btn btn-facebook btn-user btn-block">
+                                            프로그램 소개
+                                        </a>
+
+                                    </form>
+                                    <hr>
+                                    <div class="text-center">
+                                        <a class="small" href="forgot_password">비밀 번호를 잊어버리셨습니까?</a>
+                                    </div>
+                                    <!--
+                                    <div class="text-center">
+                                      <a class="small" href="forgot_password">관리자 로그인</a>
+                                    </div>
+                                    -->
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                      <input type="password" class="form-control form-control-user" name="Password" placeholder="비밀번호를 입력해주세요...">
-                    <div class="form-group">
-                    </div>
-                      <!--E-mail기억하기 버튼 삭제
-                    <div class="form-group">
-                      <div class="custom-control custom-checkbox small">
-                        <input type="checkbox" class="custom-control-input" id="customCheck">
-                        <label class="custom-control-label" for="customCheck">기억하기</label>
-                      </div>
-                    </div>
-                      -->
-                    <!-- 여기 href에다가 로그인 기능이 있는곳으로 움겨야됩니다.. -->
-                    <button type="submit" class="btn btn-primary btn-user btn-block">
-                      로그인
-                    </button>
-                    <hr>
-                    <a href="register" class="btn btn-google btn-user btn-block">
-                      새로운 계정 생성
-                    </a>
-                    <a href="intro_main" class="btn btn-facebook btn-user btn-block">
-                      프로그램 소개
-                    </a>
-
-                  </form>
-                  <hr>
-                  <div class="text-center">
-                    <a class="small" href="forgot_password">비밀 번호를 잊어버리셨습니까?</a>
-                  </div>
-                  <!--
-                  <div class="text-center">
-                    <a class="small" href="forgot_password">관리자 로그인</a>
-                  </div>
-                  -->
                 </div>
-              </div>
+
             </div>
-          </div>
+
         </div>
 
-      </div>
+
+        <div style="text-align:center">
+            <span style="color:white">Create by Team_MLD</span>
+        </div>
+    </div>
 
     </div>
 
+    <!-- Bootstrap core JavaScript-->
+    <script src="/static/vendor/jquery/jquery.min.js"></script>
+    <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
-      <div style="text-align:center">
-        <span style="color:white">Create by Team_MLD</span>
-      </div>
-    </div>
+    <!-- Core plugin JavaScript-->
+    <script src="/static/vendor/jquery-easing/jquery.easing.min.js"></script>
 
-  </div>
-
-  <!-- Bootstrap core JavaScript-->
-  <script src="/static/vendor/jquery/jquery.min.js"></script>
-  <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-
-  <!-- Core plugin JavaScript-->
-  <script src="/static/vendor/jquery-easing/jquery.easing.min.js"></script>
-
-  <!-- Custom scripts for all pages-->
-  <script src="/static/js/sb-admin-2.min.js"></script>
+    <!-- Custom scripts for all pages-->
+    <script src="/static/js/sb-admin-2.min.js"></script>
 
 </body>
 
