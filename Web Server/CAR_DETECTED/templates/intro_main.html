@@ -2,7 +2,7 @@
 
 <html>
 	<head>
-		<title>차량 인식 시스템 소개</title>
+		<title>YOLOCAR</title>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />  
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
@@ -19,6 +19,12 @@
 	.boxmargin{
 		margin: 20px;
 	}
+
+            ul {
+                width: auto;
+                #list-style-image: url('static/img/bulit_green.gif');
+                list-style-type: circle;
+            }
 	</style>
 
 	</head>
@@ -29,7 +35,7 @@
 				<div class="inner">
 					<nav>
 						<ul>
-							<li><a href="#intro"><p style="font-size:1.5em">반갑습니다.</p></a></li>
+							<li><a href="#intro"><p style="font-size:1.5em">YOLOCAR</p></a></li>
 							<li><a href="#one"><p style="font-size:1.5em">시스템 핵심 기술</p></a></li>
 							<li><a href="#two"><p style="font-size:1.5em">개발자</p></a></li>
 							<li><a href="#three"><p style="font-size:1.5em">개발내역</p></a></li>
@@ -45,10 +51,10 @@
 
 				<!-- Intro -->
 					<section id="intro" class="wrapper style1 fullscreen fade-up">
-						<div class="inner">
+						<div class="inner" style="width:100%;">
 							<p style="color: white; font-size:3em">환영합니다.</p>
 							<p style="color: white; font-size:1.5em"><span style="color: pink;">Team_MLD</span>에서 제작한 차량과 차종을 인식하는 프로그램을 소개하겠습니다.</p>
-							<p style="color: white; font-size:1.5em">차량을 인식하여 어떤 것을 할 수 있고, 어느 것이 가능한지 보여드리겠습니다.</p>
+							<p style="color: white; font-size:1.5em">차량을 인식하여 어떤 것을 할 수 있고, 이 프로그램이 사회에 어떤 영향을 가져올 수 있는지 보여드리겠습니다.</p>
 							<ul class="actions">
 								<li><a href="#one" class="button scrolly">다음</a></li>
 							</ul>
@@ -61,7 +67,7 @@
 							<a class="image-fit"><img src="static/img/pic03.jpg" alt="" data-position="top center" style="width: auto; height: 330px;"></a>
 							<div class="content">
 								<div class="inner">
-									<p style="color: white; font-size:3em">딥러닝 기술</p>
+									<p style="color: white; font-size:3em">YOLO를 통한 Deep Leaning</p>
 									<p style="color: white; font-size:1.5em">YOLO의 딥러닝 기술로 차량 및 차종을 인식하여 정보를 인식하여 추출해냅니다.</p>
 								</div>
 							</div>
@@ -82,14 +88,14 @@
 		<!--슬라이드1-->
 		<div class="item active" style = "padding: 100px 150px 0px 150px;"> 
 			<p style="color: pink; font-size:2em">YOLO</p>
-			<p style="color: white;"></span>YOLO는 훌륭한 개발자들이 개발한 Tensorflow, Caffe, Darknet 등의 딥러닝 오픈소스 프레임워크이다. YOLO는 사물 인식에 많이 사용되었으며, 그중 우리는 차량과 차번을 인식하는데 필요한 기술이라 생각하여 사용하기로 하였습니다. </p>
+			<p style="color: white;"></span>YOLO는 Tensorflow, Caffe, Darknet 등의 딥러닝 오픈소스 프레임워크이다. YOLO는 사물 인식에 많이 사용되고, 9천가지 이상의 다양한 물체를 인식할 수 있습니다. 그중 우리는 차량과 차번을 인식하는데 필요한 기술로 YOLO를 채택하여 사용하고 있습니다. </p>
 		</div>
 		<!--슬라이드1-->
 
 		<!--슬라이드2-->
 		<div class="item" style = "padding: 100px 150px 0px 150px;"> 
 			<p style="color: pink; font-size:2em">웹 카메라와 IP 카메라 및 동작</p>
-			<p style="color: white;"></span>YOLO를 통해 차량 및 차종을 인식할수 있도록 학습시킵니다. 샘플 데이터들을 하나하나 매핑하여 컴퓨터를 학습시킨뒤 그후 카메라를 통해 실시간으로 움직이는 차량에 대해 차종과 차번을 인식하여 실시간으로 데이터를 얻어냅니다.</p>
+			<p style="color: white;"></span>YOLO를 통해 차량 및 차종을 인식하여 라벨링된 데이터를 학습시켜 우리가 원하는 결과를 도출합니다. 샘플 데이터들을 하나하나 매핑하여 학습시킨후 카메라를 통해 실시간으로 움직이는 차량에 대해 차종과 차번을 인식하여 실시간으로 데이터를 추출합니다.</p>
 		</div>
 
 		<!--슬라이드2-->
@@ -113,8 +119,8 @@
 							<a class="image"><img src="static/img/pic01.jpg" alt="" data-position="top center" style="width: auto; height: 330px;"></a>
 							<div class="content">
 								<div class="inner">
-									<p style="color: white; font-size:3em">웹 서버</p>
-									<p style="color: white; font-size:1.5em">Flask 기반의 웹서버를 통한 접속</p>
+									<p style="color: white; font-size:3em">Web Server</p>
+                                    <p style="color: white; font-size:1.5em">Python - Flask FrameWork 기반의 Web Server를 Ngrok를 통해 호스팅하여 도메인으로 접속</p>
 								</div>
 							</div>
 						</section>
@@ -134,7 +140,7 @@
 		<!--슬라이드1-->
 		<div class="item active" style = "padding: 100px 150px 0px 150px;"> 
 			<p style="color: pink; font-size:2em">Flask</p>
-			<p style="color: white;"></span>플라스크(Flask)는 파이썬으로 작성된 마이크로 웹 프레임워크의 하나로 웹서버를 제작하는데 사용이 되었습니다. 특히 웹 서버단에서 계정관리를 하기위해 세션처리를 해주는 경우, 또는 비 정상적 접속을 막기 위해 사용하였습니다.</p>
+			<p style="color: white;"></span>플라스크(Flask)는 파이썬으로 작성된 마이크로 웹 프레임워크의 하나로 우리의 웹서버를 제작하는데 채택하여 사용이 하였습니다. 특히 웹 서버단에서 계정관리를 하기위해 세션처리를 해주는 경우, 또는 비 정상적 접속을 막기 위해 사용하였습니다.</p>
 		</div>
 		<!--슬라이드1-->
 
@@ -168,27 +174,48 @@
 				<!-- Two -->
 					<section id="two" class="wrapper style3 fullscreen fade-up">
 						<div class="inner">
-							<h2 style="color: white;">Developer(Team_MLD)</h2>
-							<p style="color: white;">천안 아산의 선문대학교 종합설계프로젝트 수업시간에 만들어진 팀으로 팀과의 협업 및 역활 배분을 확실히하여 프로젝트를 시작으로 맞은 역활에 최선을 다하여 프로젝트를 진행하였습니다.</p>
-							<div class="features">
-								<section>
-									<span class="icon major fa-code"></span>
-									<h3 style="color: white;">전현무 - 팀장</h3>
-									<p style="color: white;">MLD팀의 팀장으로서 리더십있게 팀원을 이끌며 팀의 전체적인 분위기 총괄<br>이길우 팀원과 딥러닝 파트 담당</p>
-								</section>
-								<section>
-									<span class="icon major fa-lock"></span>
-									<h3 style="color: white;">이길우 - 딥러닝</h3>
-									<p style="color: white;">딥러닝 파트에서 웹카메라 및 IP카메라로 부터 인식이 되도록 작성. (추가적으로 기입 부탁)</p>
-								</section>
-								<section>
-									<span class="icon major fa-cog"></span>
-									<h3 style="color: white;">정병철 - 웹서버</h3>
-									<p style="color: white;">Flask를 통한웹 서버 개발 및 HTML, CSS, JS를 이용하여 웹 서버 개발 하였으며, 차트, 데이터 테이블을 통한 데이터 도식화</p>
-								</section>
+							<h1 style="color: white;">Developer(Team_MLD)</h1>
+							<p style="color: white;"><font size="4">우리 개발진들은 천안 아산의 선문대학교 컴퓨터공학과의 차량 인식 개발 시스템 팀으로 팀과의 협업을 통해 성공적으로 프로젝트를 진행되고 있습니다.</font></p>
+							<div class="features" >
+                                <section>
+                                    <span class="icon major fa-code"></span>
+                                    <h3 style="color: white;">전현무 </h3>
+                                    <ul>
+                                        
+                                        <li>
+                                            <p style="color: white;">본 프로젝트의 팀장으로서 프로그램의 딥러닝 파트와 웹의 디자인을 맡아 리더십있게 팀원을 이끌며 팀의 전체적인 파트 분배와 관리를 총괄</p><br />
+                                        </li>
+                                        <li><font color="white" size="3">객체 학습 및 객체 인식, 웹 디자인</font></li>
+                                        <li> <font color="white" size="3">Sun Moon University 4th grade</font> </li>
+                                    </ul>
+                                </section>
+                                <section>
+                                    <span class="icon major fa-lock"></span>
+                                    <h3 style="color: white;">이길우 </h3>
+                                    <ul>
+
+                                        <li>
+                                            <p style="color: white;">딥러닝 파트에서 웹카메라 및 IP카메라로 부터 인식이 되도록 작성. (추가적으로 기입 부탁)</p>
+                                        </li>
+                                        <li><font color="white" size="3">객체 추출 및 추출된 객체 데이터 전송</font></li>
+                                        <li> <font color="white" size="3">Sun Moon University 4th grade</font> </li>
+                                    </ul>
+                                </section>
+                                <section>
+                                    <span class="icon major fa-cog"></span>
+                                    <h3 style="color: white;">정병철 </h3>
+                                    <ul>
+
+                                        <li>
+                                            <p style="color: white;">Flask를 통한웹 서버 개발 및 HTML, CSS, JS를 이용하여 웹 서버 개발 하였으며, 차트, 데이터 테이블을 통한 데이터 도식화</p>
+                                        </li>
+                                        <li><font color="white" size="3">웹 관리 및 개발, DB관리</font></li>
+                                        <li> <font color="white" size="3">Sun Moon University 4th grade</font> </li>
+                                    </ul>                   
+                                </section>
 								<section>
 									<span class="icon major fa-desktop"></span>
-									<h3 style="color: white;">류충현 - ??</h3>
+									<h3 style="color: white;">유충현 - ??</h3>
 									<p style="color: white;">내용 작성해주세요</p>
 								</section>
 							</div>
@@ -200,36 +227,37 @@
 					<div id="three" class="wrapper style1 fade-up">
 						<div class="inner">
 							<h2 style="color: white;">Personal Development details</h2>
-							<p style="color: white;">개인적 개발내역으로서 팀원이 아닌 개개인의 역활을 적음으로 어느 분야에서 어느 팀원이 활동하였는지 알아낼수 있습니다.</p>
+							<p style="color: white;">개인적 개발내역으로서 팀원이 아닌 개개인의 역할을 적음으로 어느 분야에서 어느 팀원이 활동하였는지 알아낼수 있습니다.</p>
 
 							<div class="features">
 								<div class ="boxmargin">
 									<h3 style="color: pink;">전현무 - 팀장</h3>
-									<p style="color: white;">개인적인 역활 적어주세요.</p>
+                                    <p style="color: white;">객체 학습 및 객체 인식, 웹 디자인</p>
 								</div>
 							</div>
 							<div class="features">
 
 								<div class ="boxmargin">
 									<h3 style="color: pink;">이길우</h3>
-									<p style="color: white;">개인적인 역활 적어주세요.</p>
+                                    <p style="color: white;">객체 추출 및 추출된 객체 데이터 전송</p>
 								</div>
 							</div>
 							<div class="features">
-								<div class ="boxmargin">
-									<h3 style="color: pink;">정병철</h3>
-									<p style="color: white;">
-										<span style="color: pink;">1.</span><a href="http://flask.pocoo.org/" style="color=blue;">Flask</a>를 통한 웹서버와 <a href="https://developer.mozilla.org/ko/docs/Learn/HTML/Introduction_to_HTML/Getting_started" style="color=blue;">HTML</a>과 연동 및 입력한 데이터를 웹서버로 전송하여 반응형으로 제작<br>
-										<span style="color: pink;">2.</span>요구사항 처리 및 데이터 정규화를 통한 데이터 추출 후 사용자가 요구한 데이터 제공<br>
-										<span style="color: pink;">3.</span><a style="color=pink">이길우</a> 팀원과 함께 <a href="https://www.mysql.com/" style="color=blue;">Database(MySQL)</a>를 설계하였으며, 샘플데이터 제작 후 테스팅 완료 <br>
-										<span style="color: pink;">4.</span>SW소개창 및 실행창은 기존의 탬플릿 사이트에서 인용하였으며, 필요한 요구사항 외의 기타 탬플릿 기능은 삭제 및 변경하여 사용</p>
-								</div>
+                                <div class="boxmargin">
+                                    <h3 style="color: pink;">정병철</h3>
+                                    <p style="color: white;">웹 관리 및 개발, DB관리<br>
+
+                                        <span style="color: pink;">1.</span><a href="http://flask.pocoo.org/" style="color=blue;">Flask</a>를 통한 웹서버와 <a href="https://developer.mozilla.org/ko/docs/Learn/HTML/Introduction_to_HTML/Getting_started" style="color=blue;">HTML</a>과 연동 및 입력한 데이터를 웹서버로 전송하여 반응형으로 제작<br>
+                                        <span style="color: pink;">2.</span>요구사항 처리 및 데이터 정규화를 통한 데이터 추출 후 사용자가 요구한 데이터 제공<br>
+                                        <span style="color: pink;">3.</span><a style="color=pink">이길우</a> 팀원과 함께 <a href="https://www.mysql.com/" style="color=blue;">Database(MySQL)</a>를 설계하였으며, 샘플데이터 제작 후 테스팅 완료 <br>
+                                        <span style="color: pink;">4.</span>SW소개창 및 실행창은 기존의 탬플릿 사이트에서 인용하였으며, 필요한 요구사항 외의 기타 탬플릿 기능은 삭제 및 변경하여 사용</p>
+                                </div>
 							</div>
 							<div class="features">
 
 								<div class ="boxmargin">
-									<h3 style="color: pink;">류충현</h3>
-									<p style="color: white;">개인적인 역활 적어주세요.</p>
+									<h3 style="color: pink;">유충현</h3>
+									<p style="color: white;">??</p>
 								</div>
 							</div>
 						</div>
@@ -240,7 +268,8 @@
 						<div class="inner">
 							<h2 style="color: white;">시작하기</h2>
 							<img src="static/img/start.jpg" alt="" data-position="25% 25%" />
-							<p style="color: white;">여기까지 Team_MLD에서 제작한 차량, 차종 인식 프로그램 입니다. 궁금한점이 더 있다면 <a style="color: pink;">terren_ghost@naver.com</a>으로 메일을 보내주시기 바랍니다.</p>
+                            
+							<p style="color: white;"><font size="4"> <br/><font size="6">Team_MLD</font>에서 제작한 미세먼지 저감 조치와 범죄의 감소를 위한 차량, 차종 인식 프로그램 입니다. <br />궁금한점이 더 있다면 <a style="color: pink;"><font size="6">Toringmessage@gmail.com</font></a>으로 메일을 보내주시기 바랍니다.<br /></font></p>
 							
 						
 							<ul class="actions">
