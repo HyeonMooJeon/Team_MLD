@@ -8,3 +8,7 @@
 
 다운로드
 https://bin.equinox.io/c/4VmDzA7iaHb/ngrok-stable-windows-amd64.zip
+
+ngrok authtoken 2FUWFdBf1oZ6qV5avTv2X_5EHFLQKbKoLQ11BrcuwTr
+
+추가시 분당 20회 연결을 40회 연결로 변경 가능함
