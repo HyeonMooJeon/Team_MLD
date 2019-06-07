@@ -25,6 +25,10 @@
 	.banner ul {position: absolute; margin: 0px; padding:0; list-style: none; }
 	.banner ul li {float: left; width: 600px; height: 400px; margin:0; padding:0;}
 
+
+
+
+
 </style>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
@@ -157,7 +161,34 @@
           <!-- Topbar Navbar -->
           <ul class="navbar-nav ml-auto">
 
+<li class="nav-item dropdown no-arrow mx-1">
+              <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                <i class="fas fa-bell fa-fw"></i>
+                <!-- Counter - Alerts -->
 
+              </a>
+              <!-- Dropdown - Alerts -->
+              <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="alertsDropdown">
+                <h6 class="dropdown-header">
+                  인식 차량 보러가기
+                </h6>
+                <a class="dropdown-item d-flex align-items-center" href="Show_recognize">
+                  <div class="mr-3">
+                    <div class="icon-circle bg-warning">
+                      <i class="fas fa-exclamation-triangle text-white"></i>
+                    </div>
+                  </div>
+                  <div>
+                          {% if newCar %}
+                            [{{newCar}}]차량 인식되었습니다.
+                          {% else %}
+                            새로 인식된 차량이 없습니다.
+                          {% endif %}
+
+                  </div>
+                </a>
+              </div>
+            </li>
             <!-- Nav Item - User Information -->
             <li class="nav-item dropdown no-arrow">
               <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -177,6 +208,7 @@
           </ul>
 
         </nav>
+
 
         <div class="container-fluid">
 
@@ -265,6 +297,24 @@
         <div class="modal-footer">
           <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
           <a class="btn btn-primary" href="logout">로그아웃</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal fade" id="newCar" tabindex="-1" role="dialog" aria-labelledby="ModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="ModalLabel">새로운 차량이 인식되었습니다.</h5>
+          <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span>
+          </button>
+        </div>
+        <div class="modal-body">확인창을 누르면 데이터를 보러 갑니다.</div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" type="button" data-dismiss="modal">취소</button>
+          <a class="btn btn-primary" href="logout">보러가기</a>
         </div>
       </div>
     </div>

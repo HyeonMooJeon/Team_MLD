@@ -1,10 +1,13 @@
 import pandas as pd
-from flask import Flask, render_template, request, Response, session
+from flask import Flask, render_template, request, Response, session, get_flashed_messages, redirect, url_for, flash
 import MySQLdb
 import cv2
 from flask.json import jsonify
 import json
-import webbrowser
+from django.http import HttpResponse, JsonResponse
+import time
+from threading import Thread
+import threading
 
 User_Name=""
 app = Flask(__name__)
@@ -12,8 +15,10 @@ app.secret_key = "super secret key"
 vc = cv2.VideoCapture(0)
 #DB로부터 데이터를 받을때 ASCII코드로 바뀌는걸 방지.
 app.config['JSON_AS_ASCII'] = False
-conn = MySQLdb.connect(host="localhost", user="root", password="sm435", db="team_mld", charset='utf8')
+conn = MySQLdb.connect(host="localhost", user="root", password="root", db="team_mld", charset='utf8')
 cursor = conn.cursor()
+newRecog=""
+myThread = threading.Thread()
 
 
 #카메라 동작 방법.
@@ -24,11 +29,54 @@ def gen():
         yield (b'--frame\r\n'
                b'Content-Type: image/jpeg\r\n\r\n' + open('t.jpg', 'rb').read() + b'\r\n')
 
+#새로운 데이터 확인하기. recognize 테이블에 새로운 차번호 들어오면 인식.
+#5초마다 확인하며, 간단하게 데이터 2개를 처음에 같은값 그후 비교하면서 다르면 새로운 차량 인식된걸로 됨.
+def refresh():
+    cursor.execute("SELECT re_plate FROM recognize where re_index=(select MAX(re_index) from recognize);")
+    r = [dict((cursor.description[i][0], value)
+              for i, value in enumerate(row))
+         for row in cursor.fetchall()]
+    conn.commit()
+    data1 = json.dumps(r)
+    print("처음 차번 = "+data1)
+    while True:
+        time.sleep(1)
+        cursor.execute("SELECT re_plate FROM recognize where re_index=(select MAX(re_index) from recognize);")
+        r = [dict((cursor.description[i][0], value)
+             for i, value in enumerate(row))
+                 for row in cursor.fetchall()]
+        conn.commit()
+        data2 = json.dumps(r)
+        if(data1 != data2):
+             send = data2.split("\"")
+             print("추가된 차번 = "+send[3])
+             global newRecog
+             newRecog = send[3]
+             print(send[3])
+             data1=data2
+
+
+
+#홈페이지
+@app.route("/")
+@app.route("/home")
+def index():
+    #global myThread
+    #myThread = Thread(target=refresh())
+    #myThread.start()
+
+    if session.get('user'):
+        #return render_template('index.html' ,name = User_Name)
+        return render_template("index.html", name="테스터", newCar="12다3456")
+    else:
+        return login()
+
+
 
 #여기 없는 페이지에 대한 에러처리
 @app.errorhandler(404)
 def page_error(error):
-    return render_template("error.html"), 404
+    return render_template('error.html', err_code="FAIL", err_message1="페이지를 찾을수 없습니다."), 404
 
 #table형식으로 표시하는법.
 @app.route("/Show_recognize")
@@ -49,7 +97,32 @@ def show_Recognize():
     df = df.rename(columns={'car_status_now': '범죄 유형'})
 
 
-    return render_template("lookup.html", tables=[df.to_html(classes='data')], titles="인식차량 확인하기")
+    return render_template("lookup.html", tables=[df.to_html(classes='data')])
+
+
+
+#회원 등록
+@app.route('/test')
+def test():
+    cursor.execute(
+        "SELECT file_location, file_model_location FROM recognize;")
+    r = [dict((cursor.description[i][0], value)
+              for i, value in enumerate(row))
+                 for row in cursor.fetchall()]
+    conn.commit()
+
+
+#    df = pd.DataFrame(r)
+#    df.columns.name = '인덱스'
+    data = jsonify(r)
+    df = pd.DataFrame(r)
+
+    return render_template("test.html", tables=[df.to_html(classes='data')])
+
+
+
+
+
 
 
 
@@ -58,7 +131,7 @@ def show_goverment():
      cursor.execute("SELECT go.GO_License_Plate, car_status.car_status_now, model.model_car FROM go  INNER JOIN car_status ON go.GO_car_state = car_status.car_status_key INNER JOIN model ON go.GO_car_model = model.model_key;")
      r = [dict((cursor.description[i][0], value)
                for i, value in enumerate(row))
-          for row in cursor.fetchall()]
+                   for row in cursor.fetchall()]
      conn.commit()
 
      df = pd.DataFrame(r)
@@ -92,17 +165,6 @@ def show_illegal():
 
 
      return render_template("lookup.html", tables=[df.to_html(classes='data')], titles="범죄차량 확인하기")
-
-
-
-#비디오 동영상 HTML
-@app.route("/video")
-def streaming():
-    if 'user' in session:
-        return render_template('video.html')
-    else:
-        return login()
-
 
 #비디오 동영상 동작
 @app.route('/video_feed')
@@ -143,16 +205,6 @@ def real_time():
 def logout():
     session.pop('user', None)
     return login()
-
-
-#홈페이지
-@app.route("/")
-@app.route("/home")
-def index():
-    if session.get('user'):
-        return render_template('index.html' ,name = User_Name)
-    else:
-        return login()
 
 
 #비밀번호 분실
@@ -266,9 +318,9 @@ def CHK_login():
             data = split_data.split("\"")
             print(data[3])
             global User_Name
+            global newRecog
             User_Name = data[3]
-
-            return render_template("index.html", name = User_Name)
+            return render_template("index.html", name = User_Name, newCar = newRecog)
         else:
             return render_template('error.html', err_code="FAIL", err_message1="비밀번호가 틀렸습니다..",err_message2="다시 입력해 주세요.")
     else:
@@ -321,6 +373,7 @@ def chart():
     location2 = 0
     location3 = 0
     location4 = 0
+    location5 = 0
 
     split_data = json_data.split(": ")
     i=0
@@ -345,12 +398,15 @@ def chart():
             location3 = recognize
         if i==4:
             location4 = recognize
+        if i==5:
+            location5 = recognize
+
 
         #print(recognize,"그리고",i)
         i=i+1
 
 
-    return render_template('charts.html', loc1 = location1, loc2 = location2, loc3 = location3, loc4 = location4, name= User_Name)
+    return render_template('charts.html', loc1 = location1, loc2 = location2, loc3 = location3, loc4 = location4, loc5 = location5, name= User_Name)
 
 def CHKnumber(i):
     try:

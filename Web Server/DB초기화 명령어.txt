@@ -113,6 +113,7 @@ insert into car_status(car_status_now) value('대포 의심 차량');
 insert into car_status(car_status_now) value('노후 경차');
 insert into car_status(car_status_now) value('고속도로 체납차량');
 insert into car_status(car_status_now) value('뺑소니');
+insert into car_status(car_status_now) value("위조차량");
 
 -정부 DB
 insert into go(GO_car_model, GO_License_Plate, GO_car_state) value(1, '11가1111', 1);
