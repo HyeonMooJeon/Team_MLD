@@ -1,0 +1,6 @@
+classes=16
+train  = data/train-new16.txt
+valid  = data/train-new16.txt
+names = data/obj-new16.names
+backup = backup/
+

@@ -1,0 +1,114 @@
+darknet.exe detector train data/obj.data yolo-obj.cfg darknet53.conv.74
+darknet.exe detector test data/obj.data yolo-obj.cfg backup/yolo-obj_60000.weights data/images.jpg
+
+darknet.exe detector train cfg/voc-mnist.data yolo-obj2-mnist.cfg darknet53.conv.74 -dont_show -mjpeg_port 8090 -map //-mnist 사용
+darknet.exe detector test cfg/voc-mnist.data yolo-obj2-mnist.cfg backup/yolo-obj2-mnist_15000.weights data/sampletest.jpg
+
+darknet.exe detector test data/coco.data yolov3.cfg yolov3.weights -ext_output data/images3.jpg
+./darknet detector demo cfg/coco.data yolov3.cfg yolov3.weights test.mp4 -dont_show -out_filename res.avi
+
+C:\Users\person\Desktop\darknet-master\darknet-master\build\darknet\x64
+
+First_Total_Car_yolo-obj_82000.weights
+
+1. 현재까지 가장 높은거 5천개 데이터셋
+  1. darknet.exe detector test data/obj-16.data yolo-obj.cfg backup/First_Total_Car_yolo-obj_82000.weights data/images.jpg
+ 
+
+2.lp판 단일
+  1. darknet.exe detector test data/obj.data yolo-obj2.cfg backup/lp/yolo-obj2_6000.weights data/images.jpg    //lp판 단일 class
+
+3.carnumber
+ 1. darknet.exe detector train data/obj-carnumber.data yolo-obj-carnumber.cfg backup/yolo-obj-carnumber_8000.weights darknet53.conv.74 -dont_show -mjpeg_port 8090 -map
+ 2. darknet.exe detector test data/obj-carnumber.data yolo-obj-carnumber.cfg backup/yolo-obj-carnumber_25000.weights data/images.jpg
+
+4. new16 - 7만번째가 제일 높은 인식률임
+ 1. darknet.exe detector train data/obj-new16.data yolo-obj.cfg darknet53.conv.74 -dont_show -mjpeg_port 8090 -map
+
+5. new 11 - 1~9, lp 
+ 1. darknet.exe detector train data/obj_carnumber_lp.data yolo-obj.cfg darknet53.conv.74 -dont_show -mjpeg_port 8090 -map
+
+6. new only lp
+ 1. darknet.exe detector train data/obj_only_lp.data yolo-obj.cfg darknet53.conv.74 -dont_show -mjpeg_port 8090 -map
+
+7. new lp+number2
+ 1. darknet.exe detector train data/obj_carnumber_lp2.data yolo-obj.cfg darknet53.conv.74 -dont_show -mjpeg_port 8090 -map
+
+8. onlycar
+ 1. darknet.exe detector train data/obj_only_car.data yolo-obj-car.cfg backup/yolo-obj_last.weights darknet53.conv.74 -dont_show -mjpeg_port 8090 -map
+
+
+9.only number
+
+ 2. darknet.exe detector test data/obj-carnumber.data yolo-obj-carnumber.cfg backup/onlyNearNumber/yolo-obj_9000.weights data/images.jpg
+
+10. kr + number
+
+ 2. darknet.exe detector train data/obj_kr_number.data yolo-obj-kr_number.cfg darknet53.conv.74 -dont_show -mjpeg_port 8090 -map
+
+10. number
+
+ 2. darknet.exe detector train data/obj_totalnumber.data yolo-obj_totalnumber.cfg darknet53.conv.74 -dont_show -mjpeg_port 8090 -map
+ 3. darknet.exe detector test data/obj_totalnumber.data yolo-obj_totalnumber.cfg backup/yolo-obj_totalnumber_last.weights data/images6.jpg
+
+11 kr
+
+12 park
+1. darknet.exe detector train data/obj_park.data yolo-obj-park.cfg darknet53.conv.74 -dont_show -mjpeg_port 8090 -map
+
+(GUI가없는 원격 서버의 교육 과정에서 map & Loss-chart를 보려면 Chrome / Firefox 브라우저에서 명령 
+darknet.exe detector train data/obj.data yolo-obj.cfg darknet53.conv.74 -dont_show -mjpeg_port 8090 -map을 사용한 다음 URL을 엽니 다. http://ip-address:8090)
+yolo-obj2 사용
+
+아래는 커맨드에 대한 예시와 사용방법이다.
+
+1. darknet.exe detector test data/coco.data cfg/yolov3.cfg yolov3.weights -i 0 -thresh 0.25
+
+test : 이미지 한 장 테스트를 위한 커맨드
+
+data/coco.data : data폴더의 coco.data 파일을 이용
+
+cfg/yolov3.cfg : 레이어의 정보가 들어있는 파일
+
+yolov3.weights : 학습된 가중치(여기서는 coco.data에 대해 미리 학습된 가중치이다.)
+
+thresh : 임계값(0.25는 25%이상 정확도의 물체만 감지한다는 뜻)
+
+i : ?(추가 예정)
+
+
+
+2. darknet.exe detector test data/coco.data yolov3.cfg yolov3.weights -ext_output dog.jpg
+
+ext_output dog.jpg : 결과물 저장파일 dog.jpg를 출력한다.
+
+
+
+3. darknet.exe detector demo data/coco.data cfg/yolov3.cfg yolov3.weights -ext_output test.mp4
+
+demo : 동영상 파일 테스트를 위한 커맨드
+
+
+
+4. darknet.exe detector demo data/coco.data cfg/yolov3.cfg yolov3.weights -c 0
+
+-c 0 : 0번 웹캠 테스트를 위한 커맨드
+
+
+
+5. arknet.exe detector demo data/coco.data cfg/yolov3.cfg yolov3.weights http://192.168.0.80:8080/video?dummy=param.mjpg
+
+http://192.168.0.80:8080/video?dummy=param.mjpg : 아이피 카메라 주소
+
+
+
+6. arknet.exe detector demo data/coco.data cfg/yolov3.cfg yolov3.weights -thresh 0.25 test.mp4 -out_filename res.avi
+
+: test.mp4 파일을 테스트 하고 그 결과를 res.avi로 출력한다.
+
+
+
+7. darknet.exe detector test cfg/coco.data yolov3.cfg yolov3.weights -dont_show -ext_output < data/train.txt > result.txt
+
+이미지 리스트가 적혀있는 train.txt의 이미지 목록을 읽고 그 목록에 있는 이미지를 테스트 해 result.txt에 출력한다.
+
