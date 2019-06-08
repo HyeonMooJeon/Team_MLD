@@ -102,7 +102,12 @@
 (06/08 ~ )
  - 차량 추가시 alert추가
   문제점...thread돌려버리면 웹서버가 계속 스레드에 집중하느라 다른일이 안됨... 백그라운드 돌리는방법을 알아내야함.
- - 
+★길우 필독★
+ - 차량 이미지 보는법!! 알아냈음
+   DB저장할떄  절대경로가 아닌 상대 경로로 다시 저장되도록 해주삼..
+ex) C:\Users\admin\PycharmProjects\CAR_DETECTED\static\img\sample1.jpg => 안읽어짐
+    static/img/sample1.jpg  => 조회 가능!
+
 
 
 

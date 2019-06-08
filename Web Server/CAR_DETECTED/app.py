@@ -8,6 +8,7 @@ from django.http import HttpResponse, JsonResponse
 import time
 from threading import Thread
 import threading
+from django.shortcuts import render
 
 User_Name=""
 app = Flask(__name__)
@@ -81,7 +82,7 @@ def page_error(error):
 #table형식으로 표시하는법.
 @app.route("/Show_recognize")
 def show_Recognize():
-    cursor.execute("SELECT recognize.re_plate, recognize.re_time,  location.location_now, model.model_car, recognize.file_location, recognize.file_model_location, car_status.car_status_now  FROM recognize  LEFT JOIN go ON go.GO_License_Plate = recognize.re_plate  INNER JOIN location ON recognize.re_location = location.location_key  INNER JOIN model ON recognize.re_model = model.model_key INNER JOIN car_status ON car_status.car_status_key = recognize.re_status;")
+    cursor.execute("SELECT recognize.re_plate, recognize.re_time,  location.location_now, model.model_car, car_status.car_status_now  FROM recognize  LEFT JOIN go ON go.GO_License_Plate = recognize.re_plate  INNER JOIN location ON recognize.re_location = location.location_key  INNER JOIN model ON recognize.re_model = model.model_key INNER JOIN car_status ON car_status.car_status_key = recognize.re_status;")
     r = [dict((cursor.description[i][0], value)
               for i, value in enumerate(row))
          for row in cursor.fetchall()]
@@ -92,33 +93,26 @@ def show_Recognize():
     df = df.rename(columns={'location_now': '위치'})
     df = df.rename(columns={'model_car': '차량 모델'})
     df = df.rename(columns={'re_time': '인식된 시간'})
-    df = df.rename(columns={'file_location': '인식된 차번'})
-    df = df.rename(columns={'file_model_location': '인식된 차종'})
     df = df.rename(columns={'car_status_now': '범죄 유형'})
 
+    cursor.execute("SELECT file_model_location FROM recognize;")
+    model=cursor.fetchall()
 
-    return render_template("lookup.html", tables=[df.to_html(classes='data')])
+    cursor.execute("SELECT file_location FROM recognize;")
+    plate=cursor.fetchall()
+
+
+    return render_template("lookup.html", tables=[df.to_html(classes='data')] , rows1=model, rows2=plate , r1="차종", r2="번호판")
 
 
 
 #회원 등록
 @app.route('/test')
 def test():
-    cursor.execute(
-        "SELECT file_location, file_model_location FROM recognize;")
-    r = [dict((cursor.description[i][0], value)
-              for i, value in enumerate(row))
-                 for row in cursor.fetchall()]
-    conn.commit()
+    cursor.execute("SELECT file_model_location FROM recognize;")
+    row=cursor.fetchall()
 
-
-#    df = pd.DataFrame(r)
-#    df.columns.name = '인덱스'
-    data = jsonify(r)
-    df = pd.DataFrame(r)
-
-    return render_template("test.html", tables=[df.to_html(classes='data')])
-
+    return render_template("test.html", rows=row)
 
 
 

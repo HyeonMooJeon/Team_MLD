@@ -24,7 +24,23 @@
     <style type="text/css">
 
         table {
-            width: 75%;
+            width: 100%;
+            border-bottom: 1px solid green;
+            border-top: 1px solid green;
+            margin: 30px 30px 30px 30px;
+            border-collapse: collapse;
+        }
+        tr, td, th {
+            border-bottom: 1px solid green;
+            border-top: 1px solid green;
+            border-right:hidden;
+            border-left:hidden;
+            padding: 20px 20px 20px 20px;
+            text-align: center;
+        }
+
+         #table_main {
+            width: 90%;
             border-bottom: 1px solid green;
             border-top: 1px solid green;
             margin: 30px 30px 30px 30px;
@@ -161,7 +177,7 @@
         <!-- Begin Page Content -->
         <div class="container-fluid">
 
-            <table>
+            <table id="table_main">
                 <tr>
                     <td>
                         <a href="show_illegal" class="btn btn-secondary btn-icon-split">
@@ -213,9 +229,48 @@
                     </td>
                 </tr>
             </table>
-            {% for table in tables %}
-            {{ table|safe }}
-            {% endfor %}
+            <div style="float: left; width: 80%;">
+                {% for table in tables %}
+                {{ table|safe }}
+                {% endfor %}
+            </div>
+            <div style="float: left; width: 8%;">
+            <table>
+                {% if r1 %}
+                <th>{{r1}}</th>
+                {% endif %}
+
+                {% for row in rows1 %}
+                <!-- <a href='{{row[0]}}'>{{row[0]}} 이동</a> -->
+                <tr>
+                    <td><a href='{{row[0]}}'>차량확인</a></td>
+                </tr>
+
+                {% endfor %}
+            </table>
+
+            </div>
+
+            <div style="float: left; width: 8%;">
+            <table>
+                {% if r2 %}
+                <th>{{r2}}</th>
+                {% endif %}
+
+                {% for row in rows2 %}
+                <!-- <a href='{{row[0]}}'>{{row[0]}} 이동</a> -->
+                <tr>
+                    <td><a href='{{row[0]}}'>번호확인</a></td>
+                </tr>
+                {% endfor %}
+
+            </table>
+
+            </div>
+
+
+
+
         </div>
         <!-- /.container-fluid -->
 
