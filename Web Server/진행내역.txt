@@ -108,6 +108,12 @@
 ex) C:\Users\admin\PycharmProjects\CAR_DETECTED\static\img\sample1.jpg => 안읽어짐
     static/img/sample1.jpg  => 조회 가능!
 
+ - 이미지 저장경로
+    = /static/img/model/~~~.jpg = 차량 모델 사진 저장 경로
+    = /static/img/plate/~~~.jpg   = 차번 사진 저장 경로
+
+ - 버튼을 통해 인식된 차량 사진 확인 가능!!
+ - 조회를 통해서도 가능함.
 
 
 

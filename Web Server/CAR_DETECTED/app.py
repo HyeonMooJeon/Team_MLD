@@ -144,7 +144,6 @@ def show_goverment():
 def show_illegal():
      cursor.execute("SELECT recognize.re_plate, recognize.re_time,  location.location_now, model.model_car, car_status.car_status_now FROM recognize LEFT JOIN go ON go.GO_License_Plate = recognize.re_plate INNER JOIN location ON recognize.re_location = location.location_key INNER JOIN model ON recognize.re_model = model.model_key INNER JOIN car_status ON recognize.re_status = car_status_key where go.GO_License_Plate = recognize.re_plate;")
      r = [dict((cursor.description[i][0], value)
-
                for i, value in enumerate(row)) for row in cursor.fetchall()]
      conn.commit()
 
@@ -280,7 +279,14 @@ def ChkStatus():
         df = df.rename(columns={'model_car': '차량 모델'})
         df = df.rename(columns={'re_time': '인식된 시간'})
 
-        return render_template("lookup.html", tables=[df.to_html(classes='data')], titles="인식차량 확인하기")
+        cursor.execute("SELECT file_model_location FROM recognize where re_plate='"+LP+"';")
+        model = cursor.fetchall()
+
+        cursor.execute("SELECT file_location FROM recognize where re_plate='"+LP+"';")
+        plate = cursor.fetchall()
+
+        return render_template("lookup.html", tables=[df.to_html(classes='data')], rows1=model, rows2=plate, r1="차종", r2="번호판")
+
 
     else:
         return render_template('error.html', err_code="FAIL", err_message1="인식된 차량이 없어요.",err_message2="기다려주세요.")
@@ -358,7 +364,7 @@ def intro_main():
 @app.route('/chart', methods=["GET", "POST"])
 def chart():
     cursor.execute(
-        "select count(case when re_location=1 then 1 end) as 'location1',count(case when re_location=2 then 1 end) as 'location2',count(case when re_location=3 then 1 end) as 'location3'from recognize;")
+        "select count(case when re_location=1 then 1 end) as 'location1',count(case when re_location=2 then 1 end) as 'location2',count(case when re_location=3 then 1 end) as 'location3',count(case when re_location=4 then 1 end) as 'location4' from recognize where re_time >= DATE_SUB(NOW(), INTERVAL 7 DAY);")
     r = [dict((cursor.description[i][0], value)
               for i, value in enumerate(row)) for row in cursor.fetchall()]
     json_data=json.dumps(r, ensure_ascii=False)
@@ -367,7 +373,7 @@ def chart():
     location2 = 0
     location3 = 0
     location4 = 0
-    location5 = 0
+
 
     split_data = json_data.split(": ")
     i=0
@@ -392,15 +398,13 @@ def chart():
             location3 = recognize
         if i==4:
             location4 = recognize
-        if i==5:
-            location5 = recognize
 
 
         #print(recognize,"그리고",i)
         i=i+1
 
 
-    return render_template('charts.html', loc1 = location1, loc2 = location2, loc3 = location3, loc4 = location4, loc5 = location5, name= User_Name)
+    return render_template('charts.html', loc1 = location1, loc2 = location2, loc3 = location3, loc4 = location4, name= User_Name)
 
 def CHKnumber(i):
     try:
