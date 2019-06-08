@@ -72,12 +72,12 @@ delete from ABCDEF;
 
 
 -인식차량 추가 ※시간은 DB에 추가한 시간으로 자동 저장됩니다. 한번에 insert하면 동 시간으로 추가됨.
-INSERT INTO recognize(re_plate, re_model, re_location, re_status, file_location, file_model_location) value('11가1111', 1, 1, 1, 'C:', 'C:');
-INSERT INTO recognize(re_plate, re_model, re_location, re_status, file_location, file_model_location) value('22나2222', 2, 2, 2, 'C:', 'C:');
-INSERT INTO recognize(re_plate, re_model, re_location, re_status, file_location, file_model_location) value('33다3333', 3, 3, 3, 'C:', 'C:');
-INSERT INTO recognize(re_plate, re_model, re_location, re_status, file_location, file_model_location) value('39바1375', 1, 1, 1, 'C:', 'C:');
-INSERT INTO recognize(re_plate, re_model, re_location, re_status, file_location, file_model_location) value('93허4758',2, 1, 1, 'C:', 'C:');
-INSERT INTO recognize(re_plate, re_model, re_location, re_status, file_location, file_model_location) value('11가1111', 1, 1, 1, 'C:', 'C:');
+INSERT INTO recognize(re_plate, re_model, re_location, re_status, file_location, file_model_location) value('11가1111', 1, 1, 1, '/static/img/plate/plate1.jpg', '/static/img/plate/plate1.jpg');
+INSERT INTO recognize(re_plate, re_model, re_location, re_status, file_location, file_model_location) value('22나2222', 2, 2, 2,'/static/img/plate/plate2.jpg', '/static/img/plate/plate2.jpg');
+INSERT INTO recognize(re_plate, re_model, re_location, re_status, file_location, file_model_location) value('33다3333', 3, 3, 3,'/static/img/plate/plate3.jpg', '/static/img/plate/plate3.jpg');
+INSERT INTO recognize(re_plate, re_model, re_location, re_status, file_location, file_model_location) value('39바1375', 1, 1, 1, '/static/img/plate/plate4.jpg', '/static/img/plate/plate4.jpg');
+INSERT INTO recognize(re_plate, re_model, re_location, re_status, file_location, file_model_location) value('93허4758',2, 1, 1, '/static/img/plate/plate5.jpg', '/static/img/plate/plate5.jpg');
+INSERT INTO recognize(re_plate, re_model, re_location, re_status, file_location, file_model_location) value('11가1111', 1, 1, 1,'/static/img/plate/plate6.jpg', '/static/img/plate/plate6.jpg');
 
  - 뒤에 차번, 위치, 모델, 이미지 파일 저장위치 장소 순서로 하면 저장됩니다.
  - 위치와 모델은 반드시 숫자로 설정.

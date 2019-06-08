@@ -9,6 +9,7 @@ import time
 from threading import Thread
 import threading
 from django.shortcuts import render
+from io import StringIO
 
 User_Name=""
 app = Flask(__name__)
@@ -330,19 +331,23 @@ def CHK_login():
 #정부 파일 저장하는 로직
 @app.route("/GovINFO")
 def GovTable():
-    try:
-        cursor.execute("SELECT go.GO_License_Plate, car_status.car_status_now, model.model_car "
-                        "FROM go "
-                        "INNER JOIN car_status ON go.GO_car_state = car_status.car_status_key "
-                        "INNER JOIN model ON go.GO_car_model = model.model_key "
-                        "into outfile 'C:/Users/Public/Goverment_Table.csv' fields terminated by ',' ;")
-        conn.commit()
+    cursor.execute("SELECT go.GO_License_Plate, car_status.car_status_now, model.model_car FROM go INNER JOIN car_status ON go.GO_car_state = car_status.car_status_key INNER JOIN model ON go.GO_car_model = model.model_key;")
+    r = [dict((cursor.description[i][0], value)
+              for i, value in enumerate(row))
+         for row in cursor.fetchall()]
+    conn.commit()
+    df = pd.DataFrame(r)
+    output = StringIO()
+    output.write(u'\ufeff')
+    df.to_csv(output)
+    response = Response(
+        output.getvalue(),
+        mimetype="text/csv",
+        content_type='application/octet-stream',
+    )
+    response.headers["Content-Disposition"] = "attachment; filename=Goverment.csv"  # 다운받았을때의 파일 이름 지정해주기
+    return response
 
-    except (MySQLdb.Error, MySQLdb.Warning) as e:
-        print(e)
-    finally:
-        return index()
-    #try catch를 통해 파일이 존재할경우 메인 화면으로 이동하도록 만듬
 
 #위치는 추후 수정해야함.
 @app.route('/data', methods=["GET", "POST"])
@@ -379,6 +384,7 @@ def chart():
     i=0
     for temp in split_data:
         if i==0:
+
             i=i+1
             continue
         recognize = 0
