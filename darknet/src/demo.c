@@ -1315,9 +1315,9 @@ void mld_last(char *cfgfile, char *cfgfile_model, char *weightfile, char *weight
                 time_t timer;
                 timer = time(NULL);
                 t = localtime(&timer);
-                sprintf(newFrame.path, "results/%d_%d_%d_%d_%d_%d_%d.jpg", t->tm_year + 1900, t->tm_mon + 1, t->tm_mday,
+                sprintf(newFrame.path, "/static/image/plate/%d_%d_%d_%d_%d_%d_%d.jpg", t->tm_year + 1900, t->tm_mon + 1, t->tm_mday,
                     t->tm_hour, t->tm_min, t->tm_sec, frame);
-                sprintf(newFrame.path_model, "results/model_%d_%d_%d_%d_%d_%d_%d.jpg", t->tm_year + 1900, t->tm_mon + 1, t->tm_mday,
+                sprintf(newFrame.path_model, "/static/image/model/%d_%d_%d_%d_%d_%d_%d.jpg", t->tm_year + 1900, t->tm_mon + 1, t->tm_mday,
                     t->tm_hour, t->tm_min, t->tm_sec, frame);
                 sprintf(newFrame.time, "%d-%d-%d %d:%d:%d", t->tm_year + 1900, t->tm_mon + 1, t->tm_mday,
                     t->tm_hour, t->tm_min, t->tm_sec);
@@ -1342,9 +1342,15 @@ void mld_last(char *cfgfile, char *cfgfile_model, char *weightfile, char *weight
                     char *car_model = get_car_model(list);
                     FRAME_NODE *save_node = saveNode(&list, carnumber, car_model);
                     int car_last[6] = { save_node->data.car.full[0].num,save_node->data.car.full[1].num, save_node->data.car.full[2].num,
-                   save_node->data.car.full[3].num ,save_node->data.car.full[4].num ,save_node->data.car.full[5].num };
-                    save_cv_jpg(save_node->data.image, save_node->data.path);
-                    save_cv_jpg(save_node->data.image_model, save_node->data.path_model);
+                    save_node->data.car.full[3].num ,save_node->data.car.full[4].num ,save_node->data.car.full[5].num };
+                    char platepath[150] = "../../../../Web Server/CAR_DETECTED";
+                    char modelpath[150] = "../../../../Web Server/CAR_DETECTED";
+                    strcat(platepath, save_node->data.path);
+                    strcat(modelpath, save_node->data.path_model);
+                    //save_cv_jpg(save_node->data.image, save_node->data.path);
+                    //save_cv_jpg(save_node->data.image_model, save_node->data.path_model);
+                    save_cv_jpg(save_node->data.image, platepath);
+                    save_cv_jpg(save_node->data.image_model, modelpath);
                     printf("db test\n");
                     if (insert_car_infomation(carnumber, save_node->data.car.model.name, save_node->data.time, save_node->data.path, save_node->data.path_model))
                         printf("insert error!!\n");

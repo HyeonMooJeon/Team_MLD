@@ -11,8 +11,6 @@ typedef struct {
     float prod;
 }MODEL;
 typedef struct {
-    NUMBER front[2];
-    NUMBER back[4];
     NUMBER full[6];
     MODEL model;
 }CAR;
@@ -20,8 +18,8 @@ typedef struct {
     CAR car;
     IplImage* image;
     IplImage* image_model;
-    char path[50];
-    char path_model[50];
+    char path[100];
+    char path_model[100];
     char time[50];
 }FRAME_INFO;
 typedef struct frame_node {
