@@ -115,6 +115,7 @@ ex) C:\Users\admin\PycharmProjects\CAR_DETECTED\static\img\sample1.jpg => 안읽어
  - 버튼을 통해 인식된 차량 사진 확인 가능!!
  - 조회를 통해서도 가능함.
 
-
+-로그아웃 버튼 에러 수정
+ - 비밀번호 찾기 화면 수정
 
  

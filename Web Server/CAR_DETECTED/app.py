@@ -17,7 +17,7 @@ app.secret_key = "super secret key"
 vc = cv2.VideoCapture(0)
 #DB로부터 데이터를 받을때 ASCII코드로 바뀌는걸 방지.
 app.config['JSON_AS_ASCII'] = False
-conn = MySQLdb.connect(host="localhost", user="root", password="sm435", db="team_mld", charset='utf8')
+conn = MySQLdb.connect(host="localhost", user="root", password="root", db="team_mld", charset='utf8')
 cursor = conn.cursor()
 newRecog=""
 myThread = threading.Thread()
@@ -216,7 +216,10 @@ def show_my_password():
     cursor.execute("SELECT PW FROM user where Email='"+email+"' AND User_name='"+name+"'")
     password = cursor.fetchall()
     if password:
-        return jsonify(password)
+        data = json.dumps(password)
+        print(data)
+        temp = data.split("\"")
+        return render_template('/forgot_password.html', password=temp[1])
     else:
         return render_template('error.html', err_code="FAIL", err_message1="존재하지 않는 이메일입니다", err_message2="다시 확인해주세요")
 
