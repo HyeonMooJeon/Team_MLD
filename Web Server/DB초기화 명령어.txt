@@ -32,20 +32,50 @@ CREATE TABLE model (
 );
 
 -인식 차량 수정
--인식 차량
+-인식 차량  -- 이걸로 다시 돌려주시고
 CREATE TABLE recognize (
   re_plate varchar(8) NOT NULL,
   re_model int(3) unsigned NOT NULL,
   re_time timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  re_location int(3) NOT NULL,
+  re_location int(3) unsigned NOT NULL,
   file_location varchar(200) NOT NULL,
   file_model_location varchar(200) NOT NULL,
-  re_status int(3) not null,
+  re_status int(3) NOT NULL,
   re_index int(11) NOT NULL AUTO_INCREMENT,
-  PRIMARY KEY (`re_index`),
-  foreign key(re_model) references model(model_key), 
+  PRIMARY KEY (re_index),
+  foreign key(re_model) references model(model_key),
+  foreign key(re_location) references location(location_key),
   foreign key(re_status) references car_status(car_status_key)
-);
+  on delete cascade
+  on update cascade
+)
+
+--이걸로 샘플 데이터 다시 추가하면 됨.
+insert into recognize(re_plate, re_model, re_location, file_location, file_model_location, re_status) value ("11가1111", 1, 1, "/static/img/plate/plate1.jpg", "/static/img/model/model1.jpg", 1);
+insert into recognize(re_plate, re_model, re_location, file_location, file_model_location, re_status) value ("22다2222", 2, 2, "/static/img/plate/plate2.jpg", "/static/img/model/model2.jpg", 1);
+insert into recognize(re_plate, re_model, re_location, file_location, file_model_location, re_status) value ("13무8326", 3, 3, "/static/img/plate/plate3.jpg", "/static/img/model/model3.jpg", 1);
+insert into recognize(re_plate, re_model, re_location, file_location, file_model_location, re_status) value ("41버3168", 4, 4, "/static/img/plate/plate4.jpg", "/static/img/model/model4.jpg", 1);
+insert into recognize(re_plate, re_model, re_location, file_location, file_model_location, re_status) value ("57다3159", 2, 3, "/static/img/plate/plate5.jpg", "/static/img/model/model5.jpg", 1);
+insert into recognize(re_plate, re_model, re_location, file_location, file_model_location, re_status) value ("11호8895", 4, 1, "/static/img/plate/plate6.jpg", "/static/img/model/model6.jpg", 1);
+insert into recognize(re_plate, re_model, re_location, file_location, file_model_location, re_status) value ("69허9865", 2, 1, "/static/img/plate/plate7.jpg", "/static/img/model/model7.jpg", 1);
+insert into recognize(re_plate, re_model, re_location, file_location, file_model_location, re_status) value ("14바3025", 1, 4, "/static/img/plate/plate8.jpg", "/static/img/model/model8.jpg", 1);
+insert into recognize(re_plate, re_model, re_location, file_location, file_model_location, re_status) value ("02마9137", 2, 4, "/static/img/plate/plate9.jpg", "/static/img/model/model9.jpg", 1);
+insert into recognize(re_plate, re_model, re_location, file_location, file_model_location, re_status) value ("65다7912", 2, 3, "/static/img/plate/plate10.jpg", "/static/img/model/model10.jpg", 1);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 -사용자
 CREATE TABLE user (
