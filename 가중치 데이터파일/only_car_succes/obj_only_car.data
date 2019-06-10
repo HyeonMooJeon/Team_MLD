@@ -1,0 +1,6 @@
+classes=5
+train  = data/train_only_car.txt
+valid  = data/train_only_car.txt
+names = data/obj_only_car.names
+backup = backup/
+

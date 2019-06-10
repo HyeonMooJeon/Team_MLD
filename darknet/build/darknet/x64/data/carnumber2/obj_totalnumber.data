@@ -1,0 +1,6 @@
+classes=10
+train  = data/train_totalnumber.txt
+valid  = data/train_totalnumber.txt
+names = data/carnumber2/obj_totalnumber.names
+backup = backup/
+
