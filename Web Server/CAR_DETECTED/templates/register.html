@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -41,7 +41,11 @@
           <div class="col-lg">
             <div class="p-5">
               <div class="text-center">
+                {% if OK %}
+                <h1 class="h4 text-gray-900 mb-4">{{OK}}</h1>
+                {% else %}
                 <h1 class="h4 text-gray-900 mb-4">계정 생성!</h1>
+                {% endif %}
               </div>
               <form action="register_user" method="POST" class="user">
                 <div class="form-group">
@@ -71,7 +75,7 @@
               </form>
               <hr>
               <div class="text-center">
-                  <a class="small" href="forgot_password">비밀 번호를 잊어버리셨습니까?</a>
+                <a class="small" href="forgot_password">비밀번호를 까먹으셨나요?</a>
               </div>
             </div>
           </div>

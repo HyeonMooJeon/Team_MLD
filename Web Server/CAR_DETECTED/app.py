@@ -1,15 +1,13 @@
 import pandas as pd
-from flask import Flask, render_template, request, Response, session, get_flashed_messages, redirect, url_for, flash
+from flask import Flask, render_template, request, Response, session, redirect, url_for
 import MySQLdb
 import cv2
 from flask.json import jsonify
 import json
-from django.http import HttpResponse, JsonResponse
 import time
-from threading import Thread
 import threading
-from django.shortcuts import render
 from io import StringIO
+from datetime import timedelta
 
 User_Name=""
 app = Flask(__name__)
@@ -17,7 +15,7 @@ app.secret_key = "super secret key"
 vc = cv2.VideoCapture(0)
 #DB로부터 데이터를 받을때 ASCII코드로 바뀌는걸 방지.
 app.config['JSON_AS_ASCII'] = False
-conn = MySQLdb.connect(host="localhost", user="root", password="sm435", db="team_mld", charset='utf8')
+conn = MySQLdb.connect(host="localhost", user="root", password="root", db="team_mld", charset='utf8')
 cursor = conn.cursor()
 newRecog=""
 myThread = threading.Thread()
@@ -68,8 +66,9 @@ def index():
     #myThread.start()
 
     if session.get('user'):
-        #return render_template('index.html' ,name = User_Name)
-        return render_template("index.html", name="테스터", newCar="12다3456")
+        global User_name
+        return render_template('index.html' ,name = User_Name)
+        #return render_template("index.html", name="테스터", newCar="12다3456")
     else:
         return login()
 
@@ -254,7 +253,7 @@ def register_user():
             cursor.execute("INSERT INTO user(Email,PW,User_name) VALUE('"+email+"', '"+PW+"', '"+name+"')")
             conn.commit()
             #회원가입 완료는 alert사용해서 다시 완성할것.
-            return "회원가입 완료"
+            return render_template("/register.html", OK="회원가입 완료!")
     else:
         return render_template('error.html', err_code="FAIL", err_message1="비밀번호가 서로 다릅니다.",err_message2="다른 확인해주세요.")
 
@@ -324,7 +323,7 @@ def CHK_login():
             global User_Name
             global newRecog
             User_Name = data[3]
-            return render_template("index.html", name = User_Name, newCar = newRecog)
+            return redirect(url_for('index'))
         else:
             return render_template('error.html', err_code="FAIL", err_message1="비밀번호가 틀렸습니다..",err_message2="다시 입력해 주세요.")
     else:
@@ -332,9 +331,9 @@ def CHK_login():
 
 
 #정부 파일 저장하는 로직
-@app.route("/GovINFO")
+@app.route("/recogINFO")
 def GovTable():
-    cursor.execute("SELECT go.GO_License_Plate, car_status.car_status_now, model.model_car FROM go INNER JOIN car_status ON go.GO_car_state = car_status.car_status_key INNER JOIN model ON go.GO_car_model = model.model_key;")
+    cursor.execute("SELECT recognize.re_plate  as 번호판, recognize.re_time as 인식시간,  location.location_now as 장소, model.model_car as 차종, car_status.car_status_now as 범죄유형 FROM recognize LEFT JOIN go ON go.GO_License_Plate = recognize.re_plate INNER JOIN location ON recognize.re_location = location.location_key INNER JOIN model ON recognize.re_model = model.model_key INNER JOIN car_status ON recognize.re_status = car_status_key where go.GO_License_Plate = recognize.re_plate;")
     r = [dict((cursor.description[i][0], value)
               for i, value in enumerate(row))
          for row in cursor.fetchall()]
@@ -348,7 +347,7 @@ def GovTable():
         mimetype="text/csv",
         content_type='application/octet-stream',
     )
-    response.headers["Content-Disposition"] = "attachment; filename=Goverment.csv"  # 다운받았을때의 파일 이름 지정해주기
+    response.headers["Content-Disposition"] = "attachment; filename=RecogCAR.csv"  # 다운받았을때의 파일 이름 지정해주기
     return response
 
 
@@ -424,7 +423,10 @@ def CHKnumber(i):
 
 
 
-
+@app.before_request
+def make_session_permanent():
+    session.permanent = True
+    app.permanent_session_lifetime = timedelta(minutes=1)
 
 
 if __name__ == "__main__":
