@@ -15,6 +15,7 @@ downloads/
 eggs/
 .eggs/
 lib/
+!darknet/3rdparty/pthreads/lib/
 lib64/
 parts/
 sdist/

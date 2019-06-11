@@ -5,6 +5,7 @@
 *.png
 !darknet-debug/camera-debug-values/demo/*.png
 !darknet-debug/camera-debug-values/mld/*.png
+!build/darknet/x64/data/labels/*.png
 *.so
 *.exe
 mnist/

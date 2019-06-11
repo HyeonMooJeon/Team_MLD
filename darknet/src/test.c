@@ -228,6 +228,56 @@ int* get_car_info(FRAME_NODE *list, int size) {
     free(arr);
     return number;
 }
+//횟수 계산
+int* get_car_info_weight(FRAME_NODE *list, int size) {
+    int count[10] = { 0, };
+    int *number = (int*)malloc(6);
+
+    int ***arr = (int***)malloc(sizeof(int**)*size);
+    int a, b, c, i;
+    for (a = 0; a < size; a++) {
+        *(arr + a) = (int**)malloc(sizeof(int*) * 2);
+        for (b = 0; b < 2; b++) {
+            *(*(arr + a) + b) = (int*)malloc(sizeof(int) * 6);
+        }
+    }
+    if (arr == NULL) {
+        printf("outt of memory!!!!!!!\n");
+        exit(1);
+    }
+    else {
+        for (a = 0; a < size; a++) {
+            for (b = 0; b < 2; b++) {
+                for (c = 0; c < 6; c++) {
+                    if (b == 0) {
+                        arr[a][b][c] = list->data.car.full[c].num;
+                    }
+                    else {
+                        arr[a][b][c] = (int)list->data.car.full[c].prod;
+                    }
+                }
+            }
+            list = list->next;
+        }
+    }
+    for (i = 0; i < 6; i++) {
+        for (a = 0; a < size; a++) {
+            count[arr[a][0][i]] += arr[a][1][i] / size;
+        }
+        number[i] = count_number(count);
+        memset(count, 0, sizeof(count));
+    }
+
+    for (a = 0; a < size; a++) {
+        for (b = 0; b < 2; b++) {
+            free(*(*(arr + a) + b));
+        }
+        free(*(arr + a));
+        //list = list->next;
+    }
+    free(arr);
+    return number;
+}
 //최종 차량 모델 추출
 char* get_car_model(FRAME_NODE * list) {
     int i, last = 0, temp = 0, number[5] = { 0, };
