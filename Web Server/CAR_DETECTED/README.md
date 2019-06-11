@@ -1,65 +1,54 @@
-# [Start Bootstrap - SB Admin 2](https://startbootstrap.com/template-overviews/sb-admin-2/)
+		*Team_MLD Template*
+@필수 pip 인스톨
+ - pip인스톨 전 python 버젼을 꼭 확인해주세요
+   => [window] -> cmd실행 -> python -V으로 확인후 3.7이 아닌경우 재설치 해주세요.
+       https://www.python.org/downloads/release/python-370/
+ - 설치 목록
+ - pip사용 버젼 = 19.0.3
+pip3 install pandas
+pip3 install flask
+pip3 install Flask-MySQLdb
+pip3 install mysqlclient
+pip3 install simplejson
+pip3 install opencv-python
 
-[SB Admin 2](https://startbootstrap.com/template-overviews/sb-admin-2/) is an open source admin dashboard theme for [Bootstrap](http://getbootstrap.com/) created by [Start Bootstrap](http://startbootstrap.com/).
+@파일 설명
+1. static - HTML 에서 필요한 CSS, JS 파일들 및 필요한 img소스 모음
+2. templates - HTML 소스코드
+3. app.py - 내부 로직 코드
+ - 회원 관리 부분
+  -> login = 로그인 화면
+  -> logout = 로그아웃 
+  -> login_CHK = 로그인 확인 로직
+  -> register = 회원 등록 화면
+  -> register_user = 회원 등록 로직
+  -> forgot_password = 비밀번호 분실
 
-For the legacy Bootstrap 3 version of this theme, you can view the [last stable release](https://github.com/BlackrockDigital/startbootstrap-sb-admin-2/releases/tag/v3.3.7%2B1) of SB Admin 2 for Bootstrap 3.
+ - 동작 화면
+  -> home = 홈페이지
+  -> intro_main = 소개 화면
+  -> Video_feed = 웹켐 프레임 캡쳐 로직
+  -> real_time = Video_feed을 통한 캡쳐 화면 표시
+  -> show_my_password = 비밀번호 보여주기
+  -> recogINFO = 인식 정보 CSV파일로 출력
+  -> chart = 데이터 차트를 통한 도식화 화면
+  -> lookup = 기본 테이블 표시 화면
+    -> carStatus = 차량 번호에 따른 결과 표시
+    -> show_illegal = 범죄 차량 표시
+    -> Show_recognize = 인식 차량 표시
+    -> Show_Goverment = 정부 Table표시
 
-## Preview
+@사용시 주의사항
+ - app.py의 19번째 코드에서 사용자의 MySQL 서버의 사용자명, 비밀번호, DB이름까지 설정을 해주서야 합니다.
+ - 카메라가 없는 경우 실시간 감식 화면(/real_time)에서 화면이 표시가 안됩니다.
+ - 로그인(login), 로그아웃(logout), 비밀번호 분실(forgot_password), 회원등록(regist), 프로그램 소개(intro_main)화면에서는 로그인 없이 사용이 가능합니다.
+   그외의 기능적인 화면은 로그인 후 사용이 가능합니다.
+ - 회원가입시 유의사항
+    = 비밀번호는 4자리 이상 사용해 주세요
+    = 이메일은 중복사용 불가능 합니다.
+    = 아무것도 입력하지 않을 경우 또한 등록 불가능 합니다.
 
-[![SB Admin 2 Preview](https://startbootstrap.com/assets/img/screenshots/themes/sb-admin-2.png)](https://blackrockdigital.github.io/startbootstrap-sb-admin-2/)
-
-**[Launch Live Preview](https://blackrockdigital.github.io/startbootstrap-sb-admin-2/)**
-
-## Status
-
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/BlackrockDigital/startbootstrap-sb-admin-2/master/LICENSE)
-[![npm version](https://img.shields.io/npm/v/startbootstrap-sb-admin-2.svg)](https://www.npmjs.com/package/startbootstrap-sb-admin-2)
-[![Build Status](https://travis-ci.org/BlackrockDigital/startbootstrap-sb-admin-2.svg?branch=master)](https://travis-ci.org/BlackrockDigital/startbootstrap-sb-admin-2)
-[![dependencies Status](https://david-dm.org/BlackrockDigital/startbootstrap-sb-admin-2/status.svg)](https://david-dm.org/BlackrockDigital/startbootstrap-sb-admin-2)
-[![devDependencies Status](https://david-dm.org/BlackrockDigital/startbootstrap-sb-admin-2/dev-status.svg)](https://david-dm.org/BlackrockDigital/startbootstrap-sb-admin-2?type=dev)
-
-## Download and Installation
-
-To begin using this template, choose one of the following options to get started:
-
--   [Download the latest release on Start Bootstrap](https://startbootstrap.com/template-overviews/sb-admin-2/)
--   Install via npm: `npm i startbootstrap-sb-admin-2`
--   Clone the repo: `git clone https://github.com/BlackrockDigital/startbootstrap-sb-admin-2.git`
--   [Fork, Clone, or Download on GitHub](https://github.com/BlackrockDigital/startbootstrap-sb-admin-2)
-
-## Usage
-
-After installation, run `npm install` and then run `npm start` which will open up a preview of the template in your default browser, watch for changes to core template files, and live reload the browser when changes are saved. You can view the `gulpfile.js` to see which tasks are included with the dev environment.
-
-### Gulp Tasks
-
--   `gulp` the default task that builds everything
--   `gulp watch` browserSync opens the project in your default browser and live reloads when changes are made
--   `gulp css` compiles SCSS files into CSS and minifies the compiled CSS
--   `gulp js` minifies the themes JS file
--   `gulp vendor` copies dependencies from node_modules to the vendor directory
-
-You must have npm and Gulp installed globally on your machine in order to use these features. This theme was built using node v11.6.0 and the Gulp CLI v2.0.1. If Gulp is not running properly after running `npm install`, you may need to update node and/or the Gulp CLI locally.
-
-## Bugs and Issues
-
-Have a bug or an issue with this template? [Open a new issue](https://github.com/BlackrockDigital/startbootstrap-sb-admin-2/issues) here on GitHub or leave a comment on the [template overview page at Start Bootstrap](http://startbootstrap.com/template-overviews/sb-admin-2/).
-
-## About
-
-Start Bootstrap is an open source library of free Bootstrap templates and themes. All of the free templates and themes on Start Bootstrap are released under the MIT license, which means you can use them for any purpose, even for commercial projects.
-
--   <https://startbootstrap.com>
--   <https://twitter.com/SBootstrap>
-
-Start Bootstrap was created by and is maintained by **[David Miller](http://davidmiller.io/)**.
-
--   <http://davidmiller.io>
--   <https://twitter.com/davidmillerskt>
--   <https://github.com/davidtmiller>
-
-Start Bootstrap is based on the [Bootstrap](http://getbootstrap.com/) framework created by [Mark Otto](https://twitter.com/mdo) and [Jacob Thorton](https://twitter.com/fat).
-
-## Copyright and License
-
-Copyright 2013-2019 Blackrock Digital LLC. Code released under the [MIT](https://github.com/BlackrockDigital/startbootstrap-resume/blob/gh-pages/LICENSE) license.
+@라이선스
+ - 템플릿 라이선스 - MIT LICENSE (# [Start Bootstrap - SB Admin 2](https://startbootstrap.com/template-overviews/sb-admin-2/))
+ - 프로젝트 라인선스 - GPL LICENSE
+ - YOLO 라이선스 - YOLO LICENSE1.0

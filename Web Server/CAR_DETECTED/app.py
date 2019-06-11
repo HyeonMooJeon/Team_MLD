@@ -2,12 +2,10 @@ import pandas as pd
 from flask import Flask, render_template, request, Response, session, redirect, url_for
 import MySQLdb
 import cv2
-from flask.json import jsonify
 import json
 import time
 import threading
 from io import StringIO
-from datetime import timedelta
 
 User_Name=""
 app = Flask(__name__)
@@ -15,6 +13,7 @@ app.secret_key = "super secret key"
 vc = cv2.VideoCapture(0)
 #DB로부터 데이터를 받을때 ASCII코드로 바뀌는걸 방지.
 app.config['JSON_AS_ASCII'] = False
+#MySQL root비밀번호와 사용자 그리고 DB 이름까지 맞춘다음 실행해주셔야 합니다!!
 conn = MySQLdb.connect(host="localhost", user="root", password="root", db="team_mld", charset='utf8')
 cursor = conn.cursor()
 newRecog=""
@@ -57,7 +56,7 @@ def refresh():
 
 
 
-#홈페이지
+#메인 화면
 @app.route("/")
 @app.route("/home")
 def index():
@@ -79,7 +78,7 @@ def index():
 def page_error(error):
     return render_template('error.html', err_code="FAIL", err_message1="페이지를 찾을수 없습니다."), 404
 
-#table형식으로 표시하는법.
+#인식 차량 표시
 @app.route("/Show_recognize")
 def show_Recognize():
     cursor.execute("SELECT recognize.re_plate, recognize.re_time,  location.location_now, model.model_car, car_status.car_status_now  FROM recognize  LEFT JOIN go ON go.GO_License_Plate = recognize.re_plate  INNER JOIN location ON recognize.re_location = location.location_key  INNER JOIN model ON recognize.re_model = model.model_key INNER JOIN car_status ON car_status.car_status_key = recognize.re_status;")
@@ -103,21 +102,6 @@ def show_Recognize():
 
 
     return render_template("lookup.html", tables=[df.to_html(classes='data')] , rows1=model, rows2=plate , r1="차종", r2="번호판")
-
-
-
-#회원 등록
-@app.route('/test')
-def test():
-    cursor.execute("SELECT file_model_location FROM recognize;")
-    row=cursor.fetchall()
-
-    return render_template("test.html", rows=row)
-
-
-
-
-
 
 
 @app.route("/Show_Goverment")
@@ -182,7 +166,7 @@ def lookup():
 
 
 
-#실시간 영상
+#실시간 영상 표시
 @app.route("/real_time")
 def real_time():
     if 'user' in session:
@@ -206,6 +190,7 @@ def forgot_password():
     return render_template('/forgot_password.html')
 
 
+#찾은 비밀번호 보여주기
 @app.route('/show_my_password',  methods=["POST"])
 def show_my_password():
     email = str(request.form["Email"])
@@ -351,18 +336,6 @@ def GovTable():
     return response
 
 
-#위치는 추후 수정해야함.
-@app.route('/data', methods=["GET", "POST"])
-def data():
-    cursor.execute(
-        "select count(case when re_location=1 then 1 end) as '1번 위치',count(case when re_location=2 then 1 end) as '2번 위치',count(case when re_location=3 then 1 end) as '3번 위치'from recognize;")
-    r = [dict((cursor.description[i][0], value)
-              for i, value in enumerate(row)) for row in cursor.fetchall()]
-    jsonData = jsonify(r)
-    conn.commit()
-
-    return jsonData
-
 @app.route('/intro_main')
 def intro_main():
     return render_template('intro_main.html')
@@ -422,12 +395,12 @@ def CHKnumber(i):
         return False
 
 
-
+'''
 @app.before_request
 def make_session_permanent():
     session.permanent = True
     app.permanent_session_lifetime = timedelta(minutes=1)
-
+'''
 
 if __name__ == "__main__":
     app.run(debug=True, threaded=True)
